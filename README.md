@@ -1,4 +1,4 @@
-# SEI-26_group1_project3
+# Lovely Left Overs
 Project 3 Repo
 
 Members:
