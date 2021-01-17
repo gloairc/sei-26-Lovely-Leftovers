@@ -193,7 +193,7 @@ export const batchData = [
     contactNum: 98765432,
     collectionAdress: 513456,
     status: "active",
-    Contributor: 2,
+    Contributor: "2",
   },
   {
     _id: "1",
