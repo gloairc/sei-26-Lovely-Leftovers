@@ -9,9 +9,10 @@ const listingSchema = new mongoose.Schema(
     isVegetarian: { type: Boolean },
     description: { type: String },
     bestBefore: { type: Date },
-    image: { type: URL },
+    image: { type: String },
     status: { type: String },
     recipient: { type: String },
+    batchID: { type: String },
   },
   { timestamps: true }
 );
