@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import About from "./components/About";
+import OneItem from "./components/foodListing/OneItem";
+import FoodCard from "./components/foodListing/FoodCard";
 
 function App() {
   return (
@@ -12,6 +14,9 @@ function App() {
         <Switch>
           <Route exact path="/about">
             <About />
+          </Route>
+          <Route path="/food">
+            <FoodCard />
           </Route>
         </Switch>
       </Router>
