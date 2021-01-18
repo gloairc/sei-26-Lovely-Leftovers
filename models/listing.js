@@ -2,21 +2,18 @@ const mongoose = require("mongoose");
 
 const listingSchema = new mongoose.Schema(
   {
-    title: { type: String },
-    quantity: { type: Number },
-    category: { type: String, type: Array },
+    title: { type: String, required: true },
+    quantity: { type: Number, default: 1 },
+    category: [{ type: String }],
     isHalal: { type: Boolean },
     isVegetarian: { type: Boolean },
     description: { type: String },
-    bestBefore: { type: Date },
-    image: { type: String },
-    status: { type: String },
-    recipient: { type: String },
-    batchID: { type: String },
+    bestBefore: { type: Date, required: true },
+    imgFile: { type: String },
+    status: { type: String, default: "active" },
+    recipient: { type: String, default: "null" },
   },
   { timestamps: true }
 );
 
-const Listing = mongoose.model("Listing", listingSchema);
-
-module.exports = Listing;
+module.exports = listingSchema;
