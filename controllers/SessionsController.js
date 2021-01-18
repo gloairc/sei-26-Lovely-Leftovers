@@ -9,4 +9,32 @@ sessions.get("/", (req, res) => {
   res.send(currentUser);
 });
 
+// POST on log-in
+sessions.post("/", (req, res) => {
+  User.findOne({ username: req.body.username }, (err, foundUser) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send({ error: "Oops there's a problem with the server database" });
+    } else if (!foundUser) {
+      // res.status(401).send({ error: "Sorry, no user found" });
+      res.status(401).send({ error: `<a href="/">Sorry, no user found </a>"` });
+    } else {
+      if (bcrypt.compareSync(req.body.password, foundUser.password)) {
+        req.session.currentUser = foundUser;
+        res.status(200).send(foundUser);
+      } else {
+        // res.status(401).send({ error: "Password doesn't match" });
+        res.status(401).send({ error: `<a href="/"> password does not match </a>` });
+      }
+    }
+  });
+});
+
+sessions.delete("/", (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie(this.cookie, { path: '/' });
+    res.status(StatusCodes.OK).send({ msg: "Logging out" });
+  });
+});
+
 module.exports = sessions;
