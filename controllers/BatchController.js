@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-// const { body, validationResult } = require("express-validator");
-// const { StatusCodes } = require("http-status-codes");
+const { body, validationResult } = require("express-validator");
+const { StatusCodes } = require("http-status-codes");
 const Batch = require("../models/batch");
+// const { batchFind } = require("../functions/mongooseFn");
 
 router.get("/seed", (req, res) => {
   Batch.create(
@@ -103,33 +104,113 @@ router.get("/seed", (req, res) => {
   );
 });
 
-router.get("/", (req, res) => {
-  Batch.find({}, (err, batch) => {
-    res.send(batch);
-  });
+router.get("/", async (req, res) => {
+  try {
+    const data = await Batch.find();
+    res.status(200).json({ success: true, data });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
 });
 
-router.get("/:batchID", (req, res) => {
+router.get("/:batchID", async (req, res) => {
   const batchID = req.params.batchID;
-  Batch.findById(batchID, (err, oneBatch) => {
-    res.send(oneBatch);
-  });
+  try {
+    const data = await Batch.findById(batchID, (err, oneBatch) => {
+      return oneBatch;
+    });
+    res.status(200).json({ success: true, data });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
 });
 
-router.get("/:batchID/listing", (req, res) => {
-  const batchID = req.params.batchID;
-  Batch.findById(batchID, (err, oneBatchListing) => {
-    res.send(oneBatchListing.foodListings);
-  });
-});
+router.post(
+  "/",
+  body("foodListings", "Please enter food items").notEmpty(),
+  body("contactPerson").trim().optional().notEmpty(),
+  body("contactNum", "Please enter only digits").trim().optional(),
+  body("collectionAddress").trim().optional(),
+  body(
+    "foodListings.*.title",
+    "Food title has to be at least 3 characters long"
+  )
+    .trim()
+    .isLength({ min: 3 }),
+  body("foodListings.*.quantity", "Quantity must be at least 1")
+    .trim()
+    .isInt({ min: 1 })
+    .notEmpty(),
+  body("foodListings.*.category", "Please select at least one entry")
+    .isArray({ min: 1 })
+    .notEmpty()
+    .trim(),
+  body(
+    "foodListings.*.category.*",
+    "Only categories provided are considered valid entries"
+  ).isIn([
+    "pork",
+    "chicken",
+    "beef",
+    "frozen food",
+    "vegetable",
+    "bread",
+    "dessert",
+    "noodles",
+    "rice",
+    "cooked meal",
+    "snacks",
+  ]),
+  body("foodListings.*.isHalal", "Please pick an option for halal")
+    .notEmpty()
+    .isBoolean(),
+  body("foodListings.*.isVegetarian", "Please pick an option for vegetarian")
+    .notEmpty()
+    .isBoolean(),
+  body("foodListings.*.description").trim().optional(),
+  body("foodListings.*.bestBefore", "Please enter a valid date/time")
+    .trim()
+    .notEmpty()
+    .isBefore(Date.now()),
+  body("foodListings.*.imgFile").trim().optional(),
 
-router.get("/:batchID/listing/:foodListingID", (req, res) => {
-  const batchID = req.params.batchID;
-  const foodListingID = req.params.foodListingID;
-  Batch.findById(batchID, (err, oneBatchListing) => {
-    const food = oneBatchListing.foodListings.id(foodListingID);
-    res.send(food);
-  });
-});
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const locals = { newContribution: req.body, errors: errors.array() };
+      res.status(StatusCodes.BAD_REQUEST).send(locals);
+    } else {
+      const newContribution = req.body;
+      console.log(newContribution);
+      Batch.create(newContribution, (error, data) => {
+        res.status(StatusCodes.CREATED).send(data);
+      });
+    }
+  }
+);
+
+// router.get("/:batchID/listing", async (req, res) => {
+//   const batchID = req.params.batchID;
+//   try {
+//     const data = await Batch.findById(batchID, (err, oneBatchListing) => {
+//       console.log(oneBatchListing.foodListings);
+//       const lists = oneBatchListing.foodListings;
+//       return lists;
+//     });
+//     const test = data.foodListings;
+//     res.status(200).json({ success: true, test });
+//   } catch (err) {
+//     res.status(400).json({ success: false, message: err.message });
+//   }
+// });
+
+// router.get("/:batchID/listing/:foodListingID", (req, res) => {
+//   const batchID = req.params.batchID;
+//   const foodListingID = req.params.foodListingID;
+//   Batch.findById(batchID, (err, oneBatchListing) => {
+//     const food = oneBatchListing.foodListings.id(foodListingID);
+//     res.send(food);
+//   });
+// });
 
 module.exports = router;
