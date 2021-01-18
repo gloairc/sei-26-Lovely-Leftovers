@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import About from "./components/About";
 import OneItem from "./components/foodListing/OneItem";
-import FoodCard from "./components/foodListing/FoodCard";
+import FoodListing from "./components/foodListing/FoodListing";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
             <About />
           </Route>
           <Route path="/food">
-            <FoodCard />
+            <FoodListing />
           </Route>
         </Switch>
       </Router>

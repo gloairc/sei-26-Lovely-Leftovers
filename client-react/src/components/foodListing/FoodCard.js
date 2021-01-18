@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-
+import { Card } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import testImg from "../../images/can-food.jpg";
 // import "./style.css";
 
 const FoodCard = ({ data }) => {
@@ -17,17 +19,15 @@ const FoodCard = ({ data }) => {
   });
 
   return (
-    <div>
-      <img src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/spinach-1580403191.jpg?crop=1xw:0.998589562764457xh;center,top&resize=120:*"></img>
-      <div>
-        <h3>
+    <Card style={{ width: "18rem" }} className="w-50">
+      <Card.Img variant="top" src={testImg} />
+      <Card.Body>
+        <Card.Title>
           {formData.title} ({formData.quantity})
-        </h3>
-      </div>
-      <div>
-        <p>Best Before : {formData.bestBefore}</p>
-      </div>
-    </div>
+        </Card.Title>
+        <Card.Text>{formData.bestBefore}</Card.Text>
+      </Card.Body>
+    </Card>
   );
 };
 

@@ -1,6 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { Form, FormControl, Button, Row, Col } from "react-bootstrap";
+import {
+  Form,
+  FormControl,
+  Button,
+  Row,
+  Col,
+  Container,
+} from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 // import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -35,7 +42,7 @@ const ItemDetailsTemplate = (props) => {
   //   }
 
   return (
-    <>
+    <Container>
       <Row>
         <Col>
           Title:{" "}
@@ -203,7 +210,7 @@ const ItemDetailsTemplate = (props) => {
               </Button>
             </Col>
           </Row> */}
-    </>
+    </Container>
   );
 };
 
