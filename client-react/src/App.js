@@ -15,8 +15,11 @@ function App() {
           <Route exact path="/about">
             <About />
           </Route>
-          <Route path="/listings">
+          <Route exact path="/listings">
             <FoodListing />
+          </Route>
+          <Route path="/listings/:batchId/:foodId">
+            <OneItem />
           </Route>
         </Switch>
       </Router>
