@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import testImg from "../../images/can-food.jpg";
+import Moment from "react-moment";
 // import "./style.css";
 
 const FoodCard = ({ foodData }) => {
@@ -13,7 +14,9 @@ const FoodCard = ({ foodData }) => {
         <Card.Title>
           {foodData.title} ({foodData.quantity})
         </Card.Title>
-        <Card.Text>{foodData.bestBefore}</Card.Text>
+        <Card.Text>
+          Best Before:<Moment format="DD/MM/YYYY">{foodData.bestBefore}</Moment>{" "}
+        </Card.Text>
       </Card.Body>
     </Card>
   );
