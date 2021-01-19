@@ -110,9 +110,9 @@ router.get("/seed", (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const data = await Batch.find();
-    res.status(200).json({ success: true, data });
+    res.status(200).json(data);
   } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    res.status(400).json(err);
   }
 });
 
@@ -122,9 +122,9 @@ router.get("/:batchID", async (req, res) => {
     const data = await Batch.findById(batchID, (err, oneBatch) => {
       return oneBatch;
     });
-    res.status(200).json({ success: true, data });
+    res.status(200).json(data);
   } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    res.status(400).json(err);
   }
 });
 
