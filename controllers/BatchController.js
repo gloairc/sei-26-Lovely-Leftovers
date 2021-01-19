@@ -3,6 +3,8 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const Batch = require("../models/batch");
+const foodCat = require("../dataDump/dataDump");
+const moment = require("moment");
 // const { batchFind } = require("../functions/mongooseFn");
 
 router.get("/seed", (req, res) => {
@@ -128,7 +130,7 @@ router.get("/:batchID", async (req, res) => {
 router.post(
   "/",
   body("foodListings", "Please enter food items").notEmpty(),
-  body("contactPerson").trim().optional().notEmpty(),
+  body("contactPerson").trim().optional(),
   body("contactNum", "Please enter only digits").trim().optional(),
   body("collectionAddress").trim().optional(),
   body(
@@ -136,31 +138,19 @@ router.post(
     "Food title has to be at least 3 characters long"
   )
     .trim()
-    .isLength({ min: 3 }),
+    .isLength({ min: 3 })
+    .isAlpha()
+    .withMessage("only alphabets please"),
   body("foodListings.*.quantity", "Quantity must be at least 1")
     .trim()
-    .isInt({ min: 1 })
-    .notEmpty(),
-  body("foodListings.*.category", "Please select at least one entry")
-    .isArray({ min: 1 })
-    .notEmpty()
-    .trim(),
+    .isInt({ min: 1 }),
+  body("foodListings.*.category", "Please select at least one entry").isArray({
+    min: 1,
+  }),
   body(
     "foodListings.*.category.*",
     "Only categories provided are considered valid entries"
-  ).isIn([
-    "pork",
-    "chicken",
-    "beef",
-    "frozen food",
-    "vegetable",
-    "bread",
-    "dessert",
-    "noodles",
-    "rice",
-    "cooked meal",
-    "snacks",
-  ]),
+  ).isIn(foodCat),
   body("foodListings.*.isHalal", "Please pick an option for halal")
     .notEmpty()
     .isBoolean(),
@@ -168,11 +158,8 @@ router.post(
     .notEmpty()
     .isBoolean(),
   body("foodListings.*.description").trim().optional(),
-  body("foodListings.*.bestBefore", "Please enter a valid date/time")
-    .trim()
-    .notEmpty()
-    .isBefore(Date.now()),
-  body("foodListings.*.imgFile").trim().optional(),
+  body("foodListings.*.bestBefore", "Please enter a valid date/time"),
+  body("foodListings.*.imgFile").optional(),
 
   async (req, res) => {
     const errors = validationResult(req);
