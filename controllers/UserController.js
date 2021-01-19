@@ -4,6 +4,7 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const User = require("../models/user");
+const omit = require('just-omit')
 
 // const isAuthenticated = (req, res, next) => {
 //     if (req.session.currentUser) {
@@ -30,46 +31,46 @@ router.get("/seed", (req, res) => {
         [
             {
                 firstName: "Allo",
-                lastName: "Ha",
+                familyName: "Ha",
                 organisation: "Big Hearts",
                 contactNum: 61234567,
                 email: "bighearts@email.com",
                 username: "Recipient1",
                 password: "aaaa1111",
                 type: "Recipient",
-                receivedList: ["id1", "id2"]
+                // receivedList: ["id1", "id2"]
             },
-            {
-                firstName: "Happy",
-                lastName: "Two",
-                organisation: "Sharity",
-                contactNum: 60987654,
-                email: "sharity@email.com",
-                username: "Recipient2",
-                password: "bbbb2222",
-                type: "Recipient",
-                receivedList: ["id3"],
-            },
-            {
-                firstName: "Yoyo",
-                lastName: "Hu",
-                contactNum: 69483625,
-                email: "yoyohu@email.com",
-                username: "Contributor1",
-                password: "1111aaaa",
-                type: "Contributor",
-                batchList: ["idA", "idB"],
-            },
-            {
-                firstName: "Jello",
-                lastName: "Jo",
-                contactNum: 62857463,
-                email: "jellojo@email.com",
-                username: "Contributor2",
-                password: "2222bbbb",
-                type: "Contributor",
-                batchList: ["idC", "idD", "idE"],
-            }
+            // {
+            //     firstName: "Happy",
+            //     lastName: "Two",
+            //     organisation: "Sharity",
+            //     contactNum: 60987654,
+            //     email: "sharity@email.com",
+            //     username: "Recipient2",
+            //     password: "bbbb2222",
+            //     type: "Recipient",
+            //     // receivedList: ["id3"],
+            // },
+            // {
+            //     firstName: "Yoyo",
+            //     lastName: "Hu",
+            //     contactNum: 69483625,
+            //     email: "yoyohu@email.com",
+            //     username: "Contributor1",
+            //     password: "1111aaaa",
+            //     type: "Contributor",
+            //     // batchList: ["idA", "idB"],
+            // },
+            // {
+            //     firstName: "Jello",
+            //     lastName: "Jo",
+            //     contactNum: 62857463,
+            //     email: "jellojo@email.com",
+            //     username: "Contributor2",
+            //     password: "2222bbbb",
+            //     type: "Contributor",
+            //     // batchList: ["idC", "idD", "idE"],
+            // }
         ],
         (error, user) => {
             if (error) {
@@ -94,9 +95,11 @@ router.get("/:id", (req, res) => {
                     reason: `ERROR ${StatusCodes.BAD_REQUEST}, not valid id`,
                 }); //trying to add reason in to reason {}
         } else {
-            res.status(StatusCodes.OK).send(user);
+            console.log("user", user)
+            const usernopw = { ...user, password: '' }
+            res.status(StatusCodes.OK).send(usernopw);
         }
-    })
+    }).lean();
 })
 
 //Have issue with posting
@@ -118,12 +121,14 @@ router.post("/",
             const locals = { UserInput: req.body, errors: errors.array() };
             res.status(StatusCodes.BAD_REQUEST).send(locals);
         } else { //Data is valid
+            console.log(req.body)
             //overwrite the user password with the hashed password, then pass that in to our database
             req.body.password = bcrypt.hashSync(
                 req.body.password,
                 bcrypt.genSaltSync()
             );
             User.create(req.body, (err, createdUser) => {
+                console.log
                 console.log("user is created", createdUser);
                 req.session.currentUser = createdUser
                 //req.session creates a session, we are also creating a field called currentUser = createdUser
@@ -151,9 +156,6 @@ router.put("/:id",
             const locals = { UserInput: req.body, errors: errors.array() };
             res.status(StatusCodes.BAD_REQUEST).send(locals);
         }
-        if (req.body.password) { // if password was changed
-            req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync())
-        }
         // if (userInput.receivedList) { // triggers when Recipient received something
         //     User.findByIdAndUpdate(req.params.id, { $push: { receivedList: req.body.receivedList} }, { new: true }, (error, user) => {
         //         if (error) {
@@ -171,6 +173,11 @@ router.put("/:id",
         //     })
         // }
         else {// when user update account page
+            if (req.body.password && req.body.password !== "") {
+                req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync())
+            } else if (req.body.password === "") {
+                delete req.body.password
+            }
             User.findByIdAndUpdate(
                 req.params.id, // id
                 req.body, // what to update

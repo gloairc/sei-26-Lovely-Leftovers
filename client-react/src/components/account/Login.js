@@ -11,7 +11,7 @@ const Login = () => {
         password: '',
     })
 
-    const [errorMsg, setErrorMsg] = useState({})
+    // const [errorMsg, setErrorMsg] = useState({})
 
     const [loginStatus, setLoginStatus] = useState(false)
 
@@ -20,11 +20,11 @@ const Login = () => {
         password: Joi.string().alphanum().min(8).required(),
     })
 
-    const handleBlur = (event) => {
-        const test = event.target.id
-        const validate = formSchema.validate({ [test]: formData[test], abortEarly: false })
-        setErrorMsg((state) => { return { ...state, [test]: validate.error.message } })
-    }
+    // const handleBlur = (event) => {
+    //     const test = event.target.id
+    //     const validate = formSchema.validate({ [test]: formData[test], abortEarly: false })
+    //     setErrorMsg((state) => { return { ...state, [test]: validate.error.message } })
+    // }
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -60,7 +60,6 @@ const Login = () => {
                                     return { ...state, username: event.target.value }
                                 })
                             }}
-                            onBlur={handleBlur}
                         />
                         <FormText className="text-muted">
                             Username must be at least 8 characters long
@@ -78,11 +77,10 @@ const Login = () => {
                                 setFormData((state) => {
                                     return { ...state, password: event.target.value }
                                 })
-                            }}
-                            onBlur={handleBlur} />
+                            }} />
                         <FormText className="text-muted">Password must be at least 8 characters long</FormText>
                     </Col>
-                    {errorMsg}
+                    {/* {errorMsg} */}
                 </FormGroup>
                 <Button variant="primary" type="submit">
                     Log In

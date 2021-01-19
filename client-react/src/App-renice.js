@@ -12,13 +12,13 @@ function App() {
         <Route exact path="/home">
           <h1>Log in success</h1>
         </Route>
-        <Route exact path="/users/new">
+        <Route exact path="/user/new">
           <SignUp />
         </Route>
-        <Route exact path="/users/login">
+        <Route exact path="/user/login">
           <Login />
         </Route>
-        <Route exact path="/users/:id/edit">
+        <Route exact path="/user/:id/edit">
           <AccountEdit />
         </Route>
       </Switch>

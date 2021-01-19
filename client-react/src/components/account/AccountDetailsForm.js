@@ -105,14 +105,15 @@ const AccountDetailsForm = () => {
     useEffect(() => {
         if (userId) {
             console.log('user ID exists, setting form data.')
-            setFormData(data[0])
-            //         axios.get(`/users/${userId}`)
-            // .then((response) => {
-            //     setFormData(response)
-            // })
-            // .catch((error) => {
-            //     console.log('error', error)
-            // })
+            // setFormData(data[0])
+            axios.get(`/user/${userId}`)
+                .then((response) => {
+                    setFormData(response.data)
+                    console.log(response)
+                })
+                .catch((error) => {
+                    console.log('error', error)
+                })
         } else {
             console.log('new user. no set data')
         }
@@ -122,13 +123,13 @@ const AccountDetailsForm = () => {
         event.preventDefault();
         if (!userId) {
             console.log('creating new user')
-            // axios.post('/users', formData)
-            //     .then((response) => {
-            //         console.log("created new user")
-            //     })
-            //     .catch((error) => {
-            //         console.log('error', error)
-            //     })
+            axios.post('/user', formData)
+                .then((response) => {
+                    console.log("created new user")
+                })
+                .catch((error) => {
+                    console.log('error', error)
+                })
 
             // validation WIP
             const validate = formSchema.validate(formData, { abortEarly: false })
@@ -136,13 +137,14 @@ const AccountDetailsForm = () => {
 
         } else if (userId) {
             console.log('updating profile')
-            // axios.put(`/users/${userId}`, formData)
-            //     .then((response) => {
-            //         console.log("edited user data")
-            //     })
-            //     .catch((error) => {
-            //         console.log('error', error)
-            //     })
+            axios.put(`/user/${userId}`, formData)
+                .then((response) => {
+                    console.log("edited user data")
+                })
+                .catch((error) => {
+                    console.log('error', error)
+                })
+            console.log('after axios')
         }
     }
 
@@ -154,19 +156,19 @@ const AccountDetailsForm = () => {
                     <FormCheck
                         inline label="Contributor"
                         type="radio"
-                        value="contributor"
+                        value="Contributor"
                         name="type"
                         id="contributor"
                         onClick={(event) => setFormData((state) => {
                             return { ...state, type: event.target.value }
                         })}
-                        checked={formData.type === "contributor" && userId}
-                        disabled={formData.type === "recipient" && userId}
+                        checked={formData.type === "Contributor" && userId}
+                        disabled={formData.type === "Recipient" && userId}
                     />
                     <FormCheck
                         inline label="Recipient"
                         type="radio"
-                        value="recipient"
+                        value="Recipient"
                         name="type"
                         id="recipient"
                         onClick={(event) => setFormData((state) => {
@@ -211,7 +213,8 @@ const AccountDetailsForm = () => {
                                 setFormData((state) => {
                                     return { ...state, password: event.target.value }
                                 })
-                            }} />
+                            }}
+                            disabled={userId} />
                         <FormText className="text-muted">Password must be at least 8 characters long</FormText>
                     </Col>
                 </FormGroup>
@@ -229,14 +232,14 @@ const AccountDetailsForm = () => {
                     </Col>
                 </FormGroup>
 
-                <FormGroup as={Row} controlId="lastName">
+                <FormGroup as={Row} controlId="familyName">
                     <FormLabel column sm="3">Last Name: </FormLabel>
                     <Col sm="6">
                         <FormControl type="text"
-                            value={formData.lastName}
+                            value={formData.familyName}
                             onChange={(event) => {
                                 setFormData((state) => {
-                                    return { ...state, lastName: event.target.value }
+                                    return { ...state, familyName: event.target.value }
                                 })
                             }} />
                     </Col>
