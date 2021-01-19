@@ -6,6 +6,7 @@ const Batch = require("../models/batch");
 const foodCat = require("../dataDump/dataDump");
 const moment = require("moment");
 const { isDate } = require("moment");
+const User = require("../models/user");
 // const { batchFind } = require("../functions/mongooseFn");
 
 router.get("/seed", (req, res) => {
@@ -110,9 +111,9 @@ router.get("/seed", (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const data = await Batch.find();
-    res.status(200).json({ success: true, data });
+    res.status(200).json(data);
   } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    res.status(400).json({err.message});
   }
 });
 
@@ -122,9 +123,9 @@ router.get("/:batchID", async (req, res) => {
     const data = await Batch.findById(batchID, (err, oneBatch) => {
       return oneBatch;
     });
-    res.status(200).json({ success: true, data });
+    res.status(200).json(data);
   } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    res.status(400).json(err.message);
   }
 });
 
@@ -165,7 +166,7 @@ router.post(
     .withMessage("Please enter a date later than today"),
   body("foodListings.*.imgFile").optional(),
 
-  async (req, res) => {
+  (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const locals = { newContribution: req.body, errors: errors.array() };
@@ -225,33 +226,80 @@ router.put("/sdeletelist", (req, res) => {
 });
 
 // need validation
-router.put("/edit/batch", (req, res) => {
-  const data = req.body;
-  Batch.findById(data.batchID, (err, batch) => {
-    batch.contactPerson = req.body.contactPerson;
-    batch.contactNum = req.body.contactNum;
-    batch.collectionAddress = req.body.collectionAddress;
-    batch.save();
-    res.send(batch);
-  });
-});
+router.put(
+  "/edit/batch",
+  body("contactPerson", "only alphabets with at least 3 letters")
+    .trim()
+    .optional()
+    .isAlpha()
+    .isLength({ min: 3 }),
+  body("contactNum", "only digits at least 8 digits")
+    .optional()
+    .trim()
+    .isInt({ gt: 9999999, lt: 100000000 }),
+  body("collectionAddress", "at least 8 digits")
+    .optional()
+    .trim()
+    .isLength({ min: 8 }),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const locals = { newContribution: req.body, errors: errors.array() };
+      res.status(StatusCodes.BAD_REQUEST).send(locals);
+    } else {
+      const data = req.body;
+      Batch.findById(data.batchID, (err, batch) => {
+        batch.contactPerson = req.body.contactPerson;
+        batch.contactNum = req.body.contactNum;
+        batch.collectionAddress = req.body.collectionAddress;
+        batch.save();
+        res.send(batch);
+      });
+    }
+  }
+);
 
-router.put("/edit/listing", (req, res) => {
-  const data = req.body;
-  console.log(data.batchID);
-  Batch.findById(data.batchID, (err, batch) => {
-    const listItem = batch.foodListings.id(data.listID);
-    listItem.title = req.body.title;
-    listItem.quantity = req.body.quantity;
-    listItem.category = req.body.category;
-    listItem.isHalal = req.body.isHalal;
-    listItem.isVegetarian = req.body.isVegetarian;
-    listItem.description = req.body.description;
-    listItem.bestBefore = req.body.bestBefore;
-    listItem.imgFile = req.body.imgFile;
-    batch.save();
-    res.send(batch);
-  });
-});
+router.put(
+  "/edit/listing",
+  body("title", "Only Alphabets with at least 3 letters")
+    .trim()
+    .isAlpha()
+    .isLength({ min: 3 }),
+  body(
+    "quantity",
+    "Only positive integer accepted more than 0 is accepted"
+  ).isInt({ gt: 0 }),
+  body("category", "pick at least one category").notEmpty(), //test test
+  body("category.*", "category not valid").isIn(foodCat),
+  body("isHalal", "input must be true or false").isBoolean(),
+  body("isVegetarian", "input must be true or false").isBoolean(),
+  body("bestBefore", "Enter valid dateformat dd/mm/yyyy")
+    .isDate("DD/MM/YYYY")
+    .isAfter()
+    .withMessage("Please enter a date later than today"),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const locals = { newContribution: req.body, errors: errors.array() };
+      res.status(StatusCodes.BAD_REQUEST).send(locals);
+    } else {
+      const data = req.body;
+      console.log(data.batchID);
+      Batch.findById(data.batchID, (err, batch) => {
+        const listItem = batch.foodListings.id(data.listID);
+        listItem.title = req.body.title;
+        listItem.quantity = req.body.quantity;
+        listItem.category = req.body.category;
+        listItem.isHalal = req.body.isHalal;
+        listItem.isVegetarian = req.body.isVegetarian;
+        listItem.description = req.body.description;
+        listItem.bestBefore = req.body.bestBefore;
+        listItem.imgFile = req.body.imgFile;
+        batch.save();
+        res.send(batch);
+      });
+    }
+  }
+);
 
 module.exports = router;
