@@ -2,32 +2,27 @@ import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import testImg from "../../images/can-food.jpg";
+import Moment from "react-moment";
+import { Link } from "react-router-dom";
 // import "./style.css";
 
-const FoodCard = ({ data }) => {
-  const [formData, setFormData] = useState({
-    title: "Food item 1",
-    quantity: 5,
-    category: "Canned stuff",
-    isHalal: true,
-    isVegetarian: false,
-    description: "This is a can of food",
-    bestBefore: "10/03/2666",
-    collectionAddress: "Middle of nowhere Road",
-    contactName: "Some Guy",
-    contactNumber: "666666",
-  });
-
+const FoodCard = ({ foodData }) => {
   return (
-    <Card style={{ width: "18rem" }} className="w-50">
-      <Card.Img variant="top" src={testImg} />
-      <Card.Body>
-        <Card.Title>
-          {formData.title} ({formData.quantity})
-        </Card.Title>
-        <Card.Text>{formData.bestBefore}</Card.Text>
-      </Card.Body>
-    </Card>
+    <Link to={"/listings" + foodData.queryPath}>
+      <Card style={{ width: "18rem" }} className="w-25">
+        {foodData.title} ({foodData.quantity})
+        <Card.Img variant="top" src={testImg} />
+        <Card.Body>
+          <Card.Title>
+            {foodData.title} ({foodData.quantity})
+          </Card.Title>
+          <Card.Text>
+            Best Before:
+            <Moment format="DD/MM/YYYY">{foodData.bestBefore}</Moment>{" "}
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </Link>
   );
 };
 
