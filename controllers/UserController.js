@@ -5,6 +5,7 @@ const { body, validationResult } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const User = require("../models/user");
 const omit = require('just-omit')
+const Batch = require("../models/batch");
 
 // const isAuthenticated = (req, res, next) => {
 //     if (req.session.currentUser) {
@@ -14,7 +15,7 @@ const omit = require('just-omit')
 //     }
 // };
 
-router.get("/seed", (req, res) => {
+router.get("/seeds", (req, res) => {
     User.create(
         [
             {
@@ -195,5 +196,54 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+
+//PUT /user/addToReceivedList updates recipient's received list 
+router.put("/addToReceivedList", (req, res) => {
+    Batch.findById(req.body.batchID, (error, batch) => {
+        if (error) {
+            res.status(StatusCodes.BAD_REQUEST).send(error);
+        } else { //no error in finding batch ID
+            batch.foodListings.id(req.body.listID).status = "hidden"; //make that one listing hidden
+            batch.foodListings.id(req.body.listID).recipient = (req.session.currentUser)._id; // add in recipient's user._id to the listing. NEED TO TEST THIS OUT
+            batch.save((err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(StatusCodes.BAD_REQUEST).send(err);
+                }
+                else {
+                    console.log("batch saved. Now to update user", result);
+                    User.findByIdAndUpdate(
+                        (req.session.currentUser)._id, //req.params.id, 
+                        { $push: { receivedList: { batchID: req.body.batchID, listID: req.body.listID } } }, // req.body, // what to update: 
+                        { new: true },
+                        (error, updatedUser) => {
+                            if (error) {
+                                res.status(StatusCodes.BAD_REQUEST).send(error);
+                            } else {
+                                res.status(StatusCodes.OK).send(updatedUser);
+                            }
+                        }
+                    )
+                };
+            })
+        }
+    });
+})
+
+//PUT /user/addToContributionList updates Contributor's çonstribution list 
+router.put("/addToContributionList", (req, res) => {
+    User.findByIdAndUpdate(
+        (req.session.currentUser)._id,
+        { $push: { contributionList: req.body.batchID } }, // req.body, // what to update: 
+        { new: true },
+        (error, updatedUser) => {
+            if (error) {
+                res.status(StatusCodes.BAD_REQUEST).send(error);
+            } else {
+                res.status(StatusCodes.OK).send(updatedUser);
+            }
+        }
+    )
+});
 
 module.exports = router;
