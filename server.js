@@ -30,8 +30,8 @@ app.use("/batch", BatchController);
 const ListingController = require("./controllers/ListingController");
 app.use("/listing", ListingController);
 
-// const UserController = require("./controllers/UserController");
-// app.use("/user", UserController);
+const UserController = require("./controllers/UserController");
+app.use("/user", UserController);
 
 const sessionController = require("./controllers/SessionsController");
 app.use("/sessions", sessionController);
