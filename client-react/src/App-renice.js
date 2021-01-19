@@ -1,5 +1,6 @@
 import './App.css';
-import AccountDetailsForm from './AccountDetailsForm'
+import SignUp from './components/account/SignUp'
+import AccountEdit from './components/account/AccountEdit'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
@@ -7,10 +8,10 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/users/new">
-          <AccountDetailsForm />
+          <SignUp />
         </Route>
         <Route exact path="/users/:id/edit">
-          <AccountDetailsForm />
+          <AccountEdit />
         </Route>
       </Switch>
 

@@ -31,9 +31,81 @@ const AccountDetailsForm = () => {
         contactNum: Joi.string().length(8).regex(/^[0-9]{8}$/).required(),
     })
 
+    const data = [
+        {
+            _id: "Z",
+            firstName: "Simon",
+            lastName: "Lau",
+            organisation: "General Assembly Hungry",
+            contactNum: "99998888",
+            email: "simonlau@ga.com",
+            username: "simonlau",
+            password: "1234",
+            type: "contributor",
+            contributeList: ["1"],
+            myCart: [],
+            receivedList: [],
+            createdAt: 1029301932010,
+            imgFile: "",
+            status: "active",
+        },
+        {
+            _id: "A",
+            firstName: "Nausheen",
+            lastName: "yoyo",
+            organisation: "",
+            contactNum: "88887777",
+            email: "nausheen@ga.com",
+            username: "nausheen",
+            password: "1234",
+            type: "recipient",
+            contributeList: [],
+            myCart: [],
+            receivedList: ["a", "b"],
+            createdAt: 1012313452,
+            imgFile: "",
+            status: "active",
+        },
+        {
+            _id: "B",
+            firstName: "Mitch",
+            lastName: "Goon",
+            organisation: "",
+            contactNum: "77776666",
+            email: "mitchg@heavymetal.com",
+            username: "mitchg",
+            password: "1234",
+            type: "contributor",
+            contributeList: ["0"],
+            myCart: [],
+            receivedList: [],
+            createdAt: 1000333421,
+            imgFile: "",
+            status: "active",
+        },
+        {
+            _id: "C",
+            firstName: "Renice",
+            lastName: "Goh",
+            organisation: "Save the Hangries",
+            contactNum: "66665555",
+            email: "reniceg@coding.com",
+            username: "reniceg",
+            password: "1234",
+            type: "contributor",
+            contributeList: [],
+            myCart: [],
+            receivedList: [],
+            createdAt: 1004444444,
+            imgFile: "",
+            status: "active",
+        },
+    ];
+
     useEffect(() => {
         if (userId) {
             console.log('user ID exists, setting form data.')
+            setFormData(data[0])
             //         axios.get(`/users/${userId}`)
             // .then((response) => {
             //     setFormData(response)
@@ -74,7 +146,6 @@ const AccountDetailsForm = () => {
         }
     }
 
-
     return (
         <>
             <Form onSubmit={handleSubmit}>
@@ -88,8 +159,10 @@ const AccountDetailsForm = () => {
                         id="contributor"
                         onClick={(event) => setFormData((state) => {
                             return { ...state, type: event.target.value }
-                        })
-                        } />
+                        })}
+                        checked={formData.type === "contributor" && userId}
+                        disabled={formData.type === "recipient" && userId}
+                    />
                     <FormCheck
                         inline label="Recipient"
                         type="radio"
@@ -99,7 +172,10 @@ const AccountDetailsForm = () => {
                         onClick={(event) => setFormData((state) => {
                             return { ...state, type: event.target.value }
                         })
-                        } />
+                        }
+                        checked={formData.type === "recipient" && userId}
+                        disabled={formData.type === "contributor" && userId}
+                    />
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="username">
