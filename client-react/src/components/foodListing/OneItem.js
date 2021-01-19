@@ -11,8 +11,14 @@ const OneItem = () => {
   const [foodDetails, setFoodDetails] = useState({});
 
   useEffect(() => {
-    axios.get(`/batch/${batchId}/listing/${foodId}`).then((response) => {
-      setFoodDetails(response.data);
+    axios.get(`/batch/${batchId}`).then((response) => {
+      const batchData = response.data.data;
+      batchData.foodListings.forEach((foodItem) => {
+        if (foodItem._id === foodId) {
+          setFoodDetails(foodItem);
+          return;
+        }
+      });
     });
   }, []);
 

@@ -6,8 +6,9 @@ import axios from "axios";
 import _ from "lodash";
 // use lodash chunking?
 
-const FoodListing = (params) => {
+const FoodListing = () => {
   const [fullList, setFullList] = useState([]);
+  const [handleData, setHandleData] = useState(false);
   const renderFoodCards = fullList.map((batch) => {
     return batch.foodListings.map((foodItem) => {
       const foodData = {
@@ -21,15 +22,19 @@ const FoodListing = (params) => {
   });
   useEffect(() => {
     axios.get(`/batch`).then((response) => {
-      setFullList(response.data);
+      setFullList(response.data.data);
+      setHandleData(true);
     });
-  }, []);
+  }, [handleData]);
 
   return (
     <>
       <h2>Food Listing</h2>
       <br />
-      <Container>{renderFoodCards}</Container>
+      <Container>
+        {/* {console.log(fullList)} */}
+        {renderFoodCards}
+      </Container>
     </>
   );
 };
