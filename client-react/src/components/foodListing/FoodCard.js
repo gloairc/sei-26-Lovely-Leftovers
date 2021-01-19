@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const FoodCard = ({ foodData }) => {
   return (
     <Link to={"/listings" + foodData.queryPath}>
-      <Card style={{ width: "18rem" }} className="w-50">
+      <Card style={{ width: "18rem" }} className="w-25">
         {foodData.title} ({foodData.quantity})
         <Card.Img variant="top" src={testImg} />
         <Card.Body>

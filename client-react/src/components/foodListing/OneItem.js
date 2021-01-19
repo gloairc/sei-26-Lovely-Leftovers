@@ -1,8 +1,9 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, FormControl, Button, Row, Col } from "react-bootstrap";
 import { Redirect, useParams } from "react-router-dom";
 import ItemDetailsTemplate from "./ItemDetailsTemplate";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const OneItem = () => {
@@ -10,14 +11,14 @@ const OneItem = () => {
   const [foodDetails, setFoodDetails] = useState({});
 
   useEffect(() => {
-    axios.get(`/${batchId}/listing/${foodId}`).then((response) => {
+    axios.get(`/batch/${batchId}/listing/${foodId}`).then((response) => {
       setFoodDetails(response.data);
     });
   }, []);
 
   return (
     <Form>
-      <ItemDetailsTemplate />
+      <ItemDetailsTemplate foodData={foodDetails} />
       <Row>
         <Col>
           <Button type="submit" style={{ margin: "10px 0" }}>

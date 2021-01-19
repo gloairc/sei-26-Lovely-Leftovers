@@ -13,7 +13,7 @@ import { Redirect } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./style.css";
 
-const ItemDetailsTemplate = (props) => {
+const ItemDetailsTemplate = ({ foodData }) => {
   //   const handleCreateUser = (event) => {
   //     event.preventDefault();
   //     axios.post("/users", formData).then((response) => {
@@ -49,7 +49,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="text"
             title="title"
-            value={formData.title}
+            value={foodData.title}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -65,7 +65,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="number"
             title="quantity"
-            value={formData.quantity}
+            value={foodData.quantity}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -81,7 +81,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="text"
             title="category"
-            value={formData.category}
+            value={foodData.category}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -97,7 +97,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="boolean"
             title="isHalal"
-            value={formData.isHalal}
+            value={foodData.isHalal}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -113,7 +113,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="boolean"
             title="isVegetarian"
-            value={formData.isVegetarian}
+            value={foodData.isVegetarian}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -129,7 +129,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="text"
             title="description"
-            value={formData.description}
+            value={foodData.description}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -145,7 +145,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="text"
             title="bestBefore"
-            value={formData.bestBefore}
+            value={foodData.bestBefore}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -161,7 +161,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="text"
             title="collectionAddress"
-            value={formData.collectionAddress}
+            value={foodData.collectionAddress}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -177,7 +177,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="text"
             title="contactName"
-            value={formData.contactName}
+            value={foodData.contactName}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -193,7 +193,7 @@ const ItemDetailsTemplate = (props) => {
           <FormControl
             type="number"
             title="contactNumber"
-            value={formData.contactNumber}
+            value={foodData.contactNumber}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
