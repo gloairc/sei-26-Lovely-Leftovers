@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import About from "./components/About";
 import OneItem from "./components/foodListing/OneItem";
 import FoodListing from "./components/foodListing/FoodListing";
+import ContributionAdd from "./components/contribution/ContributionAdd";
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
           </Route>
           <Route path="/listings/:batchId/:foodId">
             <OneItem />
+          </Route>
+          <Route path="/contribute">
+            <ContributionAdd />
           </Route>
         </Switch>
       </Router>

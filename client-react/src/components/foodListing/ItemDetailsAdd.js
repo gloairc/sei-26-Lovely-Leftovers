@@ -13,7 +13,7 @@ import { Redirect } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./style.css";
 
-const ItemDetailsTemplate = ({ foodData }) => {
+const ItemDetailsAdd = ({ foodData }) => {
   //   const handleCreateUser = (event) => {
   //     event.preventDefault();
   //     axios.post("/users", formData).then((response) => {
@@ -30,7 +30,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="text"
             title="title"
-            value={foodData.title}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -46,7 +45,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="number"
             title="quantity"
-            value={foodData.quantity}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -62,7 +60,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="text"
             title="category"
-            value={foodData.category}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -78,7 +75,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="boolean"
             title="isHalal"
-            value={foodData.isHalal}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -94,7 +90,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="boolean"
             title="isVegetarian"
-            value={foodData.isVegetarian}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -110,7 +105,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="text"
             title="description"
-            value={foodData.description}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -126,7 +120,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="text"
             title="bestBefore"
-            value={foodData.bestBefore}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -142,7 +135,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="text"
             title="collectionAddress"
-            value={foodData.collectionAddress}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -158,7 +150,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="text"
             title="contactName"
-            value={foodData.contactName}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -174,7 +165,6 @@ const ItemDetailsTemplate = ({ foodData }) => {
           <FormControl
             type="number"
             title="contactNumber"
-            value={foodData.contactNumber}
             // onChange={(event) => {
             //   setFormData((state) => {
             //     return { ...state, username: event.target.value };
@@ -183,16 +173,8 @@ const ItemDetailsTemplate = ({ foodData }) => {
           />
         </Col>
       </Row>
-
-      {/* <Row>
-            <Col>
-              <Button type="submit" style={{ margin: "10px 0" }}>
-                Create Account
-              </Button>
-            </Col>
-          </Row> */}
     </Container>
   );
 };
 
-export default ItemDetailsTemplate;
+export default ItemDetailsAdd;
