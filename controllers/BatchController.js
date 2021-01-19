@@ -5,6 +5,7 @@ const { StatusCodes } = require("http-status-codes");
 const Batch = require("../models/batch");
 const foodCat = require("../dataDump/dataDump");
 const moment = require("moment");
+const { isDate } = require("moment");
 // const { batchFind } = require("../functions/mongooseFn");
 
 router.get("/seed", (req, res) => {
@@ -158,7 +159,10 @@ router.post(
     .notEmpty()
     .isBoolean(),
   body("foodListings.*.description").trim().optional(),
-  body("foodListings.*.bestBefore", "Please enter a valid date/time"),
+  body("foodListings.*.bestBefore", "Please enter a valid date/time")
+    .isDate("DD/MM/YYYY")
+    .isAfter()
+    .withMessage("Please enter a date later than today"),
   body("foodListings.*.imgFile").optional(),
 
   async (req, res) => {
