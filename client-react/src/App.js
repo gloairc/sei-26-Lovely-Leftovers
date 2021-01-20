@@ -67,10 +67,10 @@ function App() {
             <Redirect to={"/about"} />
           </Route>
           <Route exact path="/contributions">
-            <ContributionTable />
+            {userId ? <ContributionTable /> : <Redirect to={"/login"} />}
           </Route>
           <Route path="/contributions/:batchId">
-            <ContributionView />
+            {userId ? <ContributionView /> : <Redirect to={"/login"} />}
           </Route>
         </Switch>
       </Router>
