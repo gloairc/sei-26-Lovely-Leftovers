@@ -22,7 +22,7 @@ const FoodListing = () => {
   });
   useEffect(() => {
     axios.get(`/batch`).then((response) => {
-      setFullList(response.data.data);
+      setFullList(response.data);
       setHandleData(true);
     });
   }, [handleData]);

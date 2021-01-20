@@ -34,7 +34,7 @@ const UserController = require("./controllers/UserController");
 app.use("/user", UserController);
 
 const sessionController = require("./controllers/SessionsController");
-app.use("/sessions", sessionController);
+app.use("/session", sessionController);
 
 app.get("/", (req, res) => {
   res.send("test");

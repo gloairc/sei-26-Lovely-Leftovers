@@ -3,7 +3,7 @@ import axios from 'axios'
 import Joi from 'joi'
 import { Form, Button, FormLabel, FormControl, FormGroup, FormText, FormCheck, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const AccountDetailsForm = () => {
     const [formData, setFormData] = useState({
@@ -31,88 +31,17 @@ const AccountDetailsForm = () => {
         contactNum: Joi.string().length(8).regex(/^[0-9]{8}$/).required(),
     })
 
-    const data = [
-        {
-            _id: "Z",
-            firstName: "Simon",
-            lastName: "Lau",
-            organisation: "General Assembly Hungry",
-            contactNum: "99998888",
-            email: "simonlau@ga.com",
-            username: "simonlau",
-            password: "1234",
-            type: "contributor",
-            contributeList: ["1"],
-            myCart: [],
-            receivedList: [],
-            createdAt: 1029301932010,
-            imgFile: "",
-            status: "active",
-        },
-        {
-            _id: "A",
-            firstName: "Nausheen",
-            lastName: "yoyo",
-            organisation: "",
-            contactNum: "88887777",
-            email: "nausheen@ga.com",
-            username: "nausheen",
-            password: "1234",
-            type: "recipient",
-            contributeList: [],
-            myCart: [],
-            receivedList: ["a", "b"],
-            createdAt: 1012313452,
-            imgFile: "",
-            status: "active",
-        },
-        {
-            _id: "B",
-            firstName: "Mitch",
-            lastName: "Goon",
-            organisation: "",
-            contactNum: "77776666",
-            email: "mitchg@heavymetal.com",
-            username: "mitchg",
-            password: "1234",
-            type: "contributor",
-            contributeList: ["0"],
-            myCart: [],
-            receivedList: [],
-            createdAt: 1000333421,
-            imgFile: "",
-            status: "active",
-        },
-        {
-            _id: "C",
-            firstName: "Renice",
-            lastName: "Goh",
-            organisation: "Save the Hangries",
-            contactNum: "66665555",
-            email: "reniceg@coding.com",
-            username: "reniceg",
-            password: "1234",
-            type: "contributor",
-            contributeList: [],
-            myCart: [],
-            receivedList: [],
-            createdAt: 1004444444,
-            imgFile: "",
-            status: "active",
-        },
-    ];
-
     useEffect(() => {
         if (userId) {
             console.log('user ID exists, setting form data.')
-            setFormData(data[0])
-            //         axios.get(`/users/${userId}`)
-            // .then((response) => {
-            //     setFormData(response)
-            // })
-            // .catch((error) => {
-            //     console.log('error', error)
-            // })
+            axios.get(`/user/${userId}`)
+                .then((response) => {
+                    setFormData(response.data)
+                    console.log(response)
+                })
+                .catch((error) => {
+                    console.log('error', error)
+                })
         } else {
             console.log('new user. no set data')
         }
@@ -122,13 +51,13 @@ const AccountDetailsForm = () => {
         event.preventDefault();
         if (!userId) {
             console.log('creating new user')
-            // axios.post('/users', formData)
-            //     .then((response) => {
-            //         console.log("created new user")
-            //     })
-            //     .catch((error) => {
-            //         console.log('error', error)
-            //     })
+            axios.post('/user', formData)
+                .then((response) => {
+                    console.log("created new user")
+                })
+                .catch((error) => {
+                    console.log('error', error)
+                })
 
             // validation WIP
             const validate = formSchema.validate(formData, { abortEarly: false })
@@ -136,13 +65,14 @@ const AccountDetailsForm = () => {
 
         } else if (userId) {
             console.log('updating profile')
-            // axios.put(`/users/${userId}`, formData)
-            //     .then((response) => {
-            //         console.log("edited user data")
-            //     })
-            //     .catch((error) => {
-            //         console.log('error', error)
-            //     })
+            axios.put(`/user/${userId}`, formData)
+                .then((response) => {
+                    console.log("edited user data")
+                })
+                .catch((error) => {
+                    console.log('error', error)
+                })
+            console.log('after axios')
         }
     }
 
@@ -151,31 +81,31 @@ const AccountDetailsForm = () => {
             <Form onSubmit={handleSubmit}>
                 <FormGroup as={Row} controlId="">
                     <FormLabel column sm="3">User Type: </FormLabel>
-                    <FormCheck
+                    {userId ? <p>{formData.type}</p> : <><FormCheck
                         inline label="Contributor"
                         type="radio"
-                        value="contributor"
+                        value="Contributor"
                         name="type"
                         id="contributor"
                         onClick={(event) => setFormData((state) => {
                             return { ...state, type: event.target.value }
                         })}
-                        checked={formData.type === "contributor" && userId}
-                        disabled={formData.type === "recipient" && userId}
+                        checked={formData.type === "Contributor" && userId}
+                        disabled={formData.type === "Recipient" && userId}
                     />
-                    <FormCheck
-                        inline label="Recipient"
-                        type="radio"
-                        value="recipient"
-                        name="type"
-                        id="recipient"
-                        onClick={(event) => setFormData((state) => {
-                            return { ...state, type: event.target.value }
-                        })
-                        }
-                        checked={formData.type === "recipient" && userId}
-                        disabled={formData.type === "contributor" && userId}
-                    />
+                        <FormCheck
+                            inline label="Recipient"
+                            type="radio"
+                            value="Recipient"
+                            name="type"
+                            id="recipient"
+                            onClick={(event) => setFormData((state) => {
+                                return { ...state, type: event.target.value }
+                            })
+                            }
+                            checked={formData.type === "recipient" && userId}
+                            disabled={formData.type === "contributor" && userId}
+                        /></>}
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="username">
@@ -211,9 +141,13 @@ const AccountDetailsForm = () => {
                                 setFormData((state) => {
                                     return { ...state, password: event.target.value }
                                 })
-                            }} />
+                            }}
+                            disabled={userId} />
                         <FormText className="text-muted">Password must be at least 8 characters long</FormText>
                     </Col>
+                    {userId ? <Col sm="2">
+                        <Link to={`/user/${userId}/changepassword`}>Change Password</Link>
+                    </Col> : ""}
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="firstName">
@@ -229,14 +163,14 @@ const AccountDetailsForm = () => {
                     </Col>
                 </FormGroup>
 
-                <FormGroup as={Row} controlId="lastName">
+                <FormGroup as={Row} controlId="familyName">
                     <FormLabel column sm="3">Last Name: </FormLabel>
                     <Col sm="6">
                         <FormControl type="text"
-                            value={formData.lastName}
+                            value={formData.familyName}
                             onChange={(event) => {
                                 setFormData((state) => {
-                                    return { ...state, lastName: event.target.value }
+                                    return { ...state, familyName: event.target.value }
                                 })
                             }} />
                     </Col>
@@ -282,7 +216,7 @@ const AccountDetailsForm = () => {
                 </FormGroup>
 
                 <Button variant="primary" type="submit">
-                    {userId ? "Edit Profile" : "Create Account"}
+                    {userId ? "Save Changes" : "Create Account"}
                 </Button>
             </Form>
         </>

@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Form, FormControl, Button, Row, Col } from "react-bootstrap";
 import { Redirect, useParams } from "react-router-dom";
-import ItemDetailsTemplate from "./ItemDetailsTemplate";
+import ItemDetailsShow from "./ItemDetailsShow";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -12,7 +12,7 @@ const OneItem = () => {
 
   useEffect(() => {
     axios.get(`/batch/${batchId}`).then((response) => {
-      const batchData = response.data.data;
+      const batchData = response.data;
       batchData.foodListings.forEach((foodItem) => {
         if (foodItem._id === foodId) {
           setFoodDetails(foodItem);
@@ -24,7 +24,7 @@ const OneItem = () => {
 
   return (
     <Form>
-      <ItemDetailsTemplate foodData={foodDetails} />
+      <ItemDetailsShow foodData={foodDetails} />
       <Row>
         <Col>
           <Button type="submit" style={{ margin: "10px 0" }}>
