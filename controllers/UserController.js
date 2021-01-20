@@ -15,7 +15,20 @@ const Batch = require("../models/batch");
 //     }
 // };
 
+// INDEX (show all users - admin access only)
+router.get("/", (req, res) => {
+    User.find({}, (error, users) => {
+        if (error) {
+            res.send(error)
+        } else {
+            res.send(users);
+        }
+    })
+});
+
+// SEEDING
 router.get("/seeds", (req, res) => {
+    console.log("seeding")
     User.create(
         [
             {
@@ -27,51 +40,108 @@ router.get("/seeds", (req, res) => {
                 username: "Recipient1",
                 password: "aaaa1111",
                 type: "Recipient",
-                // receivedList: ["id1", "id2"]
+                receivedList: ["id1", "id2"]
             },
-            // {
-            //     firstName: "Happy",
-            //     lastName: "Two",
-            //     organisation: "Sharity",
-            //     contactNum: 60987654,
-            //     email: "sharity@email.com",
-            //     username: "Recipient2",
-            //     password: "bbbb2222",
-            //     type: "Recipient",
-            //     // receivedList: ["id3"],
-            // },
-            // {
-            //     firstName: "Yoyo",
-            //     lastName: "Hu",
-            //     contactNum: 69483625,
-            //     email: "yoyohu@email.com",
-            //     username: "Contributor1",
-            //     password: "1111aaaa",
-            //     type: "Contributor",
-            //     // batchList: ["idA", "idB"],
-            // },
-            // {
-            //     firstName: "Jello",
-            //     lastName: "Jo",
-            //     contactNum: 62857463,
-            //     email: "jellojo@email.com",
-            //     username: "Contributor2",
-            //     password: "2222bbbb",
-            //     type: "Contributor",
-            //     // batchList: ["idC", "idD", "idE"],
-            // }
+            {
+                firstName: "Happy",
+                familyName: "Two",
+                organisation: "Sharity",
+                contactNum: 60987654,
+                email: "sharity@email.com",
+                username: "Recipient2",
+                password: "bbbb2222",
+                type: "Recipient",
+                receivedList: ["id3"],
+            },
+            {
+                firstName: "Yoyo",
+                familyName: "Hu",
+                contactNum: 69483625,
+                email: "yoyohu@email.com",
+                username: "Contributor1",
+                password: "1111aaaa",
+                type: "Contributor",
+                contributorList: ["idA", "idB"],
+            },
+            {
+                firstName: "Jello",
+                familyName: "Jo",
+                contactNum: 62857463,
+                email: "jellojo@email.com",
+                username: "Contributor2",
+                password: "2222bbbb",
+                type: "Contributor",
+                contributorList: ["idC", "idD", "idE"],
+            },
         ],
         (error, user) => {
             if (error) {
                 console.log(error)
-                return res.send(error);
+                return res.send({ ...error, message: "likely user already exist" });
             }
             console.log("users", user)
-            res.send("user seeded", user)
-
+            res.redirect("/user")
         }
     )
 })
+
+// router.get("/try", (req, res) => {
+//     res.send("ahahahaha")
+// })
+
+
+//PUT /user/addToReceivedList updates recipient's received list 
+router.put("/addtorlist", (req, res) => {
+    Batch.findById(req.body.batchID, (error, batch) => {
+        if (error) {
+            res.status(StatusCodes.BAD_REQUEST).send({ ...error, message: "cant find batch" });
+        } else { //no error in finding batch ID
+            batch.foodListings.id(req.body.listID).status = "hidden"; //make that one listing hidden
+            batch.foodListings.id(req.body.listID).recipient = req.body.userID;
+            // // add in recipient's user._id to the listing. // alternative (req.session.currentUser)._id
+            // res.send(batch.foodListings) //during testing
+
+            batch.save((err, updatedBatch) => {
+                if (err) {
+                    console.log(err);
+                    res.status(StatusCodes.BAD_REQUEST).send({ ...error, message: "err saving batch" });
+                }
+                else {
+                    // res.send(result)
+                    console.log("batch saved, ", updatedBatch, "now to update user...");
+                    User.findByIdAndUpdate(
+                        req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id
+                        { $push: { receivedList: { batchID: req.body.batchID, listID: req.body.listID } } }, // req.body, // what to update: 
+                        { upsert: true, new: true }, //upsert doesnt seem to be working, will add duplicate if click twice
+                        (error, updatedUser) => {
+                            if (error) {
+                                res.status(StatusCodes.BAD_REQUEST).send(error);
+                            } else {
+                                res.status(StatusCodes.OK).send(updatedUser);
+                            }
+                        }
+                    )
+                };
+            })
+        }
+    });
+})
+
+//PUT /user/addToContributionList updates Contributor's çonstribution list (IF NOT IN BATCH CONTROLLER)
+router.put("/addtoclist", (req, res) => {
+    User.findByIdAndUpdate(
+        req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id 
+        { $push: { contributionList: req.body.batchID } }, // req.body, // what to update: 
+        { upsert: true, new: true },
+        (error, updatedUser) => {
+            if (error) {
+                res.status(StatusCodes.BAD_REQUEST).send(error);
+            } else {
+                res.status(StatusCodes.OK).send(updatedUser);
+            }
+        }
+    )
+});
 
 // SHOW /user/:id (user account details)
 router.get("/:id", (req, res) => {
@@ -85,7 +155,7 @@ router.get("/:id", (req, res) => {
                 }); //trying to add reason in to reason {}
         } else {
             console.log("user", user)
-            const usernopw = { ...user, password: '' } //return user account without password for security reasons
+            const usernopw = { ...user, password: "" } //return user account without password for security reasons
             res.status(StatusCodes.OK).send(usernopw);
         }
     }).lean(); //returns response.data instead of mongoose collection
@@ -93,15 +163,15 @@ router.get("/:id", (req, res) => {
 
 //POST new user creation to /user
 router.post("/",
-    // body("firstName", "Please enter your first name.").trim().notEmpty(),
-    // body("lastName", "Please enter your last name.").trim().notEmpty(),
-    // body("organisation").optional().trim().isString(),
-    // body("contactNum", "Please enter your 8-digit contact number.").isNumeric().isIn({gt: 10000000, lt:99999999}),
-    // body("email", "Please enter a valid email address").isEmail(),
+    body("firstName", "Please enter your first name.").trim().notEmpty(),
+    body("familyName", "Please enter your last name.").trim().notEmpty(),
+    body("organisation").optional().trim().isString(),
+    body("contactNum", "Please enter a valid 8-digit contact number.").isNumeric().isInt({ gt: 10000000, lt: 99999999 }),
+    body("email", "Please enter a valid email address").isEmail(),
     body("username", "Username has to be at least 8 alphanumeric characters long.").trim().isLength({ min: 8 }),
-    // body("password", "Password has to be at least 8 alphanumeric characters long.").trim().isLength({ min: 8 }).isAlphanumeric(),
-    // body("type", `Choose between "Contributor", "Recipient" and "Admin"`).trim().isIn(["Contributor", "Recipient", "Admin"]),
-    // body("status", `Only "Active" or "Inactive"`).trim().isIn(["Active", "Inactive"]),
+    body("password", "Password has to be at least 8 alphanumeric characters long.").trim().isLength({ min: 8 }).isAlphanumeric(),
+    body("type", `Choose between "Contributor", "Recipient" and "Admin"`).trim().isIn(["Contributor", "Recipient", "Admin"]),
+    body("status", `Only "Active" or "Inactive"`).optional().trim().isIn(["Active", "Inactive"]),
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -119,7 +189,7 @@ router.post("/",
                 if (err) {
                     res.status(StatusCodes.BAD_REQUEST).send(err);
                 } else {
-                    console.log("user is created", createdUser);
+                    console.log("user is created");
                     req.session.currentUser = createdUser
                     //req.session creates a session, we are also creating a field called currentUser = createdUser
                     res.status(StatusCodes.CREATED).send(createdUser);
@@ -130,15 +200,15 @@ router.post("/",
 
 //UPDATE user account
 router.put("/:id",
-    // body("firstName", "Please enter your first name.").optional().trim().notEmpty(),
-    // body("lastName", "Please enter your last name.").optional().trim().notEmpty(),
-    // body("organisation").optional().trim().isString(),
-    // body("contactNum", "Please enter your 8-digit contact number.").optional().isNumeric().isIn({gt: 10000000, lt:99999999}),
-    // body("email", "Please enter a valid email address").optional().isEmail(),
+    body("firstName", "Please enter your first name.").optional().trim().notEmpty(),
+    body("familyName", "Please enter your last name.").optional().trim().notEmpty(),
+    body("organisation").optional().trim().isString(),
+    body("contactNum", "Please enter a valid 8-digit contact number.").optional().isNumeric().isInt({ gt: 10000000, lt: 99999999 }),
+    body("email", "Please enter a valid email address").optional().isEmail(),
     body("username", "Username has to be at least 8 alphanumeric characters long.").optional().trim().isLength({ min: 8 }).isAlphanumeric(),
-    // body("password", "Password has to be at least 8 alphanumeric characters long.").optional().trim().isLength({ min: 8 }).isAlphanumeric(),
-    // body("type", `Choose between "Contributor", "Recipient" and "Admin"`).optional().trim().isIn(["Contributor", "Recipient", "Admin"]),
-    // body("status", `Only "Active" or "Inactive"`).optional().trim().isIn(["Active", "Inactive"]), 
+    body("password", "Password has to be at least 8 alphanumeric characters long.").optional().trim().isLength({ min: 8 }).isAlphanumeric(),
+    body("type", `Choose between "Contributor", "Recipient" and "Admin"`).optional().trim().isIn(["Contributor", "Recipient", "Admin"]),
+    body("status", `Only "Active" or "Inactive"`).optional().trim().isIn(["Active", "Inactive"]),
 
     (req, res) => {
         const errors = validationResult(req);
@@ -196,54 +266,5 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-
-//PUT /user/addToReceivedList updates recipient's received list 
-router.put("/addToReceivedList", (req, res) => {
-    Batch.findById(req.body.batchID, (error, batch) => {
-        if (error) {
-            res.status(StatusCodes.BAD_REQUEST).send(error);
-        } else { //no error in finding batch ID
-            batch.foodListings.id(req.body.listID).status = "hidden"; //make that one listing hidden
-            batch.foodListings.id(req.body.listID).recipient = (req.session.currentUser)._id; // add in recipient's user._id to the listing. NEED TO TEST THIS OUT
-            batch.save((err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(StatusCodes.BAD_REQUEST).send(err);
-                }
-                else {
-                    console.log("batch saved. Now to update user", result);
-                    User.findByIdAndUpdate(
-                        (req.session.currentUser)._id, //req.params.id, 
-                        { $push: { receivedList: { batchID: req.body.batchID, listID: req.body.listID } } }, // req.body, // what to update: 
-                        { new: true },
-                        (error, updatedUser) => {
-                            if (error) {
-                                res.status(StatusCodes.BAD_REQUEST).send(error);
-                            } else {
-                                res.status(StatusCodes.OK).send(updatedUser);
-                            }
-                        }
-                    )
-                };
-            })
-        }
-    });
-})
-
-//PUT /user/addToContributionList updates Contributor's çonstribution list 
-router.put("/addToContributionList", (req, res) => {
-    User.findByIdAndUpdate(
-        (req.session.currentUser)._id,
-        { $push: { contributionList: req.body.batchID } }, // req.body, // what to update: 
-        { new: true },
-        (error, updatedUser) => {
-            if (error) {
-                res.status(StatusCodes.BAD_REQUEST).send(error);
-            } else {
-                res.status(StatusCodes.OK).send(updatedUser);
-            }
-        }
-    )
-});
 
 module.exports = router;
