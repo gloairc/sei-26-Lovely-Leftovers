@@ -57,6 +57,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, quantity: event.target.value };
               });
+              setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -76,6 +77,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
                   category: event.target.value.split(","),
                 };
               });
+              setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -91,6 +93,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, isHalal: event.target.value };
               });
+              setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -106,6 +109,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, isVegetarian: event.target.value };
               });
+              setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -121,6 +125,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, description: event.target.value };
               });
+              setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -136,6 +141,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, bestBefore: event.target.value };
               });
+              setFoodList(newFoodList);
             }}
           />
         </Col>

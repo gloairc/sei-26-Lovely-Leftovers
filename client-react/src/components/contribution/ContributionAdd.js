@@ -78,7 +78,7 @@ const ContributionAdd = () => {
   //   ],
   // });
 
-  const [batchCreated, setBatchCreated] = useState(false);
+  const [batchCreated, setBatchCreated] = useState(false); // to redirect after creation
   const handleNewBatch = (event) => {
     event.preventDefault();
     // setBatchDetails()
@@ -99,6 +99,7 @@ const ContributionAdd = () => {
       <div foodIndex={inputFoodArray.length}>
         <h3>Food Item {inputFoodArray.length + 1}</h3>
         <ItemDetailsAdd
+          key={"foodIndex" + inputFoodArray.length}
           foodList={foodList}
           foodIndex={inputFoodArray.length}
           setFoodList={() => setFoodList()}
