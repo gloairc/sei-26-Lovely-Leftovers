@@ -217,22 +217,6 @@ router.put("/:id",
             const locals = { UserInput: req.body, errors: errors.array() };
             res.status(StatusCodes.BAD_REQUEST).send(locals);
         }
-        // if (userInput.receivedList) { // triggers when Recipient received something
-        //     User.findByIdAndUpdate(req.params.id, { $push: { receivedList: req.body.receivedList} }, { new: true }, (error, user) => {
-        //         if (error) {
-        //             return res.send(error)
-        //         }
-        //         return res.send(user)
-        //     })
-        // }
-        // if (userInput.batchList) { // triggers when Contributor contribute something
-        //     User.findByIdAndUpdate(req.params.id, { $push: { batchList: req.body.batchList} }, { new: true }, (error, user) => {
-        //         if (error) {
-        //             return res.send(error)
-        //         }
-        //         return res.send(user)
-        //     })
-        // }
         else {// when user update account page
             if (req.body.password && req.body.password !== "") {//user changes password
                 req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync())
