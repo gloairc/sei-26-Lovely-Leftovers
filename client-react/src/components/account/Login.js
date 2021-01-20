@@ -5,11 +5,13 @@ import { Form, Button, FormLabel, FormControl, FormGroup, FormText, Row, Col } f
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Redirect } from 'react-router-dom';
 
-const Login = () => {
+const Login = (props) => {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
     })
+
+    const setCurrentUser = props.updateUser
 
     // const [errorMsg, setErrorMsg] = useState({})
 
@@ -28,19 +30,24 @@ const Login = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        setLoginStatus(true)
-        // axios.post('/sessions', formData)
-        //     .then((response) => {
-        //         setLoginStatus(true)
-        //     })
-        //     .catch((error) => {
-        //         setLoginStatus(error.message) // error depends on status from backend (e.g. 400/401)
-        //     })
+        axios.post('/session', formData)
+            .then((response) => {
+                if (response.data._id) {
+                    setCurrentUser(response.data)
+                }
+                setLoginStatus(true)
+                // setUserId(response.data.id) // set userId
+                // console.log(response.data) // response.data is the user document
+            })
+            .catch((error) => {
+                // setLoginStatus(error.message) // error depends on status from backend (e.g. 400/401)
+                console.log(error.response.data.error) // custom message from backend
+            })
     }
 
-    // if (loginStatus) {
-    //     return <Redirect to="/home" />
-    // }
+    if (loginStatus) {
+        return <Redirect to={`/user/${props.user._id}`} />
+    }
 
     return (
         <>
@@ -86,6 +93,7 @@ const Login = () => {
                     Log In
                 </Button>
             </Form>
+            {/* {loginStatus} */}
         </>
     )
 }
