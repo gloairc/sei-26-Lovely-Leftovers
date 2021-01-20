@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
 const port = process.env.PORT || 4001;
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("./client/build"));
+  app.use(express.static("./client-react/build"));
 
   app.get("*", (req, res) => {
     res.sendFile(
