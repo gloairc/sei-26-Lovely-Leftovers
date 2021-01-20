@@ -13,7 +13,7 @@ import { Redirect } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./style.css";
 
-const ItemDetailsAdd = ({ foodData }) => {
+const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
   //   const handleCreateUser = (event) => {
   //     event.preventDefault();
   //     axios.post("/users", formData).then((response) => {
@@ -21,20 +21,25 @@ const ItemDetailsAdd = ({ foodData }) => {
   //       setCreated(true);
   //     });
   //   };
+  const [foodDetails, setFoodDetails] = useState(foodList[foodIndex]);
+  const newFoodList = foodList.splice(foodIndex, 1, foodDetails);
+  // setFoodList(newFoodList);
 
   return (
     <Container>
+      {/* {console.log(foodDetails)} */}
       <Row>
         <Col>
           Title:{" "}
           <FormControl
             type="text"
             title="title"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, title: event.target.value };
+              });
+              setFoodList(newFoodList);
+            }}
           />
         </Col>
       </Row>
@@ -45,11 +50,11 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="number"
             title="quantity"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, quantity: event.target.value };
+              });
+            }}
           />
         </Col>
       </Row>
@@ -60,11 +65,12 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="text"
             title="category"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            value={["fruit", "beef", "pork"]}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, category: event.target.value };
+              });
+            }}
           />
         </Col>
       </Row>
@@ -75,11 +81,11 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="boolean"
             title="isHalal"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, isHalal: event.target.value };
+              });
+            }}
           />
         </Col>
       </Row>
@@ -90,11 +96,11 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="boolean"
             title="isVegetarian"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, isVegetarian: event.target.value };
+              });
+            }}
           />
         </Col>
       </Row>
@@ -105,11 +111,11 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="text"
             title="description"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, description: event.target.value };
+              });
+            }}
           />
         </Col>
       </Row>
@@ -120,56 +126,11 @@ const ItemDetailsAdd = ({ foodData }) => {
           <FormControl
             type="text"
             title="bestBefore"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
-          />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          Collection Address:{" "}
-          <FormControl
-            type="text"
-            title="collectionAddress"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
-          />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          Contact Person:{" "}
-          <FormControl
-            type="text"
-            title="contactName"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
-          />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col>
-          Contact Number:{" "}
-          <FormControl
-            type="number"
-            title="contactNumber"
-            // onChange={(event) => {
-            //   setFormData((state) => {
-            //     return { ...state, username: event.target.value };
-            //   });
-            // }}
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, bestBefore: event.target.value };
+              });
+            }}
           />
         </Col>
       </Row>

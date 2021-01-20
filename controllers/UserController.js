@@ -5,6 +5,7 @@ const { body, validationResult } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const User = require("../models/user");
 const omit = require('just-omit')
+const Batch = require("../models/batch");
 
 // const isAuthenticated = (req, res, next) => {
 //     if (req.session.currentUser) {
@@ -14,19 +15,7 @@ const omit = require('just-omit')
 //     }
 // };
 
-//SHOW ALL
-// router.get("/", (req, res) => {
-//     User.find({}, (error, users) => {
-//         if (error) {
-//             res.status(StatusCodes.BAD_REQUEST).send(error);
-//         } else {
-//             res.status(StatusCodes.OK).send(users);
-//         }
-//     });
-//     // res.send("showing user here")
-// });
-
-router.get("/seed", (req, res) => {
+router.get("/seeds", (req, res) => {
     User.create(
         [
             {
@@ -75,11 +64,11 @@ router.get("/seed", (req, res) => {
         (error, user) => {
             if (error) {
                 console.log(error)
-                res.send(error);
-            } else {
-                console.log("users", user)
-                res.send(user)
+                return res.send(error);
             }
+            console.log("users", user)
+            res.send("user seeded", user)
+
         }
     )
 })
@@ -96,19 +85,18 @@ router.get("/:id", (req, res) => {
                 }); //trying to add reason in to reason {}
         } else {
             console.log("user", user)
-            const usernopw = { ...user, password: '' }
+            const usernopw = { ...user, password: '' } //return user account without password for security reasons
             res.status(StatusCodes.OK).send(usernopw);
         }
-    }).lean();
+    }).lean(); //returns response.data instead of mongoose collection
 })
 
-//Have issue with posting
 //POST new user creation to /user
 router.post("/",
     // body("firstName", "Please enter your first name.").trim().notEmpty(),
     // body("lastName", "Please enter your last name.").trim().notEmpty(),
     // body("organisation").optional().trim().isString(),
-    // body("contactNum", "Please enter your 8-digit contact number.").isNumeric(),
+    // body("contactNum", "Please enter your 8-digit contact number.").isNumeric().isIn({gt: 10000000, lt:99999999}),
     // body("email", "Please enter a valid email address").isEmail(),
     body("username", "Username has to be at least 8 alphanumeric characters long.").trim().isLength({ min: 8 }),
     // body("password", "Password has to be at least 8 alphanumeric characters long.").trim().isLength({ min: 8 }).isAlphanumeric(),
@@ -128,11 +116,14 @@ router.post("/",
                 bcrypt.genSaltSync()
             );
             User.create(req.body, (err, createdUser) => {
-                console.log
-                console.log("user is created", createdUser);
-                req.session.currentUser = createdUser
-                //req.session creates a session, we are also creating a field called currentUser = createdUser
-                res.status(StatusCodes.CREATED).send(createdUser);
+                if (err) {
+                    res.status(StatusCodes.BAD_REQUEST).send(err);
+                } else {
+                    console.log("user is created", createdUser);
+                    req.session.currentUser = createdUser
+                    //req.session creates a session, we are also creating a field called currentUser = createdUser
+                    res.status(StatusCodes.CREATED).send(createdUser);
+                }
             });
         }
     });
@@ -142,7 +133,7 @@ router.put("/:id",
     // body("firstName", "Please enter your first name.").optional().trim().notEmpty(),
     // body("lastName", "Please enter your last name.").optional().trim().notEmpty(),
     // body("organisation").optional().trim().isString(),
-    // body("contactNum", "Please enter your 8-digit contact number.").optional().isNumeric(),
+    // body("contactNum", "Please enter your 8-digit contact number.").optional().isNumeric().isIn({gt: 10000000, lt:99999999}),
     // body("email", "Please enter a valid email address").optional().isEmail(),
     body("username", "Username has to be at least 8 alphanumeric characters long.").optional().trim().isLength({ min: 8 }).isAlphanumeric(),
     // body("password", "Password has to be at least 8 alphanumeric characters long.").optional().trim().isLength({ min: 8 }).isAlphanumeric(),
@@ -173,9 +164,9 @@ router.put("/:id",
         //     })
         // }
         else {// when user update account page
-            if (req.body.password && req.body.password !== "") {
+            if (req.body.password && req.body.password !== "") {//user changes password
                 req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync())
-            } else if (req.body.password === "") {
+            } else if (req.body.password === "") { // users didnt change password, remove the field "password"
                 delete req.body.password
             }
             User.findByIdAndUpdate(
@@ -205,5 +196,54 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+
+//PUT /user/addToReceivedList updates recipient's received list 
+router.put("/addToReceivedList", (req, res) => {
+    Batch.findById(req.body.batchID, (error, batch) => {
+        if (error) {
+            res.status(StatusCodes.BAD_REQUEST).send(error);
+        } else { //no error in finding batch ID
+            batch.foodListings.id(req.body.listID).status = "hidden"; //make that one listing hidden
+            batch.foodListings.id(req.body.listID).recipient = (req.session.currentUser)._id; // add in recipient's user._id to the listing. NEED TO TEST THIS OUT
+            batch.save((err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(StatusCodes.BAD_REQUEST).send(err);
+                }
+                else {
+                    console.log("batch saved. Now to update user", result);
+                    User.findByIdAndUpdate(
+                        (req.session.currentUser)._id, //req.params.id, 
+                        { $push: { receivedList: { batchID: req.body.batchID, listID: req.body.listID } } }, // req.body, // what to update: 
+                        { new: true },
+                        (error, updatedUser) => {
+                            if (error) {
+                                res.status(StatusCodes.BAD_REQUEST).send(error);
+                            } else {
+                                res.status(StatusCodes.OK).send(updatedUser);
+                            }
+                        }
+                    )
+                };
+            })
+        }
+    });
+})
+
+//PUT /user/addToContributionList updates Contributor's çonstribution list 
+router.put("/addToContributionList", (req, res) => {
+    User.findByIdAndUpdate(
+        (req.session.currentUser)._id,
+        { $push: { contributionList: req.body.batchID } }, // req.body, // what to update: 
+        { new: true },
+        (error, updatedUser) => {
+            if (error) {
+                res.status(StatusCodes.BAD_REQUEST).send(error);
+            } else {
+                res.status(StatusCodes.OK).send(updatedUser);
+            }
+        }
+    )
+});
 
 module.exports = router;
