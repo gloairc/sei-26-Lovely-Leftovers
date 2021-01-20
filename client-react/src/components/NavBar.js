@@ -6,6 +6,7 @@ import { StatusProvider, useUser, useDispatch } from "./context/Context";
 const NavBar = (props) => {
   const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
 
+<<<<<<< HEAD
   const [contributorNav, setContributorNav] = useState(false);
   const [recipientNav, setRecipientNav] = useState(false);
 
@@ -29,6 +30,18 @@ const NavBar = (props) => {
   //     setRecipientNav(true);
   //   }
   // }, []);
+=======
+  // const [contributorNav, setContributorNav] = useState(false);
+  // const [recipientNav, setRecipientNav] = useState(false);
+
+  useEffect(() => {
+    // if (userType === "Contributor") {
+    //   setContributorNav(true);
+    // } else if (userType === "Recipient") {
+    //   setRecipientNav(true);
+    // }
+  }, []);
+>>>>>>> 1acd8689e19439408ed663af763c60dbc9fd371e
 
   return (
     <Navbar bg="light" expand="lg" fixed="top" style={{ position: "sticky" }}>

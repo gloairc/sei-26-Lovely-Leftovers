@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import FoodCard from "./FoodCard";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Row, Col, Container } from "react-bootstrap";
+import { Container, CardColumns } from "react-bootstrap";
 import axios from "axios";
 import _ from "lodash";
+import "./style.css";
 // use lodash chunking?
 
 const FoodListing = () => {
@@ -28,14 +29,18 @@ const FoodListing = () => {
   }, [handleData]);
 
   return (
-    <>
-      <h2>Food Listing</h2>
-      <br />
+    <div className="foodContainer">
+      <div className="header">
+        <h1>Food Listing</h1>
+      </div>
+
       <Container>
-        {/* {console.log(fullList)} */}
-        {renderFoodCards}
+        <CardColumns>
+          {/* {console.log(fullList)} */}
+          {renderFoodCards}
+        </CardColumns>
       </Container>
-    </>
+    </div>
   );
 };
 
