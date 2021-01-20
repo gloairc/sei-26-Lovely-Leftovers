@@ -27,6 +27,13 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
   // setFoodList(newFoodList);
 
   const stringtoDate = (inputString) => {};
+  const toBoolean = (inputString) => {
+    if (inputString === "Yes") {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <Container>
@@ -89,13 +96,17 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
           <FormControl
             type="boolean"
             title="isHalal"
+            as="select"
             onChange={(event) => {
               setFoodDetails((state) => {
-                return { ...state, isHalal: event.target.value };
+                return { ...state, isHalal: toBoolean(event.target.value) };
               });
               setFoodList(newFoodList);
             }}
-          />
+          >
+            <option>Yes</option>
+            <option>No</option>
+          </FormControl>
         </Col>
       </Row>
 
@@ -105,13 +116,20 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
           <FormControl
             type="boolean"
             title="isVegetarian"
+            as="select"
             onChange={(event) => {
               setFoodDetails((state) => {
-                return { ...state, isVegetarian: event.target.value };
+                return {
+                  ...state,
+                  isVegetarian: toBoolean(event.target.value),
+                };
               });
               setFoodList(newFoodList);
             }}
-          />
+          >
+            <option>Yes</option>
+            <option>No</option>
+          </FormControl>
         </Col>
       </Row>
 
