@@ -15,7 +15,7 @@ import FoodListing from "./components/foodListing/FoodListing";
 import ContributionAdd from "./components/contribution/ContributionAdd";
 
 function App() {
-  const [userInfo, setUserInfo] = useState()
+  const [userInfo, setUserInfo] = useState({ _id: '60069e52a70d026203aea575' })
 
   return (
     <div>
@@ -32,7 +32,7 @@ function App() {
             <Login user={userInfo} updateUser={setUserInfo} />
           </Route>
           <Route exact path="/logout">
-            {userInfo ? <Logout user={userInfo} updateUser={setUserInfo} /> : <h1>You are not logged in</h1>}
+            <Logout user={userInfo} updateUser={setUserInfo} />
           </Route>
           <Route exact path="/user/:id">
             {userInfo ? <Account user={userInfo} /> : <h1>Please log in</h1>}
