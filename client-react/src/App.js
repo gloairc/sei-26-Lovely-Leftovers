@@ -1,6 +1,11 @@
 import "./App.css";
 import { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import SignUp from "./components/account/SignUp";
 import Login from "./components/account/Login";
 import AccountEdit from "./components/account/AccountEdit";
@@ -15,44 +20,34 @@ import FoodListing from "./components/foodListing/FoodListing";
 import ContributionAdd from "./components/contribution/ContributionAdd";
 
 function App() {
-  const [userInfo, setUserInfo] = useState({ _id: "60069e52a70d026203aea575" });
+  const userId = sessionStorage.getItem("userId");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   return (
-    <div className="App">
-      <NavBar />
+    <div>
+      <NavBar loggedIn={loggedIn} />
       <Router>
         <Switch>
-          <Route exact path="/home">
-            <h1>Log in success</h1>
-          </Route>
           <Route exact path="/user/new">
             <SignUp />
           </Route>
           <Route exact path="/login">
-            <Login user={userInfo} updateUser={setUserInfo} />
+            <Login setLoggedIn={() => setLoggedIn()} />
           </Route>
           <Route exact path="/logout">
-            <Logout user={userInfo} updateUser={setUserInfo} />
+            <Logout />
           </Route>
           <Route exact path="/user/:id">
-            {userInfo ? <Account user={userInfo} /> : <h1>Please log in</h1>}
+            <Account />
           </Route>
           <Route exact path="/user/:id/edit">
-            {userInfo ? (
-              <AccountEdit user={userInfo} />
-            ) : (
-              <h1>Please log in</h1>
-            )}
+            {userId ? <AccountEdit /> : <Redirect to={"/login"} />}
           </Route>
           <Route exact path="/user/:id/changepassword">
-            {userInfo ? (
-              <PasswordEdit user={userInfo} />
-            ) : (
-              <h1>Please log in</h1>
-            )}
+            {userId ? <PasswordEdit /> : <Redirect to={"/login"} />}
           </Route>
           <Route exact path="/user/:id/delete">
-            <DeleteAccount user={userInfo} />
+            {userId ? <DeleteAccount /> : <Redirect to={"/login"} />}
           </Route>
           <Route exact path="/about">
             <About />
@@ -60,11 +55,14 @@ function App() {
           <Route exact path="/listings">
             <FoodListing />
           </Route>
-          <Route path="/listings/:batchId/:foodId">
-            <OneItem />
+          <Route exact path="/listings/:batchId/:foodId">
+            {userId ? <OneItem /> : <Redirect to={"/login"} />}
           </Route>
-          <Route path="/contribute">
-            <ContributionAdd />
+          <Route exact path="/contribute">
+            {userId ? <ContributionAdd /> : <Redirect to={"/login"} />}
+          </Route>
+          <Route exact path="/">
+            <Redirect to={"/about"} />
           </Route>
         </Switch>
       </Router>

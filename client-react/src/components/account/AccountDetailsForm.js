@@ -3,7 +3,7 @@ import axios from 'axios'
 import Joi from 'joi'
 import { Form, Button, FormLabel, FormControl, FormGroup, FormText, FormCheck, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Redirect } from 'react-router-dom';
 
 const AccountDetailsForm = () => {
     const [formData, setFormData] = useState({
@@ -11,29 +11,29 @@ const AccountDetailsForm = () => {
         username: '',
         password: '',
         firstName: '',
-        lastName: '',
+        familyName: '',
         organisation: '',
         contactNum: '',
         email: '',
     })
 
+    const [sent, setSent] = useState(false)
     const userId = useParams().id
 
     // validation is WIP
-    const formSchema = Joi.object({
-        username: Joi.string().alphanum().min(8).required(),
-        password: Joi.string().alphanum().min(8).required(),
-        type: Joi.string().required(),
-        firstName: Joi.string().regex(/^[a-zA-Z]{2}[a-zA-Z]+/).required(),
-        lastName: Joi.string().required(),
-        organisation: Joi.string().alphanum(),
-        email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
-        contactNum: Joi.string().length(8).regex(/^[0-9]{8}$/).required(),
-    })
+    // const formSchema = Joi.object({
+    //     username: Joi.string().alphanum().min(8).required(),
+    //     password: Joi.string().alphanum().min(8).required(),
+    //     type: Joi.string().required(),
+    //     firstName: Joi.string().regex(/^[a-zA-Z]{2}[a-zA-Z]+/).required(),
+    //     lastName: Joi.string().required(),
+    //     organisation: Joi.string().alphanum(),
+    //     email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
+    //     contactNum: Joi.string().length(8).regex(/^[0-9]{8}$/).required(),
+    // })
 
     useEffect(() => {
         if (userId) {
-            console.log('user ID exists, setting form data.')
             axios.get(`/user/${userId}`)
                 .then((response) => {
                     setFormData(response.data)
@@ -53,15 +53,20 @@ const AccountDetailsForm = () => {
             console.log('creating new user')
             axios.post('/user', formData)
                 .then((response) => {
-                    console.log("created new user")
+                    console.log(response)
+                    sessionStorage.setItem('userId', response.data._id)
+                    sessionStorage.setItem('userType', response.data.type)
+                    setTimeout(() => {
+                        setSent(true)
+                    }, 2000)
                 })
                 .catch((error) => {
                     console.log('error', error)
                 })
 
             // validation WIP
-            const validate = formSchema.validate(formData, { abortEarly: false })
-            console.log(validate.error)
+            // const validate = formSchema.validate(formData, { abortEarly: false })
+            // console.log(validate.error)
 
         } else if (userId) {
             console.log('updating profile')
@@ -76,10 +81,15 @@ const AccountDetailsForm = () => {
         }
     }
 
+    if (sent) {
+        const userId = sessionStorage.getItem('userId')
+        return <Redirect to={`/user/${userId}`} />
+    }
+
     return (
         <>
             <Form onSubmit={handleSubmit}>
-                <FormGroup as={Row} controlId="">
+                <FormGroup as={Row} controlId="type">
                     <FormLabel column sm="3">User Type: </FormLabel>
                     {userId ? <p>{formData.type}</p> : <><FormCheck
                         inline label="Contributor"
@@ -103,8 +113,8 @@ const AccountDetailsForm = () => {
                                 return { ...state, type: event.target.value }
                             })
                             }
-                            checked={formData.type === "recipient" && userId}
-                            disabled={formData.type === "contributor" && userId}
+                            checked={formData.type === "Recipient" && userId}
+                            disabled={formData.type === "Contributor" && userId}
                         /></>}
                 </FormGroup>
 
