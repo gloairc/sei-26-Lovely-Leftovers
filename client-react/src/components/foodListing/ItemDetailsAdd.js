@@ -9,6 +9,7 @@ import {
   Container,
 } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
+import Moment from "react-moment";
 // import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./style.css";
@@ -24,6 +25,8 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
   const [foodDetails, setFoodDetails] = useState(foodList[foodIndex]);
   const newFoodList = foodList.splice(foodIndex, 1, foodDetails);
   // setFoodList(newFoodList);
+
+  const stringtoDate = (inputString) => {};
 
   return (
     <Container>
@@ -61,14 +64,17 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
 
       <Row>
         <Col>
-          Category:{" "}
+          Category:
+          <p>(separate categories with a comma i.e. "fruit,beef,...")</p>
           <FormControl
             type="text"
             title="category"
-            value={["fruit", "beef", "pork"]}
             onChange={(event) => {
               setFoodDetails((state) => {
-                return { ...state, category: event.target.value };
+                return {
+                  ...state,
+                  category: event.target.value.split(","),
+                };
               });
             }}
           />
@@ -122,7 +128,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
 
       <Row>
         <Col>
-          Best Before Date:{" "}
+          Best Before Date: (Format: "DD/MM/YYYY")
           <FormControl
             type="text"
             title="bestBefore"

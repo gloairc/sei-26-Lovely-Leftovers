@@ -36,9 +36,9 @@ const ContributionAdd = () => {
   ]);
 
   const [batchDetails, setBatchDetails] = useState({
-    contactPerson: "test data",
+    contactPerson: "mitch test data",
     contactNum: 12345678,
-    collectionAddress: "-10 Anson Avenue",
+    collectionAddress: "666 Middle of Nowhere Road",
     foodListings: foodList,
   });
 
@@ -81,6 +81,7 @@ const ContributionAdd = () => {
   const [batchCreated, setBatchCreated] = useState(false);
   const handleNewBatch = (event) => {
     event.preventDefault();
+    // setBatchDetails()
     axios.post("/batch", batchDetails).then((response) => {
       setBatchCreated(true);
       console.log(response);
