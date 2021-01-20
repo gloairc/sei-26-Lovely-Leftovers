@@ -1,21 +1,23 @@
-import './App.css';
-import { createContext, useState } from 'react'
+import "./App.css";
+import { createContext, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import SignUp from './components/account/SignUp';
-import Login from './components/account/Login';
-import AccountEdit from './components/account/AccountEdit';
-import Account from './components/account/Account';
-import PasswordEdit from './components/account/PasswordEdit';
-import DeleteAccount from './components/account/DeleteAccount';
-import Logout from './components/account/Logout';
+import SignUp from "./components/account/SignUp";
+import Login from "./components/account/Login";
+import AccountEdit from "./components/account/AccountEdit";
+import Account from "./components/account/Account";
+import PasswordEdit from "./components/account/PasswordEdit";
+import DeleteAccount from "./components/account/DeleteAccount";
+import Logout from "./components/account/Logout";
 import NavBar from "./components/NavBar";
 import About from "./components/About";
 import OneItem from "./components/foodListing/OneItem";
 import FoodListing from "./components/foodListing/FoodListing";
 import ContributionAdd from "./components/contribution/ContributionAdd";
+import ContributionTable from "./components/contribution/ContributionTable";
+import ContributionView from "./components/contribution/ContributionView";
 
 function App() {
-  const [userInfo, setUserInfo] = useState({ _id: '60069e52a70d026203aea575' })
+  const [userInfo, setUserInfo] = useState({ _id: "60069e52a70d026203aea575" });
 
   return (
     <div>
@@ -38,10 +40,18 @@ function App() {
             {userInfo ? <Account user={userInfo} /> : <h1>Please log in</h1>}
           </Route>
           <Route exact path="/user/:id/edit">
-            {userInfo ? <AccountEdit user={userInfo} /> : <h1>Please log in</h1>}
+            {userInfo ? (
+              <AccountEdit user={userInfo} />
+            ) : (
+              <h1>Please log in</h1>
+            )}
           </Route>
           <Route exact path="/user/:id/changepassword">
-            {userInfo ? <PasswordEdit user={userInfo} /> : <h1>Please log in</h1>}
+            {userInfo ? (
+              <PasswordEdit user={userInfo} />
+            ) : (
+              <h1>Please log in</h1>
+            )}
           </Route>
           <Route exact path="/user/:id/delete">
             <DeleteAccount user={userInfo} />
@@ -58,8 +68,13 @@ function App() {
           <Route path="/contribute">
             <ContributionAdd />
           </Route>
+          <Route exact path="/contributions">
+            <ContributionTable />
+          </Route>
+          <Route path="/contributions/:batchId">
+            <ContributionView />
+          </Route>
         </Switch>
-
       </Router>
     </div>
   );
