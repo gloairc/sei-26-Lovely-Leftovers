@@ -15,7 +15,7 @@ const Login = (props) => {
 
     // const [errorMsg, setErrorMsg] = useState({})
 
-    // const [loginStatus, setLoginStatus] = useState(false)
+    const [loginStatus, setLoginStatus] = useState(false)
 
     const formSchema = Joi.object({
         username: Joi.string().alphanum().min(8).required(),
@@ -35,7 +35,7 @@ const Login = (props) => {
                 if (response.data._id) {
                     setCurrentUser(response.data)
                 }
-                // setLoginStatus(true)
+                setLoginStatus(true)
                 // setUserId(response.data.id) // set userId
                 // console.log(response.data) // response.data is the user document
             })
@@ -45,7 +45,7 @@ const Login = (props) => {
             })
     }
 
-    if (props.user) {
+    if (loginStatus) {
         return <Redirect to={`/user/${props.user._id}`} />
     }
 

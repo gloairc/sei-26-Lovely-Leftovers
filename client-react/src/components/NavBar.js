@@ -17,17 +17,17 @@ const NavBar = (props) => {
 
           <Nav.Link href="/listings">Listings</Nav.Link>
 
-          <Nav.Link href="/account">Account</Nav.Link>
+          <Nav.Link href="/user/60069e52a70d026203aea575">Account</Nav.Link>
           {isContributor ? (
             <>
               <Nav.Link href="/contributions">Contributions</Nav.Link>
               <Nav.Link href="/contribute">Contribute</Nav.Link>
             </>
           ) : (
-            <>
-              <Nav.Link href="/collections">Collections</Nav.Link>
-            </>
-          )}
+              <>
+                <Nav.Link href="/collections">Collections</Nav.Link>
+              </>
+            )}
         </Nav>
       </Navbar.Collapse>
       <Col md={3} xs={2} xl={2} lg={2}>
