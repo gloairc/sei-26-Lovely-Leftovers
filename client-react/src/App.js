@@ -1,18 +1,11 @@
 import "./App.css";
-<<<<<<< HEAD
-=======
 import { useState } from "react";
->>>>>>> 1acd8689e19439408ed663af763c60dbc9fd371e
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from "react-router-dom";
-<<<<<<< HEAD
-import { useState } from "react";
-=======
->>>>>>> 1acd8689e19439408ed663af763c60dbc9fd371e
 import SignUp from "./components/account/SignUp";
 import Login from "./components/account/Login";
 import AccountEdit from "./components/account/AccountEdit";
@@ -33,14 +26,8 @@ function App() {
 
   return (
     <div>
-<<<<<<< HEAD
       <NavBar loggedIn={loggedIn} />
 
-=======
-      <UserContext.Provider value="hihihi">
-        <NavBar />
-      </UserContext.Provider>
->>>>>>> 1acd8689e19439408ed663af763c60dbc9fd371e
       <Router>
         <Switch>
           <Route exact path="/user/new">
@@ -56,15 +43,6 @@ function App() {
             <Account />
           </Route>
           <Route exact path="/user/:id/edit">
-<<<<<<< HEAD
-            {userId ? <AccountEdit /> : <Redirect to={"/login"} />}
-          </Route>
-          <Route exact path="/user/:id/changepassword">
-            {userId ? <PasswordEdit /> : <Redirect to={"/login"} />}
-          </Route>
-          <Route exact path="/user/:id/delete">
-            {userId ? <DeleteAccount /> : <Redirect to={"/login"} />}
-=======
             {/* {userId ? <AccountEdit /> : <Redirect to={"/login"} />} */}
           </Route>
           <Route exact path="/user/:id/changepassword">
@@ -72,7 +50,6 @@ function App() {
           </Route>
           <Route exact path="/user/:id/delete">
             {/* {userId ? <DeleteAccount /> : <Redirect to={"/login"} />} */}
->>>>>>> 1acd8689e19439408ed663af763c60dbc9fd371e
           </Route>
           <Route exact path="/about">
             <About />
@@ -81,17 +58,10 @@ function App() {
             <FoodListing />
           </Route>
           <Route exact path="/listings/:batchId/:foodId">
-<<<<<<< HEAD
-            {userId ? <OneItem /> : <Redirect to={"/login"} />}
-          </Route>
-          <Route exact path="/contribute">
-            {userId ? <ContributionAdd /> : <Redirect to={"/login"} />}
-=======
             {/* {userId ? <OneItem /> : <Redirect to={"/login"} />} */}
           </Route>
           <Route exact path="/contribute">
             {/* {userId ? <ContributionAdd /> : <Redirect to={"/login"} />} */}
->>>>>>> 1acd8689e19439408ed663af763c60dbc9fd371e
           </Route>
           <Route exact path="/">
             <Redirect to={"/about"} />

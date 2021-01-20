@@ -6,20 +6,51 @@ import { StatusProvider, useUser, useDispatch } from "./context/Context";
 const NavBar = (props) => {
   const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
 
-<<<<<<< HEAD
   const [contributorNav, setContributorNav] = useState(false);
   const [recipientNav, setRecipientNav] = useState(false);
 
   const ShowStatus = () => {
     const { status } = useUser();
-    return <button onClick={() => console.log(status)}>CLICK ME</button>;
+    if (status) {
+      return (
+        <>
+          <Button
+            href="/login"
+            size="md"
+            style={{ margin: "1px 2px", width: "90px" }}
+          >
+            Login
+          </Button>
+          <Button
+            href="/user/new"
+            size="md"
+            style={{ margin: "1px 2px", width: "90px" }}
+          >
+            Sign Up
+          </Button>
+        </>
+      );
+    }
+    return (
+      <Button
+        href="/logout"
+        size="md"
+        style={{ margin: "1px 2px", width: "90px" }}
+      >
+        Logout
+      </Button>
+    );
   };
 
   const Trigger = () => {
     const dispatch = useDispatch();
-    console.log(dispatch);
     return (
-      <button onClick={() => dispatch({ type: "logged in" })}>log in</button>
+      <>
+        <button onClick={() => dispatch({ type: "logged in" })}>log in</button>
+        <button onClick={() => dispatch({ type: "logged out" })}>
+          log out
+        </button>
+      </>
     );
   };
 
@@ -30,18 +61,6 @@ const NavBar = (props) => {
   //     setRecipientNav(true);
   //   }
   // }, []);
-=======
-  // const [contributorNav, setContributorNav] = useState(false);
-  // const [recipientNav, setRecipientNav] = useState(false);
-
-  useEffect(() => {
-    // if (userType === "Contributor") {
-    //   setContributorNav(true);
-    // } else if (userType === "Recipient") {
-    //   setRecipientNav(true);
-    // }
-  }, []);
->>>>>>> 1acd8689e19439408ed663af763c60dbc9fd371e
 
   return (
     <Navbar bg="light" expand="lg" fixed="top" style={{ position: "sticky" }}>
@@ -63,36 +82,12 @@ const NavBar = (props) => {
             <Nav.Link href="/collections">Collections</Nav.Link>
           </>
         </Nav>
+      </Navbar.Collapse>
+      <Col md={3} xs={2} xl={2} lg={2}>
         <StatusProvider>
           <Trigger />
           <ShowStatus />
         </StatusProvider>
-      </Navbar.Collapse>
-      <Col md={3} xs={2} xl={2} lg={2}>
-        <Button
-          href="/logout"
-          size="md"
-          style={{ margin: "1px 2px", width: "90px" }}
-        >
-          Logout
-        </Button>
-
-        <>
-          <Button
-            href="/login"
-            size="md"
-            style={{ margin: "1px 2px", width: "90px" }}
-          >
-            Login
-          </Button>
-          <Button
-            href="/user/new"
-            size="md"
-            style={{ margin: "1px 2px", width: "90px" }}
-          >
-            Sign Up
-          </Button>
-        </>
       </Col>
     </Navbar>
   );

@@ -33,6 +33,7 @@ const useUser = () => {
   if (context === undefined) {
     throw new Error("hehe");
   }
+  console.log("context", context);
   return context;
 };
 
