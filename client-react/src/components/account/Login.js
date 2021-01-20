@@ -5,17 +5,17 @@ import { Form, Button, FormLabel, FormControl, FormGroup, FormText, Row, Col } f
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Redirect } from 'react-router-dom';
 
-const Login = () => {
+const Login = (props) => {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
     })
 
+    const setCurrentUser = props.updateUser
+
     // const [errorMsg, setErrorMsg] = useState({})
 
-    const [loginStatus, setLoginStatus] = useState(false)
-
-    const [userId, setUserId] = useState('')
+    // const [loginStatus, setLoginStatus] = useState(false)
 
     const formSchema = Joi.object({
         username: Joi.string().alphanum().min(8).required(),
@@ -30,22 +30,24 @@ const Login = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        setLoginStatus(true)
         axios.post('/session', formData)
             .then((response) => {
-                setLoginStatus(true)
-                setUserId(response.data.id) // set userId
-                console.log(response)
+                if (response.data._id) {
+                    setCurrentUser(response.data)
+                }
+                // setLoginStatus(true)
+                // setUserId(response.data.id) // set userId
+                // console.log(response.data) // response.data is the user document
             })
             .catch((error) => {
-                setLoginStatus(error.message) // error depends on status from backend (e.g. 400/401)
-                console.log(error.response.data.error)
+                // setLoginStatus(error.message) // error depends on status from backend (e.g. 400/401)
+                console.log(error.response.data.error) // custom message from backend
             })
     }
 
-    // if (loginStatus === true) {
-    //     return <Redirect to={`/home`} />
-    // }
+    if (props.user) {
+        return <Redirect to={`/user/${props.user._id}`} />
+    }
 
     return (
         <>
@@ -91,7 +93,7 @@ const Login = () => {
                     Log In
                 </Button>
             </Form>
-            {loginStatus}
+            {/* {loginStatus} */}
         </>
     )
 }

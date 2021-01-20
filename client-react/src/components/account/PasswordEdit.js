@@ -4,7 +4,7 @@ import { Form, Button, FormLabel, FormControl, FormGroup, Row, Col } from 'react
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useParams, Link } from 'react-router-dom';
 
-const PasswordEdit = () => {
+const PasswordEdit = (props) => {
     const [formData, setFormData] = useState({})
     const userId = useParams().id
 
@@ -26,41 +26,46 @@ const PasswordEdit = () => {
 
     return (
         <>
-            <h1>Change Password</h1>
-            <Form onSubmit={handleSubmit}>
-                <FormGroup as={Row} controlId="newpassword1">
-                    <FormLabel column sm="3">
-                        Enter New Password:
-                                </FormLabel>
-                    <Col sm="6">
-                        <FormControl
-                            type="password"
-                            value={formData.password}
-                            onChange={(event) => {
-                                setFormData((state) => {
-                                    return { ...state, password: event.target.value }
-                                })
-                            }} />
-                    </Col>
-                </FormGroup>
+            {props.user ?
+                <div>
+                    <h1>Change Password</h1>
+                    <Form onSubmit={handleSubmit}>
+                        <FormGroup as={Row} controlId="newpassword1">
+                            <FormLabel column sm="3">
+                                Enter New Password:
+                                    </FormLabel>
+                            <Col sm="6">
+                                <FormControl
+                                    type="password"
+                                    value={formData.password}
+                                    onChange={(event) => {
+                                        setFormData((state) => {
+                                            return { ...state, password: event.target.value }
+                                        })
+                                    }} />
+                            </Col>
+                        </FormGroup>
 
-                <FormGroup as={Row} controlId="password2">
-                    <FormLabel column sm="3">Re-Enter New Password: </FormLabel>
-                    <Col sm="6">
-                        <FormControl type="Password"
-                            value={formData.password2}
-                            onChange={(event) => {
-                                setFormData((state) => {
-                                    return { ...state, password2: event.target.value }
-                                })
-                            }} />
-                    </Col>
-                </FormGroup>
+                        <FormGroup as={Row} controlId="password2">
+                            <FormLabel column sm="3">Re-Enter New Password: </FormLabel>
+                            <Col sm="6">
+                                <FormControl type="Password"
+                                    value={formData.password2}
+                                    onChange={(event) => {
+                                        setFormData((state) => {
+                                            return { ...state, password2: event.target.value }
+                                        })
+                                    }} />
+                            </Col>
+                        </FormGroup>
 
-                <Button variant="primary" type="submit">
-                    Save Password
-                </Button>
-            </Form>
+                        <Button variant="primary" type="submit">
+                            Save Password
+                    </Button>
+                    </Form>
+                </div>
+                :
+                <h1>You need to log in</h1>}
         </>
     )
 }
