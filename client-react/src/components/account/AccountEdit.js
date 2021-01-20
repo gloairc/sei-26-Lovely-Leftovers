@@ -1,10 +1,16 @@
 import AccountDetailsForm from './AccountDetailsForm'
 
-const AccountEdit = () => {
+const AccountEdit = (props) => {
+
     return (
         <>
-            <h1>Edit account</h1>
-            <AccountDetailsForm />
+            {props.user ?
+                <div>
+                    <h1>Edit account</h1>
+                    <AccountDetailsForm user={props.user} />
+                </div>
+                :
+                <h1>You need to log in</h1>}
         </>
     )
 }
