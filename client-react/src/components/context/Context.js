@@ -1,45 +1,47 @@
-import { createContext } from 'react'
+import React, { createContext, useContext, useReducer } from "react";
 
-const UserContext = createContext({
-    userInfo: "guest",
-    updateUser: () => { },
-});
+const UserContext = createContext();
+const DispatchContext = createContext();
 
-// const AuthStateContext = createContext();
-// const AuthDispatchContext = createContext();
+const countLog = (state, action) => {
+  switch (action.type) {
+    case "logged in": {
+      return { status: (state.status = true) };
+    }
+    case "logged out": {
+      return { status: (state.status = false) };
+    }
+    default: {
+      throw new Error(`Unhandled action type: ${action.type}`);
+    }
+  }
+};
 
-// // state management - AuthProvider is available to any children of the AuthProvider component
-// const AuthProvider = ({ children }) => {
-//     const [user, dispatch] = useReducer(Reducer.AuthReducer, Reducer.initialState);
+const StatusProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(countLog, { status: false });
+  return (
+    <UserContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>
+        {children}
+      </DispatchContext.Provider>
+    </UserContext.Provider>
+  );
+};
 
-//     return (
-//         <AuthStateContext.Provider value={user}>
-//             <AuthDispatchContext.Provider value={dispatch}>
-//                 {children}
-//             </AuthDispatchContext.Provider>
-//         </AuthStateContext.Provider>
-//     );
-// };
+const useUser = () => {
+  const context = useContext(UserContext);
+  if (context === undefined) {
+    throw new Error("hehe");
+  }
+  return context;
+};
 
-// function useAuthState() {
-//     const context = useContext(AuthStateContext);
-//     if (context === undefined) {
-//         throw new Error("useAuthState must be used within a AuthProvider");
-//     }
+const useDispatch = () => {
+  const context = useContext(DispatchContext);
+  if (context === undefined) {
+    throw new Error("oops");
+  }
+  return context;
+};
 
-//     return context;
-// }
-
-// function useAuthDispatch() {
-//     const context = useContext(AuthDispatchContext);
-//     if (context === undefined) {
-//         throw new Error("useAuthDispatch must be used within a AuthProvider");
-//     }
-
-//     return context;
-// }
-
-// const Context = { AuthProvider, useAuthState, useAuthDispatch }
-// export default Context;
-
-export default UserContext;
+export { StatusProvider, useUser, useDispatch };
