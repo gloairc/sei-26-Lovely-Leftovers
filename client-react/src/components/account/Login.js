@@ -15,6 +15,8 @@ const Login = () => {
 
     const [loginStatus, setLoginStatus] = useState(false)
 
+    const [userId, setUserId] = useState('')
+
     const formSchema = Joi.object({
         username: Joi.string().alphanum().min(8).required(),
         password: Joi.string().alphanum().min(8).required(),
@@ -29,17 +31,20 @@ const Login = () => {
     const handleSubmit = (event) => {
         event.preventDefault()
         setLoginStatus(true)
-        // axios.post('/sessions', formData)
-        //     .then((response) => {
-        //         setLoginStatus(true)
-        //     })
-        //     .catch((error) => {
-        //         setLoginStatus(error.message) // error depends on status from backend (e.g. 400/401)
-        //     })
+        axios.post('/session', formData)
+            .then((response) => {
+                setLoginStatus(true)
+                setUserId(response.data.id) // set userId
+                console.log(response)
+            })
+            .catch((error) => {
+                setLoginStatus(error.message) // error depends on status from backend (e.g. 400/401)
+                console.log(error.response.data.error)
+            })
     }
 
-    // if (loginStatus) {
-    //     return <Redirect to="/home" />
+    // if (loginStatus === true) {
+    //     return <Redirect to={`/home`} />
     // }
 
     return (
@@ -86,6 +91,7 @@ const Login = () => {
                     Log In
                 </Button>
             </Form>
+            {loginStatus}
         </>
     )
 }

@@ -67,6 +67,8 @@ Edit Profile
                 <Link to={`/user/${userId}/edit`}>Edit Profile</Link>
                 <Col sm="1"></Col>
                 <Link to={`/user/${userId}/changepassword`}>Change Password</Link>
+                <Col sm="1"></Col>
+                <Link to={`/user/${userId}/delete`}>Delete Account</Link>
             </Row>
         </>
     )
