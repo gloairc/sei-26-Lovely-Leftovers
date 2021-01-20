@@ -18,6 +18,7 @@ import About from "./components/About";
 import OneItem from "./components/foodListing/OneItem";
 import FoodListing from "./components/foodListing/FoodListing";
 import ContributionAdd from "./components/contribution/ContributionAdd";
+import { UserContext } from "./components/context/Context";
 
 function App() {
   const userId = sessionStorage.getItem("userId");
@@ -25,7 +26,9 @@ function App() {
 
   return (
     <div>
-      <NavBar loggedIn={loggedIn} />
+      <UserContext.Provider value="hihihi">
+        <NavBar />
+      </UserContext.Provider>
       <Router>
         <Switch>
           <Route exact path="/user/new">
@@ -41,13 +44,13 @@ function App() {
             <Account />
           </Route>
           <Route exact path="/user/:id/edit">
-            {userId ? <AccountEdit /> : <Redirect to={"/login"} />}
+            {/* {userId ? <AccountEdit /> : <Redirect to={"/login"} />} */}
           </Route>
           <Route exact path="/user/:id/changepassword">
-            {userId ? <PasswordEdit /> : <Redirect to={"/login"} />}
+            {/* {userId ? <PasswordEdit /> : <Redirect to={"/login"} />} */}
           </Route>
           <Route exact path="/user/:id/delete">
-            {userId ? <DeleteAccount /> : <Redirect to={"/login"} />}
+            {/* {userId ? <DeleteAccount /> : <Redirect to={"/login"} />} */}
           </Route>
           <Route exact path="/about">
             <About />
@@ -56,10 +59,10 @@ function App() {
             <FoodListing />
           </Route>
           <Route exact path="/listings/:batchId/:foodId">
-            {userId ? <OneItem /> : <Redirect to={"/login"} />}
+            {/* {userId ? <OneItem /> : <Redirect to={"/login"} />} */}
           </Route>
           <Route exact path="/contribute">
-            {userId ? <ContributionAdd /> : <Redirect to={"/login"} />}
+            {/* {userId ? <ContributionAdd /> : <Redirect to={"/login"} />} */}
           </Route>
           <Route exact path="/">
             <Redirect to={"/about"} />

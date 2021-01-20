@@ -1,9 +1,10 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useEffect, useReducer } from "react";
 
-const UserContext = createContext({ loggedin: false });
+const logged = false;
+export const UserContext = createContext(logged);
 
 const UserProvider = () => {
-  const [loggedin, setLoggedin] = useState(false);
+  const [state, dispatch] = useReducer(reducer, logged);
 
   useEffect(() => {});
 
@@ -13,5 +14,7 @@ const UserProvider = () => {
     </UserContext.Provider>
   );
 };
+
+const reducer = (x, action) => {};
 
 export default UserProvider;

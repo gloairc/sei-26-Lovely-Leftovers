@@ -11,5 +11,11 @@
   border-bottom: 0.5px solid rgb(189, 182, 182);
 }
 
-.textWrap {
+#foodss {
+  width: 20rem;
+  margin: 10px 0px;
+  background: #faf9f9;
+  border-radius: 10px;
+  border: 0px;
+  box-shadow: 3px 3px 10px #cdeac0;
 }

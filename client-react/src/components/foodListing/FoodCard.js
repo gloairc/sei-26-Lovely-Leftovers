@@ -9,14 +9,7 @@ import { Link } from "react-router-dom";
 
 const FoodCard = ({ foodData }) => {
   return (
-    <Card
-      style={{
-        width: "20rem",
-        margin: "10px 0px",
-        background: "rgba(255,255,255,0.85)",
-      }}
-      border="info"
-    >
+    <Card id="foodss" style={{}}>
       <Card.Img variant="top" src="" />
       <Card.Body>
         <Card.Title
