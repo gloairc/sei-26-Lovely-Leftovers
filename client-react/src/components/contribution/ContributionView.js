@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "./style.css";
 import axios from "axios";
 
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
@@ -55,11 +53,9 @@ const ContributionTable = () => {
                   <td>{foodItem.status}</td>
                   <td>{foodItem.recipient}</td>
                   <td>
-                    {/* <DeleteForeverIcon onClick={() => handleDelete(subject._id)} /> */}
-                    {/* <Link to={`/batch/${batch._id}`}>
-                  <EditIcon />
-                </Link> */}
-                    <Link>View</Link>
+                    <Link to={`/listings/${batchData._id}/${foodItem._id}`}>
+                      View
+                    </Link>
                     <br />
                     <Link>Hide</Link>
                   </td>
