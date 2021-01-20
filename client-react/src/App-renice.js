@@ -5,6 +5,8 @@ import AccountEdit from './components/account/AccountEdit';
 import Account from './components/account/Account';
 import PasswordEdit from './components/account/PasswordEdit';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import DeleteAccount from './components/account/DeleteAccount';
+import Logout from './components/account/Logout'
 
 function App() {
   return (
@@ -19,6 +21,9 @@ function App() {
         <Route exact path="/user/login">
           <Login />
         </Route>
+        <Route exact path="/logout">
+          <Logout />
+        </Route>
         <Route exact path="/user/:id">
           <Account />
         </Route>
@@ -27,6 +32,9 @@ function App() {
         </Route>
         <Route exact path="/user/:id/changepassword">
           <PasswordEdit />
+        </Route>
+        <Route exact path="/user/:id/delete">
+          <DeleteAccount />
         </Route>
       </Switch>
 
