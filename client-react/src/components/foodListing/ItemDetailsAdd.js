@@ -7,9 +7,11 @@ import {
   Row,
   Col,
   Container,
+  InputGroup,
 } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import Moment from "react-moment";
+import foodCat from "./dataDump";
 // import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./style.css";
@@ -23,8 +25,12 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
   //     });
   //   };
   const [foodDetails, setFoodDetails] = useState(foodList[foodIndex]);
+  const [selectedCat, setSelectedCat] = useState([]);
   const newFoodList = foodList.splice(foodIndex, 1, foodDetails);
   // setFoodList(newFoodList);
+  const renderFoodCat = foodCat.map((foodItem) => {
+    return <Form.Check type="checkbox" label={foodItem} value={foodItem} />;
+  });
 
   const stringtoDate = (inputString) => {};
   const toBoolean = (inputString) => {
@@ -74,7 +80,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
         <Col>
           Category:
           <p>(separate categories with a comma i.e. "fruit,beef,...")</p>
-          <FormControl
+          {/* <FormControl
             type="text"
             title="category"
             onChange={(event) => {
@@ -86,7 +92,28 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               });
               setFoodList(newFoodList);
             }}
-          />
+          ></FormControl> */}
+          <Form.Group
+            onChange={(event) => {
+              const newList = selectedCat;
+              if (event.target.checked) {
+                newList.push(event.target.value);
+              } else {
+                // const toRemove = selectedItems.indexOf(event.target.value);
+                newList.splice(newList.indexOf(event.target.value), 1);
+              }
+              setSelectedCat(newList);
+              setFoodDetails((state) => {
+                return {
+                  ...state,
+                  category: selectedCat,
+                };
+              });
+              setFoodList(newFoodList);
+            }}
+          >
+            {renderFoodCat}
+          </Form.Group>
         </Col>
       </Row>
 
