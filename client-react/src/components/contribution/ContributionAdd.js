@@ -42,6 +42,8 @@ const ContributionAdd = () => {
     collectionAddress: "666 Middle of Nowhere Road",
     foodListings: foodList,
   });
+  const [dataPosted, setDataPosted] = useState(false);
+  const userId = sessionStorage.getItem("userId");
 
   //test data
   // const [batchDetails, setBatchDetails] = useState({
@@ -86,8 +88,17 @@ const ContributionAdd = () => {
     axios.post("/batch", batchDetails).then((response) => {
       setBatchCreated(true);
       console.log(response);
+      const contributionData = { userID: userId, batchID: response.data._id };
+      axios.put("/user/addtoclist", contributionData).then((response) => {
+        setDataPosted(true);
+      });
     });
   };
+
+  if (dataPosted) {
+    return <Redirect to={"/contributions"} />;
+  }
+
   const handleInputChange = (event, index) => {
     setFoodList((state) => {
       return { ...state };
