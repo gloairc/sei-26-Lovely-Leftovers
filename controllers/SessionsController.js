@@ -5,9 +5,20 @@ const User = require("../models/user.js");
 const { StatusCodes } = require("http-status-codes");
 
 sessions.get("/", (req, res) => {
-  req.session.currentUser = currentUser;
-  res.send(currentUser);
+  if (req.session.currentUser) {// if session exists
+    res.status(StatusCodes.OK).send("Session found. User is logged in!");
+  } else {
+    res.status(StatusCodes.FORBIDDEN).send({ error: "You are not authorized to view this page." });
+  }
 });
+
+// sessions.get("/", (req, res) => { //if equals to sessionsStorage
+//   if (req.session.currentUser._id === req.body.userId) {
+//     res.status(StatusCodes.OK).send("Session found. User is logged in!");
+//   } else {
+//     res.status(StatusCodes.FORBIDDEN).send({ error: "You are not authorized to view this page." });
+//   }
+// });
 
 // POST on log-in /session
 sessions.post("/", (req, res) => {

@@ -4,7 +4,7 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const User = require("../models/user");
-const omit = require('just-omit')
+const omit = require("just-omit");
 const Batch = require("../models/batch");
 
 // const isAuthenticated = (req, res, next) => {
@@ -19,16 +19,16 @@ const Batch = require("../models/batch");
 router.get("/", (req, res) => {
     User.find({}, (error, users) => {
         if (error) {
-            res.send(error)
+            res.send(error);
         } else {
             res.send(users);
         }
-    })
+    });
 });
 
 // SEEDING
-router.get("/seeds", (req, res) => {
-    console.log("seeding")
+router.get("/seed", (req, res) => {
+    console.log("seeding");
     User.create(
         [
             {
@@ -40,7 +40,7 @@ router.get("/seeds", (req, res) => {
                 username: "Recipient1",
                 password: "aaaa1111",
                 type: "Recipient",
-                receivedList: ["id1", "id2"]
+                receivedList: ["id1", "id2"],
             },
             {
                 firstName: "Happy",
@@ -76,30 +76,26 @@ router.get("/seeds", (req, res) => {
         ],
         (error, user) => {
             if (error) {
-                console.log(error)
+                console.log(error);
                 return res.send({ ...error, message: "likely user already exist" });
             }
-            console.log("users", user)
-            res.redirect("/user")
+            console.log("users", user);
+            res.redirect("/user");
         }
-    )
-})
+    );
+});
 
-// router.get("/try", (req, res) => {
-//     res.send("ahahahaha")
-// })
-
-
-//PUT /user/addToReceivedList updates recipient's received list 
-router.put("/addtorlist", (req, res) => {
+//PUT /user/myfood/add updates recipient's received list 
+router.put("/myfood/new", (req, res) => {
     Batch.findById(req.body.batchID, (error, batch) => {
         if (error) {
             res.status(StatusCodes.BAD_REQUEST).send({ ...error, message: "cant find batch" });
         } else { //no error in finding batch ID
+            // res.send(req.body) //testing
             batch.foodListings.id(req.body.listID).status = "hidden"; //make that one listing hidden
             batch.foodListings.id(req.body.listID).recipient = req.body.userID;
-            // // add in recipient's user._id to the listing. // alternative (req.session.currentUser)._id
-            // res.send(batch.foodListings) //during testing
+            // add in recipient's user._id to the listing. // alternative (req.session.currentUser)._id
+            // res.send(batch.foodListings) // testing
 
             batch.save((err, updatedBatch) => {
                 if (err) {
@@ -111,7 +107,7 @@ router.put("/addtorlist", (req, res) => {
                     console.log("batch saved, ", updatedBatch, "now to update user...");
                     User.findByIdAndUpdate(
                         req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id
-                        { $push: { receivedList: { batchID: req.body.batchID, listID: req.body.listID } } }, // req.body, // what to update: 
+                        { $push: { receivedList: { batchId: req.body.batchID, listingId: req.body.listID } } }, // req.body, // what to update: 
                         { upsert: true, new: true }, //upsert doesnt seem to be working, will add duplicate if click twice
                         (error, updatedUser) => {
                             if (error) {
@@ -127,11 +123,11 @@ router.put("/addtorlist", (req, res) => {
     });
 })
 
-//PUT /user/addToContributionList updates Contributor's çonstribution list (IF NOT IN BATCH CONTROLLER)
-router.put("/addtoclist", (req, res) => {
+//PUT /user/mycontributions/new updates Contributor's çonstribution list
+router.put("/mycontributions/new", (req, res) => {
     User.findByIdAndUpdate(
         req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id 
-        { $push: { contributionList: req.body.batchID } }, // req.body, // what to update: 
+        { $push: { contributedList: req.body.batchID } }, // req.body, // what to update: 
         { upsert: true, new: true },
         (error, updatedUser) => {
             if (error) {
@@ -140,29 +136,29 @@ router.put("/addtoclist", (req, res) => {
                 res.status(StatusCodes.OK).send(updatedUser);
             }
         }
-    )
+    );
 });
+
 
 // SHOW /user/:id (user account details)
 router.get("/:id", (req, res) => {
     User.findById(req.params.id, (error, user) => {
         if (error) {
-            res
-                .status(StatusCodes.BAD_REQUEST)
-                .send({
-                    ...error,
-                    reason: `ERROR ${StatusCodes.BAD_REQUEST}, not valid id`,
-                }); //trying to add reason in to reason {}
+            res.status(StatusCodes.BAD_REQUEST).send({
+                ...error,
+                reason: `ERROR ${StatusCodes.BAD_REQUEST}, not valid id`,
+            }); //trying to add reason in to reason {}
         } else {
-            console.log("user", user)
-            const usernopw = { ...user, password: "" } //return user account without password for security reasons
+            console.log("user", user);
+            const usernopw = { ...user, password: "" }; //return user account without password for security reasons
             res.status(StatusCodes.OK).send(usernopw);
         }
     }).lean(); //returns response.data instead of mongoose collection
-})
+});
 
 //POST new user creation to /user
-router.post("/",
+router.post(
+    "/",
     body("firstName", "Please enter your first name.").trim().notEmpty(),
     body("familyName", "Please enter your last name.").trim().notEmpty(),
     body("organisation").optional().trim().isString(),
@@ -178,8 +174,9 @@ router.post("/",
             // Errors returned in an array `errors.array()`.
             const locals = { UserInput: req.body, errors: errors.array() };
             res.status(StatusCodes.BAD_REQUEST).send(locals);
-        } else { //Data is valid
-            console.log(req.body)
+        } else {
+            //Data is valid
+            console.log(req.body);
             //overwrite the user password with the hashed password, then pass that in to our database
             req.body.password = bcrypt.hashSync(
                 req.body.password,
@@ -190,16 +187,19 @@ router.post("/",
                     res.status(StatusCodes.BAD_REQUEST).send(err);
                 } else {
                     console.log("user is created");
-                    req.session.currentUser = createdUser
+                    req.session.currentUser = createdUser;
                     //req.session creates a session, we are also creating a field called currentUser = createdUser
                     res.status(StatusCodes.CREATED).send(createdUser);
                 }
             });
+
         }
-    });
+    }
+);
 
 //UPDATE user account
-router.put("/:id",
+router.put(
+    "/:id",
     body("firstName", "Please enter your first name.").optional().trim().notEmpty(),
     body("familyName", "Please enter your last name.").optional().trim().notEmpty(),
     body("organisation").optional().trim().isString(),
@@ -217,22 +217,6 @@ router.put("/:id",
             const locals = { UserInput: req.body, errors: errors.array() };
             res.status(StatusCodes.BAD_REQUEST).send(locals);
         }
-        // if (userInput.receivedList) { // triggers when Recipient received something
-        //     User.findByIdAndUpdate(req.params.id, { $push: { receivedList: req.body.receivedList} }, { new: true }, (error, user) => {
-        //         if (error) {
-        //             return res.send(error)
-        //         }
-        //         return res.send(user)
-        //     })
-        // }
-        // if (userInput.batchList) { // triggers when Contributor contribute something
-        //     User.findByIdAndUpdate(req.params.id, { $push: { batchList: req.body.batchList} }, { new: true }, (error, user) => {
-        //         if (error) {
-        //             return res.send(error)
-        //         }
-        //         return res.send(user)
-        //     })
-        // }
         else {// when user update account page
             if (req.body.password && req.body.password !== "") {//user changes password
                 req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync())
@@ -252,8 +236,8 @@ router.put("/:id",
                 }
             );
         }
-    });
-
+    }
+);
 
 // DELETE or use React Axios to send DELETE and PUT
 router.delete("/:id", (req, res) => {
@@ -265,6 +249,5 @@ router.delete("/:id", (req, res) => {
         }
     });
 });
-
 
 module.exports = router;

@@ -5,62 +5,17 @@ import { StatusProvider, useUser, useDispatch } from "./context/Context";
 
 const NavBar = (props) => {
   const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
 
-  const [contributorNav, setContributorNav] = useState(false);
-  const [recipientNav, setRecipientNav] = useState(false);
-
-  const ShowStatus = () => {
-    const { status } = useUser();
-    if (status) {
-      return (
-        <>
-          <Button
-            href="/login"
-            size="md"
-            style={{ margin: "1px 2px", width: "90px" }}
-          >
-            Login
-          </Button>
-          <Button
-            href="/user/new"
-            size="md"
-            style={{ margin: "1px 2px", width: "90px" }}
-          >
-            Sign Up
-          </Button>
-        </>
-      );
-    }
-    return (
-      <Button
-        href="/logout"
-        size="md"
-        style={{ margin: "1px 2px", width: "90px" }}
-      >
-        Logout
-      </Button>
-    );
+  const handleClick = () => {
+    setUserType(sessionStorage.getItem("userType"));
+    setUserId(sessionStorage.getItem("userId"));
   };
 
-  const Trigger = () => {
-    const dispatch = useDispatch();
-    return (
-      <>
-        <button onClick={() => dispatch({ type: "logged in" })}>log in</button>
-        <button onClick={() => dispatch({ type: "logged out" })}>
-          log out
-        </button>
-      </>
-    );
-  };
-
-  // useEffect(() => {
-  //   if (userType === "Contributor") {
-  //     setContributorNav(true);
-  //   } else if (userType === "Recipient") {
-  //     setRecipientNav(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    setUserType(sessionStorage.getItem("userType"));
+    setUserId(sessionStorage.getItem("userId"));
+  }, [props]);
 
   return (
     <Navbar bg="light" expand="lg" fixed="top" style={{ position: "sticky" }}>
@@ -70,24 +25,55 @@ const NavBar = (props) => {
           <Nav.Link href="/about">About Us</Nav.Link>
 
           <Nav.Link href="/listings">Listings</Nav.Link>
+          {userType === "Contributor" ? (
+            <>
+              <Nav.Link href={`/user/${userId}`}>Account</Nav.Link>
+              <Nav.Link href="/contributions">Contributions</Nav.Link>
+              <Nav.Link href="/contribute">Contribute</Nav.Link>
+            </>
+          ) : (
+            ""
+          )}
 
-          <>
-            <Nav.Link href="/user/60069e52a70d026203aea575">Account</Nav.Link>
-            <Nav.Link href="/contributions">Contributions</Nav.Link>
-            <Nav.Link href="/contribute">Contribute</Nav.Link>
-          </>
-
-          <>
-            <Nav.Link href="/user/60069e52a70d026203aea575">Account</Nav.Link>
-            <Nav.Link href="/collections">Collections</Nav.Link>
-          </>
+          {userType === "Recipient" ? (
+            <>
+              <Nav.Link href={`/user/${userId}`}>Account</Nav.Link>
+              <Nav.Link href="/collections">Collections</Nav.Link>
+            </>
+          ) : (
+            ""
+          )}
         </Nav>
       </Navbar.Collapse>
       <Col md={3} xs={2} xl={2} lg={2}>
-        <StatusProvider>
-          <Trigger />
-          <ShowStatus />
-        </StatusProvider>
+        {userType ? (
+          <Button
+            href="/logout"
+            size="md"
+            style={{ margin: "1px 2px", width: "90px" }}
+            onClick={handleClick}
+          >
+            Logout
+          </Button>
+        ) : (
+          <>
+            <Button
+              href="/login"
+              size="md"
+              style={{ margin: "1px 2px", width: "90px" }}
+            >
+              Login
+            </Button>
+            <Button
+              href="/user/new"
+              size="md"
+              style={{ margin: "1px 2px", width: "90px" }}
+              onClick={handleClick}
+            >
+              Sign Up
+            </Button>
+          </>
+        )}
       </Col>
     </Navbar>
   );
