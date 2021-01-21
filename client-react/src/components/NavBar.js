@@ -25,7 +25,7 @@ const NavBar = (props) => {
           <Nav.Link href="/about">About Us</Nav.Link>
 
           <Nav.Link href="/listings">Listings</Nav.Link>
-          {contributorNav ? (
+          {userType === "Contributor" ? (
             <>
               <Nav.Link href="/user/60069e52a70d026203aea575">Account</Nav.Link>
               <Nav.Link href="/contributions">Contributions</Nav.Link>
@@ -33,7 +33,7 @@ const NavBar = (props) => {
             </>
           ) : ""}
 
-          {recipientNav ? (
+          {userType === "Recipient" ? (
             <>
               <Nav.Link href="/user/60069e52a70d026203aea575">Account</Nav.Link>
               <Nav.Link href="/collections">Collections</Nav.Link>
