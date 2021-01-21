@@ -40,10 +40,11 @@ function App() {
             <Logout />
           </Route>
           <Route exact path="/user/:id">
-            <Account />
+            {userId ? <Account /> : <Redirect to={'/login'} />}
+
           </Route>
           <Route exact path="/user/:id/edit">
-            {userId ? <AccountEdit /> : <Redirect to={"/login"} />}
+            <AccountEdit />
           </Route>
           <Route exact path="/user/:id/changepassword">
             {userId ? <PasswordEdit /> : <Redirect to={"/login"} />}
