@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Moment from "react-moment";
 import axios from "axios";
 
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
@@ -20,11 +21,9 @@ const ContributionTable = () => {
   }, [dataLoaded]);
 
   return (
-    <div className="contributionTable">
-      <div className="contributionTitle">
-        <h2>Batch {batchData._id}</h2>
-        {console.log(batchData)}
-      </div>
+    <>
+      <h2>Batch {batchData._id}</h2>
+      {console.log(batchData)}
       <Table
         striped
         bordered
@@ -49,7 +48,9 @@ const ContributionTable = () => {
                 <tr>
                   <td>{foodItem.title}</td>
                   <td>{foodItem.quantity}</td>
-                  <td>{foodItem.bestBefore}</td>
+                  <td>
+                    <Moment format="DD/MM/YYYY">{foodItem.bestBefore}</Moment>
+                  </td>
                   <td>{foodItem.status}</td>
                   <td>{foodItem.recipient}</td>
                   <td>
@@ -67,7 +68,17 @@ const ContributionTable = () => {
           )}
         </tbody>
       </Table>
-    </div>
+
+      <Row>
+        <Col></Col>
+
+        <Col>
+          <Button href="/contributions" style={{ margin: "10px 0" }}>
+            Back
+          </Button>
+        </Col>
+      </Row>
+    </>
   );
 };
 

@@ -47,7 +47,6 @@ const ContributionTable = () => {
     <div className="contributionTable">
       <div className="contributionTitle">
         <h2>My Contributions</h2>
-        {/* {console.log(tableData)} */}
       </div>
       <Table
         striped
