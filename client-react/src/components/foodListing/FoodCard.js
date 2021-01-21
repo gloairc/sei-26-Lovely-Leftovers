@@ -11,19 +11,19 @@ const FoodCard = ({ foodData }) => {
   const isHalalTF = (foodData.isHalal === true) ? "Halal" : "";
   const isVegTF = (foodData.isVegetarian === true) ? "Vegetarian" : "";
 
-  // const longCatList = () => {
-  //   const foodCat = (foodData.category);
-  //   let catList = "";
-  //   let finalCatList = "";
-  //   for (let i = 0; i < ((foodCat).length) - 1; i++) {
-  //     catList += ((foodCat)[i] + ", ")
-  //   }
-  //   finalCatList = catList + (foodCat)[foodCat.length - 1]
-  //   // console.log("finalCatList", finalCatList)
-  //   return finalCatList
-  // }
+  const longCatList = () => {
+    const foodCat = (foodData.category);
+    let catList = "";
+    let finalCatList = "";
+    for (let i = 0; i < ((foodCat).length) - 1; i++) {
+      catList += ((foodCat)[i] + ", ")
+    }
+    finalCatList = catList + (foodCat)[foodCat.length - 1]
+    // console.log("finalCatList", finalCatList)
+    return finalCatList
+  }
 
-  // const foodCategories = ((foodData.category).length > 1) ? longCatList() : (foodData.category)
+  const foodCategories = ((foodData.category).length > 1) ? longCatList() : (foodData.category)
 
 
   return (
@@ -53,8 +53,8 @@ const FoodCard = ({ foodData }) => {
               {/* <Moment format="DD/MM/YYYY">{foodData.bestBefore}</Moment>{" "} */}
             </span>
             <footer class="blockquote-footer font-italic"><br />Category:
-            {foodData.category}
-              {/* {foodCategories} */}
+            {/* {foodData.category} */}
+              {foodCategories}
             </footer>
           </Card.Text>
           <Card.Link href={`/listings${foodData.queryPath}`}>
