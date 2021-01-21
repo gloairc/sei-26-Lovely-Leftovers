@@ -36,31 +36,45 @@ const Account = () => {
             </Row>
             <Container style={{ margin: "5px" }}>
               <Row style={{ background: "#cdeac0", height: "50px" }}>
-                <Col sm={keyWidth}><span class="font-weight-bold">Account Type:</span> </Col>
+                <Col sm={keyWidth}>
+                  <span class="font-weight-bold">Account Type:</span>{" "}
+                </Col>
                 <Col sm={valueWidth}>{formData.type}</Col>
               </Row>
               <Row style={{ height: "50px" }}>
-                <Col sm={keyWidth}><span class="font-weight-bold">Username:</span> </Col>
+                <Col sm={keyWidth}>
+                  <span class="font-weight-bold">Username:</span>{" "}
+                </Col>
                 <Col sm={valueWidth}>{formData.username}</Col>
               </Row>
               <Row style={{ background: "#cdeac0", height: "50px" }}>
-                <Col sm={keyWidth}><span class="font-weight-bold">First Name:</span> </Col>
+                <Col sm={keyWidth}>
+                  <span class="font-weight-bold">First Name:</span>{" "}
+                </Col>
                 <Col sm={valueWidth}>{formData.firstName}</Col>
               </Row>
               <Row style={{ height: "50px" }}>
-                <Col sm={keyWidth}><span class="font-weight-bold">Family Name:</span> </Col>
+                <Col sm={keyWidth}>
+                  <span class="font-weight-bold">Family Name:</span>{" "}
+                </Col>
                 <Col sm={valueWidth}>{formData.familyName}</Col>
               </Row>
               <Row style={{ background: "#cdeac0", height: "50px" }}>
-                <Col sm={keyWidth}><span class="font-weight-bold">Organisation:</span> </Col>
+                <Col sm={keyWidth}>
+                  <span class="font-weight-bold">Organisation:</span>{" "}
+                </Col>
                 <Col sm={valueWidth}>{formData.organisation}</Col>
               </Row>
               <Row style={{ height: "50px" }}>
-                <Col sm={keyWidth}><span class="font-weight-bold">Contact Number:</span> </Col>
+                <Col sm={keyWidth}>
+                  <span class="font-weight-bold">Contact Number:</span>{" "}
+                </Col>
                 <Col sm={valueWidth}>{formData.contactNum}</Col>
               </Row>
               <Row style={{ background: "#cdeac0", height: "50px" }}>
-                <Col sm={keyWidth}><span class="font-weight-bold">Email Address:</span> </Col>
+                <Col sm={keyWidth}>
+                  <span class="font-weight-bold">Email Address:</span>{" "}
+                </Col>
                 <Col sm={valueWidth}>{formData.email}</Col>
               </Row>
             </Container>
@@ -69,12 +83,14 @@ const Account = () => {
             <div className="rightLink">
               <Link to={`/user/${userId}/edit`}>
                 <Button
-                  variant="warning"
+                  variant="outline-warning"
                   style={{
                     borderRadius: "25px",
                     padding: "6px",
                     width: "150px",
                     marginTop: "10px",
+                    border: "3px solid",
+                    fontWeight: "bold",
                   }}
                 >
                   Edit Profile
@@ -84,12 +100,14 @@ const Account = () => {
             <div className="rightLink">
               <Link to={`/user/${userId}/changepassword`}>
                 <Button
-                  variant="warning"
+                  variant="outline-warning"
                   style={{
                     borderRadius: "25px",
                     padding: "6px",
                     width: "150px",
                     marginTop: "10px",
+                    border: "3px solid",
+                    fontWeight: "bold",
                   }}
                 >
                   Change Password
@@ -114,8 +132,8 @@ const Account = () => {
           </div>
         </div>
       ) : (
-          <Redirect to={"/about"} />
-        )}
+        <Redirect to={"/about"} />
+      )}
     </div>
   );
 };

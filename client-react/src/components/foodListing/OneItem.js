@@ -71,7 +71,11 @@ const OneItem = () => {
   const collectBtn = (
     <Button
       onClick={handleCollect}
-      style={{ margin: "10px 0", borderRadius: "20px", width: "150px" }}
+      style={{
+        margin: "10px 10px 15px 10px",
+        borderRadius: "20px",
+        width: "150px",
+      }}
       variant="success"
     >
       Collect
@@ -88,12 +92,13 @@ const OneItem = () => {
       </div>
 
       <div>
-        <div>{toShowCollectBtnOrNot}</div>
+        <div></div>
         <div>
+          {toShowCollectBtnOrNot}
           <Button
             href="/listings"
             style={{
-              margin: "10px 10px",
+              margin: "10px 10px 15px 10px",
               borderRadius: "20px",
               border: "3px solid",
               fontWeight: "bold",

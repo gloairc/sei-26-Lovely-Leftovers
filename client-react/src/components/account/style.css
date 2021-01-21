@@ -37,3 +37,9 @@
   padding-top: 10px;
   padding-bottom: 20px;
 }
+
+.edit {
+  width: 80%;
+  margin: 10px auto;
+  background: rgba(255, 255, 255, 0.8);
+}
