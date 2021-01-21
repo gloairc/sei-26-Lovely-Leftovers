@@ -116,10 +116,19 @@ const AccountDetailsForm = () => {
 
   const handleBlur = (event) => {
     console.log("BLUR");
-    console.log(formData.username);
+    setErrorMsg("");
     axios
-      .get("/user", { username: formData.username })
-      .then((response) => console.log(response));
+      .get("/user", {
+        // /user?username=formData.username
+        params: { username: formData.username },
+      })
+      .then((response) => {
+        // either receive the existing one user else or all users when username ===""
+        console.log("axios then response", response.data);
+        if (response.data.length === 1) {
+          setErrorMsg([{ msg: "Username already taken!" }]);
+        }
+      });
   };
 
   const keyWidth = 2;
@@ -368,4 +377,5 @@ const AccountDetailsForm = () => {
     </div>
   );
 };
+
 export default AccountDetailsForm;

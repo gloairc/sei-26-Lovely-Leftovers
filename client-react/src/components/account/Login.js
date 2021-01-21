@@ -51,6 +51,7 @@ const Login = (props) => {
       })
       .catch((error) => {
         // setLoginStatus(error.message) // error depends on status from backend (e.g. 400/401)
+        setStatus("");
         setErrorMsg(error.response.data.error); // custom message from backend
         console.log(error.response.data);
       });
