@@ -31,7 +31,7 @@ const DeleteAccount = () => {
     return (
         <>
             {userId === userIdParam ?
-                <p> We are deleting your account.You will be redirected once done.</p>
+                <p> We are deleting your account. You will be redirected once done.</p>
                 :
                 <Redirect to={'/restricted'} />}
         </>

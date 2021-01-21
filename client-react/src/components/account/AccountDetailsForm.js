@@ -75,6 +75,7 @@ const AccountDetailsForm = () => {
                     }, 2000)
                 })
                 .catch((error) => {
+                    console.log('error response', error.response)
                     console.log('error', error.response.data.errors)
                     setErrorMsg(error.response.data.errors)
                 })
@@ -115,10 +116,16 @@ const AccountDetailsForm = () => {
 
     const handleBlur = (event) => {
         console.log("BLUR")
-        console.log(formData.username)
-        axios.get('/user', { 'username': formData.username })
-            .then((response) =>
-                console.log(response))
+        setErrorMsg("");
+        axios.get('/user', {  // /user?username=formData.username
+            params: { username: formData.username }
+        })
+            .then((response) => {// either receive the existing one user else or all users when username ===""
+                console.log("axios then response", response.data)
+                if ((response.data).length === 1) {
+                    setErrorMsg([{ msg: "Username already taken!" }])
+                }
+            })
     }
 
     const keyWidth = 2
