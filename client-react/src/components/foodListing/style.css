@@ -1,0 +1,21 @@
+.foodContainer {
+  border: 1px solid rgb(204, 203, 203);
+  width: 75%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin: 10px 15px 0 15px;
+  border-bottom: 0.5px solid rgb(189, 182, 182);
+}
+
+#foodss {
+  width: 250px;
+  margin: 10px 0px;
+  background: #faf9f9;
+  border-radius: 10px;
+  border: 0px;
+  box-shadow: 3px 3px 10px #cdeac0;
+}

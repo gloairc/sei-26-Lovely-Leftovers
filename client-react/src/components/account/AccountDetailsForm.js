@@ -1,23 +1,28 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import Joi from 'joi'
-import { Form, Button, FormLabel, FormControl, FormGroup, FormText, FormCheck, Row, Col } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams, Link, Redirect } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Joi from "joi";
+import "./style.css";
+import {
+    Form,
+    Button,
+    FormLabel,
+    FormControl,
+    FormGroup,
+    FormText,
+    FormCheck,
+    Row,
+    Col,
+    Alert,
+} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useParams, Link, Redirect } from "react-router-dom";
 
 const AccountDetailsForm = () => {
     const [formData, setFormData] = useState({
-        type: '',
-        username: '',
-        password: '',
-        firstName: '',
-        familyName: '',
-        organisation: '',
-        contactNum: '',
-        email: '',
     })
-
+    const [errorMsg, setErrorMsg] = useState()
     const [sent, setSent] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const userId = useParams().id
 
     // validation is WIP
@@ -34,9 +39,11 @@ const AccountDetailsForm = () => {
 
     useEffect(() => {
         if (userId) {
+            setIsLoading(true)
             axios.get(`/user/${userId}`)
                 .then((response) => {
                     setFormData(response.data)
+                    setIsLoading(false)
                     console.log(response)
                 })
                 .catch((error) => {
@@ -49,8 +56,15 @@ const AccountDetailsForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        const updatedInfo = {
+            username: formData.username,
+            firstName: formData.firstName,
+            familyName: formData.familyName,
+            organisation: formData.organisation,
+            contactNum: formData.contactNum,
+            email: formData.email,
+        }
         if (!userId) {
-            console.log('creating new user')
             axios.post('/user', formData)
                 .then((response) => {
                     console.log(response)
@@ -61,7 +75,8 @@ const AccountDetailsForm = () => {
                     }, 2000)
                 })
                 .catch((error) => {
-                    console.log('error', error)
+                    console.log('error', error.response.data.errors)
+                    setErrorMsg(error.response.data.errors)
                 })
 
             // validation WIP
@@ -69,28 +84,57 @@ const AccountDetailsForm = () => {
             // console.log(validate.error)
 
         } else if (userId) {
-            console.log('updating profile')
-            axios.put(`/user/${userId}`, formData)
+            axios.put(`/user/${userId}`, updatedInfo)
                 .then((response) => {
-                    console.log("edited user data")
+                    setTimeout(() => {
+                        setSent(true)
+                    }, 2000)
                 })
                 .catch((error) => {
-                    console.log('error', error)
+                    console.log('error', error.response.data.errors)
+                    setErrorMsg(error.response.data.errors) // array of objects
                 })
-            console.log('after axios')
         }
     }
 
     if (sent) {
-        const userId = sessionStorage.getItem('userId')
-        return <Redirect to={`/user/${userId}`} />
+        const userId = sessionStorage.getItem("userId");
+        return <Redirect to={`/user/${userId}`} />;
     }
+
+    const showErrors = () => {
+        let errors = []
+        if (errorMsg) {
+            errors.push(<p>Error!</p>)
+            for (let i = 0; i < errorMsg.length; i++) {
+                errors.push(<p>{errorMsg[i].msg}</p>)
+            }
+        }
+        return errors;
+    }
+
+    const handleBlur = (event) => {
+        console.log("BLUR")
+        console.log(formData.username)
+        axios.get('/user', { 'username': formData.username })
+            .then((response) =>
+                console.log(response))
+    }
+
+    const keyWidth = 2
+    const valueWidth = 5
+    const buffer = 1
 
     return (
         <>
+            <Row>
+                <Col sm={buffer} />
+                {errorMsg ? <Alert variant="danger">{showErrors()}</Alert> : ""}
+            </Row>
             <Form onSubmit={handleSubmit}>
                 <FormGroup as={Row} controlId="type">
-                    <FormLabel column sm="3">User Type: </FormLabel>
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>User Type: </FormLabel>
                     {userId ? <p>{formData.type}</p> : <><FormCheck
                         inline label="Contributor"
                         type="radio"
@@ -119,23 +163,23 @@ const AccountDetailsForm = () => {
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="username">
-                    <FormLabel column sm="3">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>
                         Username:
                                 </FormLabel>
-                    <Col sm="6">
+                    <Col sm={valueWidth}>
                         <FormControl
                             type="text"
-                            value={formData.username}
+                            value={isLoading ? "Loading data" : formData.username}
+                            disabled={isLoading}
                             onChange={(event) => {
                                 console.log(event.target.id)
                                 setFormData((state) => {
                                     return { ...state, username: event.target.value }
                                 })
                             }}
-                            onBlur={(event) => {
-                                console.log(event.target.value)
-                            }
-                            } />
+                            onBlur={(event) => handleBlur(event)}
+                        />
                         <FormText className="text-muted">
                             Username must be at least 8 characters long
                             </FormText>
@@ -143,10 +187,11 @@ const AccountDetailsForm = () => {
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="password">
-                    <FormLabel column sm="3">Password: </FormLabel>
-                    <Col sm="6">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>Password: </FormLabel>
+                    <Col sm={valueWidth}>
                         <FormControl type="Password"
-                            value={formData.password}
+                            value={userId ? "" : formData.password}
                             onChange={(event) => {
                                 setFormData((state) => {
                                     return { ...state, password: event.target.value }
@@ -161,10 +206,12 @@ const AccountDetailsForm = () => {
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="firstName">
-                    <FormLabel column sm="3">First Name: </FormLabel>
-                    <Col sm="6">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>First Name: </FormLabel>
+                    <Col sm={valueWidth}>
                         <FormControl type="text"
-                            value={formData.firstName}
+                            value={isLoading ? "Loading data" : formData.firstName}
+                            disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {
                                     return { ...state, firstName: event.target.value }
@@ -174,10 +221,12 @@ const AccountDetailsForm = () => {
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="familyName">
-                    <FormLabel column sm="3">Last Name: </FormLabel>
-                    <Col sm="6">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>Last Name: </FormLabel>
+                    <Col sm={valueWidth}>
                         <FormControl type="text"
-                            value={formData.familyName}
+                            value={isLoading ? "Loading data" : formData.familyName}
+                            disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {
                                     return { ...state, familyName: event.target.value }
@@ -187,10 +236,12 @@ const AccountDetailsForm = () => {
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="organisation">
-                    <FormLabel column sm="3">Organisation: </FormLabel>
-                    <Col sm="6">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>Organisation: </FormLabel>
+                    <Col sm={valueWidth}>
                         <FormControl type="text"
-                            value={formData.organisation}
+                            value={isLoading ? "Loading data" : formData.organisation}
+                            disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {
                                     return { ...state, organisation: event.target.value }
@@ -200,10 +251,12 @@ const AccountDetailsForm = () => {
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="contactNum">
-                    <FormLabel column sm="3">Contact Number: </FormLabel>
-                    <Col sm="6">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>Contact Number: </FormLabel>
+                    <Col sm={valueWidth}>
                         <FormControl type="number"
-                            value={formData.contactNum}
+                            value={isLoading ? "Loading data" : formData.contactNum}
+                            disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {
                                     return { ...state, contactNum: event.target.value }
@@ -213,10 +266,12 @@ const AccountDetailsForm = () => {
                 </FormGroup>
 
                 <FormGroup as={Row} controlId="email">
-                    <FormLabel column sm="3">Email Address: </FormLabel>
-                    <Col sm="6">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>Email Address: </FormLabel>
+                    <Col sm={valueWidth}>
                         <FormControl type="email"
-                            value={formData.email}
+                            value={isLoading ? "Loading data" : formData.email}
+                            disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {
                                     return { ...state, email: event.target.value }
@@ -225,9 +280,23 @@ const AccountDetailsForm = () => {
                     </Col>
                 </FormGroup>
 
-                <Button variant="primary" type="submit">
-                    {userId ? "Save Changes" : "Create Account"}
-                </Button>
+                <Row>
+                    <Col sm={buffer} />
+                    <Col sm={keyWidth}>
+                        <Button variant="primary" type="submit" disabled={isLoading}>
+                            {userId ? "Save Changes" : "Create Account"}
+                        </Button>
+                    </Col>
+                    {userId ?
+                        <>
+                            <Col sm="1"></Col>
+                            <Col>
+                                <Link to={`/user/${userId}`}>Back to Account Details</Link>
+                            </Col>
+                        </>
+                        :
+                        ""}
+                </Row>
             </Form>
         </>
     )
