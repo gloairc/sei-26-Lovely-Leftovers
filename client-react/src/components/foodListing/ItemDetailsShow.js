@@ -15,6 +15,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import "./style.css";
 
 const ItemDetailsShow = ({ foodData, batchData }) => {
+  const [category, setcategory] = useState([]);
   //   const handleCreateUser = (event) => {
   //     event.preventDefault();
   //     axios.post("/users", formData).then((response) => {
@@ -22,10 +23,25 @@ const ItemDetailsShow = ({ foodData, batchData }) => {
   //       setCreated(true);
   //     });
   //   };
-  console.log(foodData)
+  console.log("fooddata", foodData);
+  console.log("batchData", batchData)
 
   const IsHalalTF = (foodData.isHalal === true) ? "Yes" : "No";
   const IsVegTF = (foodData.isVegetarian === true) ? "Yes" : "No"
+
+  const longCatList = () => {
+    const foodCat = (foodData.category);
+    let catList = "";
+    let finalCatList = "";
+    for (let i = 0; i < ((foodCat).length) - 1; i++) {
+      catList += ((foodCat)[i] + ", ")
+    }
+    finalCatList = catList + (foodCat)[foodCat.length - 1]
+    // console.log("finalCatList", finalCatList)
+    return finalCatList
+  }
+
+  const foodCategories = ((foodData.category).length > 1) ? longCatList() : (foodData.category)
 
 
   return (
@@ -35,12 +51,12 @@ const ItemDetailsShow = ({ foodData, batchData }) => {
       </Row>
 
       <Row>
-        <Col><p><span class="font-weight-bold">Quantity: </span>{foodData.quantity}</p></Col>
+        <Col><p><span class="font-weight-bold">Quantity: </span>{foodData.quantity}<span> x {foodData.weight}{foodData.unit}</span></p></Col>
       </Row>
-
+      {/* 
       <Row>
-        <Col><p><span class="font-weight-bold">Category: </span>{foodData.category}</p></Col>
-      </Row>
+        <Col><p><span class="font-weight-bold">Category: </span>{foodCategories}</p></Col>
+      </Row> */}
 
       <Row>
         <Col><p><span class="font-weight-bold">Halal? </span> {IsHalalTF}</p></Col>
