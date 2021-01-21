@@ -20,6 +20,7 @@ import FoodListing from "./components/foodListing/FoodListing";
 import ContributionAdd from "./components/contribution/ContributionAdd";
 import ContributionTable from "./components/contribution/ContributionTable";
 import ContributionView from "./components/contribution/ContributionView";
+import CollectionView from './components/recipient/CollectionView'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState();
@@ -37,6 +38,9 @@ function App() {
       <NavBar loggedIn={loggedIn} />
       <Router>
         <Switch>
+          <Route exact path="/restricted">
+            <h1>You are not authorised to visit this page.</h1>
+          </Route>
           <Route exact path="/user/new">
             <SignUp />
           </Route>
@@ -47,11 +51,10 @@ function App() {
             <Logout setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
           </Route>
           <Route exact path="/user/:id">
-            {userId ? <Account /> : <Redirect to={'/login'} />}
-            {/* <Account /> */}
+            {userId ? <Account /> : <Redirect to={"/login"} />}
           </Route>
           <Route exact path="/user/:id/edit">
-            <AccountEdit />
+            {userId ? <AccountEdit /> : <Redirect to={"/login"} />}
           </Route>
           <Route exact path="/user/:id/changepassword">
             {userId ? <PasswordEdit /> : <Redirect to={"/login"} />}
@@ -79,6 +82,9 @@ function App() {
           </Route>
           <Route path="/contributions/:batchId">
             {userId ? <ContributionView /> : <Redirect to={"/login"} />}
+          </Route>
+          <Route path="/collections">
+            {userId ? <CollectionView /> : <Redirect to={"/login"} />}
           </Route>
         </Switch>
       </Router>

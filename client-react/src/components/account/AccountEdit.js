@@ -1,11 +1,21 @@
 import AccountDetailsForm from './AccountDetailsForm'
+import { useParams, Redirect } from 'react-router-dom'
 
 const AccountEdit = () => {
+    const userId = sessionStorage.getItem('userId')
+
+    const userIdParam = useParams().id
 
     return (
         <>
-            <h1>Edit account</h1>
-            <AccountDetailsForm />
+            {userId === userIdParam ?
+                <>
+                    <h1>Edit account</h1>
+                    <AccountDetailsForm />
+                </>
+                :
+                <Redirect to={'/restricted'} />
+            }
         </>
     )
 }

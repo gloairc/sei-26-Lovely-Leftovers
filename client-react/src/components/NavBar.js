@@ -6,7 +6,7 @@ const NavBar = (props) => {
   const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
   const [userId, setUserId] = useState(sessionStorage.getItem("userId"))
 
-  const handleClick = () => {
+  const handleClick = (event) => {
     setUserType(sessionStorage.getItem("userType"))
     setUserId(sessionStorage.getItem("userId"))
   }

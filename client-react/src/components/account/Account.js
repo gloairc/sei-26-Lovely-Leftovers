@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useParams } from 'react-router-dom';
 import axios from 'axios'
 import { Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,6 +8,8 @@ const Account = () => {
     const [formData, setFormData] = useState({})
 
     const userId = sessionStorage.getItem('userId')
+
+    const userIdParam = useParams().id
 
     useEffect(() => {
         axios.get(`/user/${userId}`)
@@ -26,7 +28,7 @@ const Account = () => {
 
     return (
         <>
-            {userId ? (<>
+            {userId === userIdParam ? (<>
                 <div>
                     <h1>Account Details</h1>
                     <Row>
@@ -75,7 +77,7 @@ const Account = () => {
                 </div>
             </>)
                 :
-                (<Redirect to={"/about"} />)}
+                (<Redirect to={"/restricted"} />)}
         </>
     )
 }

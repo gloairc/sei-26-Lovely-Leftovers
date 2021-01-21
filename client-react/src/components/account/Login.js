@@ -38,14 +38,6 @@ const Login = (props) => {
                     setLoginStatus(true)
                     props.setLoggedIn(true)
                 }
-                // setUserId(response.data.id) // set userId
-                // console.log(response.data) // response.data is the user document
-            })
-            .then(() => {
-                setTimeout(() => {
-                    const userId = sessionStorage.getItem('userId')
-                    return <Redirect to={`/user/${userId}`} />
-                }, 2000)
             })
             .catch((error) => {
                 // setLoginStatus(error.message) // error depends on status from backend (e.g. 400/401)
@@ -55,10 +47,10 @@ const Login = (props) => {
     }
 
 
-    // if (loginStatus) {
-    //     const userId = sessionStorage.getItem('userId')
-    //     return <Redirect to={`/user/${userId}`} />
-    // }
+    if (loginStatus) {
+        // const userId = sessionStorage.getItem('userId')
+        return <Redirect to={'/listings'} />
+    }
 
     const keyWidth = 2
     const valueWidth = 5
@@ -115,7 +107,6 @@ const Login = (props) => {
                     <Col sm='3'>{status === 'logging in' ? 'Logging in, please wait..' : ""}</Col>
                 </Row>
             </Form>
-            {loginStatus ? <Redirect to={`/user/${sessionStorage.getItem('userId')}`} /> : ""}
         </>
     )
 }
