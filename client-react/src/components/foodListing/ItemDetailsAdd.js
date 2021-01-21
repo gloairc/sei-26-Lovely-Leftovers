@@ -17,22 +17,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import "./style.css";
 
 const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
-  //   const handleCreateUser = (event) => {
-  //     event.preventDefault();
-  //     axios.post("/users", formData).then((response) => {
-  //       console.log("response", response);
-  //       setCreated(true);
-  //     });
-  //   };
   const [foodDetails, setFoodDetails] = useState(foodList[foodIndex]);
   const [selectedCat, setSelectedCat] = useState([]);
   const newFoodList = foodList.splice(foodIndex, 1, foodDetails);
-  // setFoodList(newFoodList);
   const renderFoodCat = foodCat.map((foodItem) => {
     return <Form.Check type="checkbox" label={foodItem} value={foodItem} />;
   });
-
-  const stringtoDate = (inputString) => {};
   const toBoolean = (inputString) => {
     if (inputString === "Yes") {
       return true;
@@ -43,7 +33,6 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
 
   return (
     <Container>
-      {/* {console.log(foodDetails)} */}
       <Row>
         <Col>
           Title:{" "}
@@ -54,7 +43,6 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, title: event.target.value };
               });
-              setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -70,7 +58,6 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, quantity: event.target.value };
               });
-              setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -79,27 +66,13 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
       <Row>
         <Col>
           Category:
-          <p>(separate categories with a comma i.e. "fruit,beef,...")</p>
-          {/* <FormControl
-            type="text"
-            title="category"
-            onChange={(event) => {
-              setFoodDetails((state) => {
-                return {
-                  ...state,
-                  category: event.target.value.split(","),
-                };
-              });
-              setFoodList(newFoodList);
-            }}
-          ></FormControl> */}
           <Form.Group
+            title="category"
             onChange={(event) => {
               const newList = selectedCat;
               if (event.target.checked) {
                 newList.push(event.target.value);
               } else {
-                // const toRemove = selectedItems.indexOf(event.target.value);
                 newList.splice(newList.indexOf(event.target.value), 1);
               }
               setSelectedCat(newList);
@@ -109,7 +82,6 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
                   category: selectedCat,
                 };
               });
-              setFoodList(newFoodList);
             }}
           >
             {renderFoodCat}
@@ -128,9 +100,9 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, isHalal: toBoolean(event.target.value) };
               });
-              setFoodList(newFoodList);
             }}
           >
+            <option>(Select One Below)</option>
             <option>Yes</option>
             <option>No</option>
           </FormControl>
@@ -151,9 +123,9 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
                   isVegetarian: toBoolean(event.target.value),
                 };
               });
-              setFoodList(newFoodList);
             }}
           >
+            <option>(Select One Below)</option>
             <option>Yes</option>
             <option>No</option>
           </FormControl>
@@ -170,7 +142,6 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, description: event.target.value };
               });
-              setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -180,16 +151,38 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
         <Col>
           Best Before Date: (Format: "DD/MM/YYYY")
           <FormControl
-            type="text"
+            type="date"
             title="bestBefore"
             onChange={(event) => {
               setFoodDetails((state) => {
-                return { ...state, bestBefore: event.target.value };
+                const formattedDate = new Date(
+                  Date.parse(event.target.value)
+                ).toLocaleDateString("en-SG");
+                return { ...state, bestBefore: formattedDate }; //returning as a string
               });
-              setFoodList(newFoodList);
             }}
           />
         </Col>
+      </Row>
+
+      <Row>
+        <Col></Col>
+        {/* <Col></Col> this is for testing
+        <Col></Col>
+        <Col></Col>
+        <Col>
+          <Button
+            type="button"
+            onClick={() => {
+              console.log("Saved");
+              console.log(foodDetails);
+              console.log(foodList);
+            }}
+            style={{ margin: "10px 0" }}
+          >
+            Save
+          </Button>
+        </Col> */}
       </Row>
     </Container>
   );

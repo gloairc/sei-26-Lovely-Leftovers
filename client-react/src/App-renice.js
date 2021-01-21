@@ -24,18 +24,19 @@ import CollectionView from './components/recipient/CollectionView'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState();
-  const [userType, setUserType] = useState(sessionStorage.getItem("userType"))
-  const [userId, setUserId] = useState(sessionStorage.getItem("userId"))
+  const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
 
   useEffect(() => {
-    console.log('using effect')
-    setUserType(sessionStorage.getItem("userType"))
-    setUserId(sessionStorage.getItem("userId"))
-  }, [loggedIn])
+    console.log("using effect");
+    setUserType(sessionStorage.getItem("userType"));
+    setUserId(sessionStorage.getItem("userId"));
+  }, [loggedIn]);
 
   return (
     <div>
       <NavBar loggedIn={loggedIn} />
+
       <Router>
         <Switch>
           <Route exact path="/restricted">

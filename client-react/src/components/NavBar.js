@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Button, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { StatusProvider, useUser, useDispatch } from "./context/Context";
 
 const NavBar = (props) => {
   const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
-  const [userId, setUserId] = useState(sessionStorage.getItem("userId"))
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
 
   const handleClick = (event) => {
     setUserType(sessionStorage.getItem("userType"))
@@ -12,8 +13,8 @@ const NavBar = (props) => {
   }
 
   useEffect(() => {
-    setUserType(sessionStorage.getItem("userType"))
-    setUserId(sessionStorage.getItem("userId"))
+    setUserType(sessionStorage.getItem("userType"));
+    setUserId(sessionStorage.getItem("userId"));
   }, [props]);
 
   return (
@@ -74,7 +75,7 @@ const NavBar = (props) => {
             </>
           )}
       </Col>
-    </Navbar >
+    </Navbar>
   );
 };
 

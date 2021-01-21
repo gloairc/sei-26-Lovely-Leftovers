@@ -1,0 +1,22 @@
+.accForm {
+  border: 1px solid rgb(204, 203, 203);
+  width: 50%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.leftForm {
+  width: 75%;
+}
+
+.rightForm {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.rightLink {
+  font-size: 20px;
+}

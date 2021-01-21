@@ -14,7 +14,7 @@ import Moment from "react-moment";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./style.css";
 
-const ItemDetailsShow = ({ foodData }) => {
+const ItemDetailsShow = ({ foodData, batchData }) => {
   //   const handleCreateUser = (event) => {
   //     event.preventDefault();
   //     axios.post("/users", formData).then((response) => {
@@ -22,50 +22,55 @@ const ItemDetailsShow = ({ foodData }) => {
   //       setCreated(true);
   //     });
   //   };
+  console.log(foodData)
+
+  const IsHalalTF = (foodData.isHalal === true) ? "Yes" : "No";
+  const IsVegTF = (foodData.isVegetarian === true) ? "Yes" : "No"
+
 
   return (
     <Container>
       <Row>
-        <Col>Title:{foodData.title}</Col>
+        <Col><p><span class="font-weight-bold">Title: </span>{foodData.title}</p></Col>
       </Row>
 
       <Row>
-        <Col>Quantity:{foodData.quantity}</Col>
+        <Col><p><span class="font-weight-bold">Quantity: </span>{foodData.quantity}</p></Col>
       </Row>
 
       <Row>
-        <Col>Category:{foodData.category}</Col>
+        <Col><p><span class="font-weight-bold">Category: </span>{foodData.category}</p></Col>
       </Row>
 
       <Row>
-        <Col>Is this Halal?:{foodData.isHalal}</Col>
+        <Col><p><span class="font-weight-bold">Halal? </span> {IsHalalTF}</p></Col>
       </Row>
 
       <Row>
-        <Col>Is this vegetarian?:{foodData.isVegetarian}</Col>
+        <Col><p><span class="font-weight-bold">Vegetarian? </span> {IsVegTF}</p></Col>
       </Row>
 
       <Row>
-        <Col>Description:{foodData.description}</Col>
+        <Col><p><span class="font-weight-bold">Description: </span>{foodData.description}</p></Col>
       </Row>
 
       <Row>
         <Col>
-          Best Before Date:
-          <Moment format="DD/MM/YYYY">{foodData.bestBefore}</Moment>
+          <p><span class="font-weight-bold"> Best Before Date: </span>{foodData.bestBefore}</p>
+          {/* <Moment format="DD/MM/YYYY"> {foodData.bestBefore}</Moment> */}
         </Col>
       </Row>
 
       <Row>
-        <Col>Collection Address:{foodData.collectionAddress}</Col>
+        <Col> <p><span class="font-weight-bold">Collection Address: </span>{batchData.collectionAddress}</p></Col>
       </Row>
 
       <Row>
-        <Col>Contact Person:{foodData.contactPerson}</Col>
+        <Col> <p><span class="font-weight-bold">Contact Person: </span> {batchData.contactPerson}</p></Col>
       </Row>
 
       <Row>
-        <Col>Contact Number:{foodData.contactNum}</Col>
+        <Col> <p><span class="font-weight-bold">Contact Number: </span>{batchData.contactNum}</p></Col>
       </Row>
 
       {/* <Row>
