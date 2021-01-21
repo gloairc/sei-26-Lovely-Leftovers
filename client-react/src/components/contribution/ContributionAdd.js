@@ -10,15 +10,14 @@ import {
   Accordion,
   Card,
 } from "react-bootstrap";
-import { Redirect, useParams } from "react-router-dom";
+import { Redirect, useParams, Prompt } from "react-router-dom";
 import ItemDetailsAdd from "../foodListing/ItemDetailsAdd";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ContributionAdd = () => {
-  //   let { batchId, foodId } = useParams();
   const userId = sessionStorage.getItem("userId");
-  const [foodList, setFoodList] = useState([]);
+  const [foodList, setFoodList] = useState([{}]);
   const [inputFoodArray, setInputFoodArray] = useState([
     <Card foodIndex={0}>
       <Card.Header>
@@ -115,12 +114,6 @@ const ContributionAdd = () => {
     return <Redirect to={"/contributions"} />;
   }
 
-  const handleInputChange = (event, index) => {
-    setFoodList((state) => {
-      return { ...state };
-    });
-  };
-
   const handleAddNewItem = () => {
     setInputFoodArray([
       ...inputFoodArray,
@@ -173,14 +166,16 @@ const ContributionAdd = () => {
   const handleRemoveItem = (index) => {
     console.log("item removed");
     const list = [...inputFoodArray];
-    console.log(list);
-    list.splice(index, 1);
-    console.log(list);
+    list.pop();
     setInputFoodArray(list);
+    const updateBatch = batchDetails;
+    updateBatch.foodListings.pop();
+    setBatchDetails(updateBatch);
   };
 
   return (
     <>
+      <h2>Add a New Contribution</h2>
       <Form onSubmit={handleNewBatch}>
         <Container>
           <Row>
@@ -195,7 +190,16 @@ const ContributionAdd = () => {
               <div>
                 Remove Last Item
                 <Button
-                  onClick={() => handleRemoveItem(inputFoodArray.length - 1)}
+                  id="removeItem"
+                  onClick={() => {
+                    if (inputFoodArray.length > 1) {
+                      handleRemoveItem(inputFoodArray.length - 1);
+                    } else {
+                      document.getElementById("removeItem").count = alert(
+                        "Must have at least 1 Food Item"
+                      );
+                    }
+                  }}
                 >
                   -
                 </Button>
@@ -209,7 +213,7 @@ const ContributionAdd = () => {
         </Container>
       </Form>
       {/* below is for test and troubleshooting only */}
-      <Button
+      {/* <Button
         type="button"
         onClick={() => {
           console.log(batchDetails);
@@ -217,7 +221,7 @@ const ContributionAdd = () => {
         style={{ margin: "10px 0" }}
       >
         check batchDetails
-      </Button>
+      </Button> */}
     </>
   );
 };

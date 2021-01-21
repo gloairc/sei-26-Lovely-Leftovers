@@ -31,7 +31,6 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
   const renderFoodCat = foodCat.map((foodItem) => {
     return <Form.Check type="checkbox" label={foodItem} value={foodItem} />;
   });
-
   const stringtoDate = (inputString) => {};
   const toBoolean = (inputString) => {
     if (inputString === "Yes") {
@@ -54,7 +53,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, title: event.target.value };
               });
-              setFoodList(newFoodList);
+              // setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -70,7 +69,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, quantity: event.target.value };
               });
-              setFoodList(newFoodList);
+              // setFoodList(newFoodList);
             }}
           />
         </Col>
@@ -109,7 +108,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
                   category: selectedCat,
                 };
               });
-              setFoodList(newFoodList);
+              // setFoodList(newFoodList);
             }}
           >
             {renderFoodCat}
@@ -128,9 +127,10 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, isHalal: toBoolean(event.target.value) };
               });
-              setFoodList(newFoodList);
+              // setFoodList(newFoodList);
             }}
           >
+            <option>(Select One Below)</option>
             <option>Yes</option>
             <option>No</option>
           </FormControl>
@@ -151,9 +151,10 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
                   isVegetarian: toBoolean(event.target.value),
                 };
               });
-              setFoodList(newFoodList);
+              // setFoodList(newFoodList);
             }}
           >
+            <option>(Select One Below)</option>
             <option>Yes</option>
             <option>No</option>
           </FormControl>
@@ -166,12 +167,12 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
           <FormControl
             type="text"
             title="description"
-            onChange={(event) => {
-              setFoodDetails((state) => {
-                return { ...state, description: event.target.value };
-              });
-              setFoodList(newFoodList);
-            }}
+            // onChange={(event) => {
+            //   setFoodDetails((state) => {
+            //     return { ...state, description: event.target.value };
+            //   });
+            //   setFoodList(newFoodList);
+            // }}
           />
         </Col>
       </Row>
@@ -186,9 +187,29 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               setFoodDetails((state) => {
                 return { ...state, bestBefore: event.target.value };
               });
-              setFoodList(newFoodList);
+              // setFoodList(newFoodList);
             }}
           />
+        </Col>
+      </Row>
+
+      <Row>
+        <Col></Col>
+        <Col></Col>
+        <Col></Col>
+        <Col></Col>
+        <Col>
+          <Button
+            type="button"
+            onClick={() => {
+              console.log("Saved");
+              console.log(foodDetails);
+              console.log(foodList);
+            }}
+            style={{ margin: "10px 0" }}
+          >
+            Save
+          </Button>
         </Col>
       </Row>
     </Container>
