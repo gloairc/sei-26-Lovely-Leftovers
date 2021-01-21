@@ -75,6 +75,7 @@ const AccountDetailsForm = () => {
                     }, 2000)
                 })
                 .catch((error) => {
+                    console.log('error response', error.response)
                     console.log('error', error.response.data.errors)
                     setErrorMsg(error.response.data.errors)
                 })

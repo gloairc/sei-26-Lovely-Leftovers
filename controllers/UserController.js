@@ -139,7 +139,6 @@ router.put("/contributions/new", (req, res) => {
     );
 });
 
-//NEED TO CHANGE TO CONTRIBUTIONS
 // SHOW /user/:id (user account details)
 router.get("/:id", (req, res) => {
     User.findById(req.params.id, (error, user) => {
@@ -239,15 +238,15 @@ router.put(
     }
 );
 
-// DELETE or use React Axios to send DELETE and PUT
-router.delete("/:id", (req, res) => {
-    User.findByIdAndRemove(req.params.id, (error, user) => {
-        if (error) {
-            res.status(StatusCodes.BAD_REQUEST).send(error);
-        } else {
-            res.status(StatusCodes.OK).send(user);
-        }
-    });
-});
+// // DELETE (not used as we inactivate the user instead)
+// router.delete("/:id", (req, res) => {
+//     User.findByIdAndRemove(req.params.id, (error, user) => {
+//         if (error) {
+//             res.status(StatusCodes.BAD_REQUEST).send(error);
+//         } else {
+//             res.status(StatusCodes.OK).send(user);
+//         }
+//     });
+// });
 
 module.exports = router;

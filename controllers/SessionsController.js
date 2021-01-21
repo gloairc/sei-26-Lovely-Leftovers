@@ -31,12 +31,17 @@ sessions.post("/", (req, res) => {
       // res.status(401).send({ error: "Sorry, no user found" });
       res.status(401).send({ error: `Sorry, no user found` });
     } else {//no error with server database and found user in database
-      if (bcrypt.compareSync(req.body.password, foundUser.password)) { //password match
-        req.session.currentUser = foundUser;
-        res.status(200).send(foundUser);
+      // check User status
+      if (foundUser.status === "Active") {
+        if (bcrypt.compareSync(req.body.password, foundUser.password)) { //password match
+          req.session.currentUser = foundUser;
+          res.status(200).send(foundUser);
+        } else {
+          // res.status(401).send({ error: "Password doesn't match" });
+          res.status(401).send({ error: `Password does not match` });
+        }
       } else {
-        // res.status(401).send({ error: "Password doesn't match" });
-        res.status(401).send({ error: `Password does not match` });
+        res.status(401).send({ error: `User account has been deleted` });
       }
     }
   });

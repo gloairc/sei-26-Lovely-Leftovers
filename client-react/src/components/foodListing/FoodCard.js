@@ -19,7 +19,7 @@ const FoodCard = ({ foodData }) => {
       catList += ((foodCat)[i] + ", ")
     }
     finalCatList = catList + (foodCat)[foodCat.length - 1]
-    console.log("finalCatList", finalCatList)
+    // console.log("finalCatList", finalCatList)
     return finalCatList
   }
 
