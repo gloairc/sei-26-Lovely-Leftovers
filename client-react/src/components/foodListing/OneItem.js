@@ -9,9 +9,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const OneItem = () => {
   let { batchId, foodId } = useParams();
   const [foodDetails, setFoodDetails] = useState({});
-  //const userId = req.session.currentUser //OR grab from global state
-  const userId = "60079ec9f7b7a342e072ecc2" //hardcoded for now
+  const userId = sessionStorage.getItem("userId");
+  // const userId = "60079ec9f7b7a342e072ecc2"  //hardcoded for now 
   const [isCollected, setIsCollected] = useState(false)
+
 
   useEffect(() => {
     axios.get(`/batch/${batchId}`).then((response) => {
@@ -26,13 +27,12 @@ const OneItem = () => {
   }, []);
 
   const handleCollect = () => {
-    // event.preventDefault();
     console.log("handling collect Click")
-    axios.put("/user/addtorlist", ({ "batchID": batchId, "listID": foodId, "userID": userId }))
+    axios.put("/user/myfood/new", ({ "batchID": batchId, "listID": foodId, "userID": userId }))
       .then((response) => {// response is updatedUser
-        console.log("collected! response is ", response)
+        delete response.data.password;
+        console.log("collected! response is User Doc without password ", response)
         setIsCollected(true)
-        //redirect
       })
       .catch((error) => {
         console.log("error", error)
