@@ -1,80 +1,54 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import FoodCard from "../foodListing/FoodCard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 
-const CollectionTable = () => {
-//   let { batchId } = useParams();
-  const [userData, setUserData] = useState([]);
+const CollectionView = () => {
+  const [userCollected, setUserCollected] = useState([]);
+  const [fullList, setFullList] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
-  const userId = sessionStorage.getItem('userId')
+
+  const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
     axios.get(`/user/${userId}`).then((response) => {
-        setUserData(response.data);
-        // axios.get(`/user/${userId}`).then((response) => {
+      const foodList = response.data.receivedList.map((foodId) => {
+        return foodId;
+      });
+      setUserCollected(foodList);
 
-        // }
-        ))
-
-
-
-
-      setDataLoaded(true);
+      axios.get("/batch").then((batchResponse) => {
+        setFullList(batchResponse.data);
+      });
     });
+    setDataLoaded(true);
   }, [dataLoaded]);
 
+  const renderFoodCards = fullList.map((batch) => {
+    return batch.foodListings.map((foodItem) => {
+      const foodData = {
+        title: foodItem.title,
+        quantity: foodItem.quantity,
+        bestBefore: foodItem.bestBefore,
+        queryPath: "/" + batch._id + "/" + foodItem._id,
+      };
+
+      if (userCollected.includes(foodItem._id)) {
+        return <FoodCard foodData={foodData} />;
+      }
+    });
+  });
+
   return (
-    <div className="contributionTable">
-      <div className="contributionTitle">
-        <h2>Batch {batchData._id}</h2>
-        {console.log(batchData)}
-      </div>
-      <Table
-        striped
-        bordered
-        hover
-        variant="dark"
-        style={{ margin: "10px 2.5%" }}
-      >
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Contributor</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataLoaded ? (
-            <>
-              {setUserData.receivedList.map((foodItem) => (
-                <tr>
-                  <td>{foodItem.title}</td>
-                  <td>{foodItem.quantity}</td>
-                  <td>{foodItem.bestBefore}</td>
-                  <td>{foodItem.status}</td>
-                  <td>{foodItem.recipient}</td>
-                  <td>
-                    <Link to={`/listings/${batchData._id}/${foodItem._id}`}>
-                      View
-                    </Link>
-                    <br />
-                    <Link>Hide</Link>
-                  </td>
-                </tr>
-              ))}
-            </>
-          ) : (
-            <></>
-          )}
-        </tbody>
-      </Table>
+    <div>
+      <h2>My Collections</h2>
+
+      {renderFoodCards}
     </div>
   );
 };
 
-export default CollectionTable;
+export default CollectionView;
