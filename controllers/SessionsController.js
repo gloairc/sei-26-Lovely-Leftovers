@@ -20,6 +20,7 @@ sessions.get("/", (req, res) => {
 //   }
 // });
 
+//TO ADD ON, if user is inactive/deleted, should not be able to log in
 // POST on log-in /session
 sessions.post("/", (req, res) => {
   User.findOne({ username: req.body.username }, (err, foundUser) => {

@@ -35,7 +35,7 @@ const OneItem = () => {
 
   const handleCollect = () => {
     console.log("handling collect Click")
-    axios.put("/user/myfood/new", ({ "batchID": batchId, "listID": foodId, "userID": userId }))
+    axios.put("/user/collections/new", ({ "batchID": batchId, "listID": foodId, "userID": userId }))
       .then((response) => {// response is updatedUser
         delete response.data.password;
         console.log("collected! response is User Doc without password ", response)
@@ -49,7 +49,7 @@ const OneItem = () => {
   }
 
   if (isCollected === true) {
-    return <Redirect to={"/myfood"} />
+    return <Redirect to={"/collections"} />
   }
 
   const collectBtn = (
