@@ -52,7 +52,7 @@ const ContributionAdd = () => {
       setBatchCreated(true);
       console.log(response);
       const contributionData = { userID: userId, batchID: response.data._id };
-      axios.put("/user/mycontributions/new", contributionData).then((response) => {
+      axios.put("/user/contributions/new", contributionData).then((response) => {
         setDataPosted(true);
       });
     });

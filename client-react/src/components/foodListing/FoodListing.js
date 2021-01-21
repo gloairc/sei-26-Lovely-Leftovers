@@ -10,11 +10,17 @@ const FoodListing = () => {
   const [fullList, setFullList] = useState([]);
   const [handleData, setHandleData] = useState(false);
   const renderFoodCards = fullList.map((batch) => {
-    return batch.foodListings.map((foodItem) => {
+    const onlyActiveFoodList = (batch.foodListings).filter(function (food) {
+      return food.status === "active"
+    });
+    return onlyActiveFoodList.map((foodItem) => {
       const foodData = {
         title: foodItem.title,
         quantity: foodItem.quantity,
         bestBefore: foodItem.bestBefore,
+        category: foodItem.category,
+        isHalal: foodItem.isHalal,
+        isVegetarian: foodItem.isVegetarian,
         queryPath: "/" + batch._id + "/" + foodItem._id,
       };
       return <FoodCard foodData={foodData} />;
@@ -22,7 +28,14 @@ const FoodListing = () => {
   });
   useEffect(() => {
     axios.get(`/batch`).then((response) => {
-      setFullList(response.data);
+      // console.log("axios response", response.data)
+      // need to filter and remove inactive batches, then setFullList to map out
+      const onlyActiveBatch = (response.data).filter(function (batch) {
+        return batch.status === "active"
+      });
+      // console.log("only active batch", onlyActiveBatch);
+      setFullList(onlyActiveBatch);
+      // console.log("full list to map", fullList);
       setHandleData(true);
     });
   }, [handleData]);
