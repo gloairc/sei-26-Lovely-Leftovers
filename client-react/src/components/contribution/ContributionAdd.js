@@ -7,7 +7,8 @@ import {
   Row,
   Col,
   Container,
-  Accordian,
+  Accordion,
+  Card,
 } from "react-bootstrap";
 import { Redirect, useParams } from "react-router-dom";
 import ItemDetailsAdd from "../foodListing/ItemDetailsAdd";
@@ -16,23 +17,39 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const ContributionAdd = () => {
   //   let { batchId, foodId } = useParams();
+  const userId = sessionStorage.getItem("userId");
   const [foodList, setFoodList] = useState([]);
   const [inputFoodArray, setInputFoodArray] = useState([
-    <div index={0}>
-      <h3>Food Item {1}</h3>
-      <ItemDetailsAdd
-        foodList={foodList}
-        foodIndex={0}
-        setFoodList={() => setFoodList()}
-      />
-      <br />
-      {/* <div>
-        Remove Item
-        <Button onClick={() => handleRemoveItem(0)}>-</Button>
-      </div> */}
-      <br />
-      <p>===================================================</p>
-    </div>,
+    <Card foodIndex={0}>
+      <Card.Header>
+        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+          Food Item {1} (Click to expand)
+        </Accordion.Toggle>
+      </Card.Header>
+      <Accordion.Collapse eventKey="0">
+        <Card.Body>
+          <ItemDetailsAdd
+            key={"foodIndex" + 0}
+            foodList={foodList}
+            foodIndex={0}
+            setFoodList={() => setFoodList()}
+          />
+        </Card.Body>
+      </Accordion.Collapse>
+    </Card>,
+
+    // <div index={0}>
+    //   <h3>Food Item {1}</h3>
+    //   <ItemDetailsAdd
+    //     foodList={foodList}
+    //     foodIndex={0}
+    //     setFoodList={() => setFoodList()}
+    //   />
+    //   <br />
+
+    //   <br />
+    //   <p>===================================================</p>
+    // </div>,
     //     {/* <Button onClick={() => handleRemoveItem()}>-</Button> */}
   ]);
 
@@ -43,7 +60,6 @@ const ContributionAdd = () => {
     foodListings: foodList,
   });
   const [dataPosted, setDataPosted] = useState(false);
-  const userId = sessionStorage.getItem("userId");
 
   //test data
   // const [batchDetails, setBatchDetails] = useState({
@@ -108,26 +124,48 @@ const ContributionAdd = () => {
   const handleAddNewItem = () => {
     setInputFoodArray([
       ...inputFoodArray,
-      <div foodIndex={inputFoodArray.length}>
-        <h3>Food Item {inputFoodArray.length + 1}</h3>
-        <ItemDetailsAdd
-          key={"foodIndex" + inputFoodArray.length}
-          foodList={foodList}
-          foodIndex={inputFoodArray.length}
-          setFoodList={() => setFoodList()}
-        />
-        <br />
-        {/* <div>
-          Remove Item
-          <Button
-            onClick={(event) => handleRemoveItem(parseInt(event.foodIndex))}
+      <Card foodIndex={inputFoodArray.length}>
+        <Card.Header>
+          <Accordion.Toggle
+            as={Button}
+            variant="link"
+            eventKey={inputFoodArray.length}
           >
-            -
-          </Button>
-        </div> */}
-        <br />
-        <p>===================================================</p>
-      </div>,
+            Food Item {inputFoodArray.length + 1} (Click to expand)
+          </Accordion.Toggle>
+        </Card.Header>
+        <Accordion.Collapse eventKey={inputFoodArray.length}>
+          <Card.Body>
+            <ItemDetailsAdd
+              key={"foodIndex" + inputFoodArray.length}
+              foodList={foodList}
+              foodIndex={inputFoodArray.length}
+              setFoodList={() => setFoodList()}
+            />
+          </Card.Body>
+        </Accordion.Collapse>
+      </Card>,
+
+      // <div foodIndex={inputFoodArray.length}>
+      //   <h3>Food Item {inputFoodArray.length + 1}</h3>
+      //   <ItemDetailsAdd
+      //     key={"foodIndex" + inputFoodArray.length}
+      //     foodList={foodList}
+      //     foodIndex={inputFoodArray.length}
+      //     setFoodList={() => setFoodList()}
+      //   />
+      //   <br />
+      //   {/* <div>
+      //     Remove Item
+      //     <Button
+      //       onClick={(event) => handleRemoveItem(parseInt(event.foodIndex))}
+      //     >
+      //       -
+      //     </Button>
+      //   </div> */}
+      //   <br />
+      //   <p>===================================================</p>
+      // </div>
       //     {/* <Button onClick={() => handleRemoveItem()}>-</Button> */}
     ]);
     console.log("item added");
@@ -146,7 +184,9 @@ const ContributionAdd = () => {
       <Form onSubmit={handleNewBatch}>
         <Container>
           <Row>
-            <Col>{inputFoodArray}</Col>
+            <Col>
+              <Accordion>{inputFoodArray}</Accordion>
+            </Col>
             <Col>
               <div>
                 Add Food Item
