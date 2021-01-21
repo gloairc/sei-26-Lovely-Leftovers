@@ -35,20 +35,6 @@ const ContributionAdd = () => {
         </Card.Body>
       </Accordion.Collapse>
     </Card>,
-
-    // <div index={0}>
-    //   <h3>Food Item {1}</h3>
-    //   <ItemDetailsAdd
-    //     foodList={foodList}
-    //     foodIndex={0}
-    //     setFoodList={() => setFoodList()}
-    //   />
-    //   <br />
-
-    //   <br />
-    //   <p>===================================================</p>
-    // </div>,
-    //     {/* <Button onClick={() => handleRemoveItem()}>-</Button> */}
   ]);
 
   const [batchDetails, setBatchDetails] = useState({
@@ -62,7 +48,6 @@ const ContributionAdd = () => {
   const [batchCreated, setBatchCreated] = useState(false); // to redirect after creation
   const handleNewBatch = (event) => {
     event.preventDefault();
-    // setBatchDetails()
     axios.post("/batch", batchDetails).then((response) => {
       setBatchCreated(true);
       console.log(response);
@@ -101,28 +86,6 @@ const ContributionAdd = () => {
           </Card.Body>
         </Accordion.Collapse>
       </Card>,
-
-      // <div foodIndex={inputFoodArray.length}>
-      //   <h3>Food Item {inputFoodArray.length + 1}</h3>
-      //   <ItemDetailsAdd
-      //     key={"foodIndex" + inputFoodArray.length}
-      //     foodList={foodList}
-      //     foodIndex={inputFoodArray.length}
-      //     setFoodList={() => setFoodList()}
-      //   />
-      //   <br />
-      //   {/* <div>
-      //     Remove Item
-      //     <Button
-      //       onClick={(event) => handleRemoveItem(parseInt(event.foodIndex))}
-      //     >
-      //       -
-      //     </Button>
-      //   </div> */}
-      //   <br />
-      //   <p>===================================================</p>
-      // </div>
-      //     {/* <Button onClick={() => handleRemoveItem()}>-</Button> */}
     ]);
     console.log("item added");
   };
