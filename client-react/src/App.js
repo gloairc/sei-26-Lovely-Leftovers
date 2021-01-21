@@ -5,7 +5,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SignUp from "./components/account/SignUp";
 import Login from "./components/account/Login";
 import AccountEdit from "./components/account/AccountEdit";
@@ -22,8 +22,15 @@ import ContributionTable from "./components/contribution/ContributionTable";
 import ContributionView from "./components/contribution/ContributionView";
 
 function App() {
-  const userId = sessionStorage.getItem("userId");
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState();
+  const [userType, setUserType] = useState(sessionStorage.getItem("userType"))
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId"))
+
+  useEffect(() => {
+    console.log('using effect')
+    setUserType(sessionStorage.getItem("userType"))
+    setUserId(sessionStorage.getItem("userId"))
+  }, [loggedIn])
 
   return (
     <div>
@@ -34,14 +41,14 @@ function App() {
             <SignUp />
           </Route>
           <Route exact path="/login">
-            <Login setLoggedIn={() => setLoggedIn()} />
+            <Login setLoggedIn={setLoggedIn} />
           </Route>
           <Route exact path="/logout">
-            <Logout />
+            <Logout setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
           </Route>
           <Route exact path="/user/:id">
             {userId ? <Account /> : <Redirect to={'/login'} />}
-
+            {/* <Account /> */}
           </Route>
           <Route exact path="/user/:id/edit">
             <AccountEdit />
