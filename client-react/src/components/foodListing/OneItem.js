@@ -9,20 +9,27 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const OneItem = () => {
   let { batchId, foodId } = useParams();
   const [foodDetails, setFoodDetails] = useState({});
+  const [batchDetails, setBatchDetails] = useState({});
   const userId = sessionStorage.getItem("userId");
+  const userType = sessionStorage.getItem("userType");
   // const userId = "60079ec9f7b7a342e072ecc2"  //hardcoded for now 
   const [isCollected, setIsCollected] = useState(false)
 
+  // const isEmptyObject = (value) => {
+  //   return Object.keys(value).length === 0 && value.constructor === Object;
+  // }
 
   useEffect(() => {
     axios.get(`/batch/${batchId}`).then((response) => {
       const batchData = response.data;
+      console.log("batchData reponse.data", batchData)
       batchData.foodListings.forEach((foodItem) => {
         if (foodItem._id === foodId) {
           setFoodDetails(foodItem);
           return;
         }
       });
+      setBatchDetails(batchData);
     });
   }, []);
 
@@ -45,17 +52,25 @@ const OneItem = () => {
     return <Redirect to={"/myfood"} />
   }
 
+  const collectBtn = (
+    <Button onClick={handleCollect} style={{ margin: "10px 0" }}>
+      Collect
+    </Button>
+  )
+
+
+  const toShowCollectBtnOrNot = (userType === "Recipient") ? collectBtn : ""
+
   return (
     <Container fluid>
       <Row>
-        <ItemDetailsShow foodData={foodDetails} />
+        <ItemDetailsShow foodData={foodDetails} batchData={batchDetails} />
+        {/* <ItemDetailsShow foodData={foodDetails} batchData={batchData} /> */}
       </Row>
 
       <Row>
         <Col>
-          <Button onClick={handleCollect} style={{ margin: "10px 0" }}>
-            Collect
-          </Button>
+          {toShowCollectBtnOrNot}
         </Col>
 
         <Col>

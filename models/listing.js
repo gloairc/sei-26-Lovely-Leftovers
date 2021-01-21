@@ -8,7 +8,7 @@ const listingSchema = new mongoose.Schema(
     isHalal: { type: Boolean, required: false },
     isVegetarian: { type: Boolean, required: false },
     description: { type: String },
-    bestBefore: { type: Date, required: false },
+    bestBefore: { type: String, required: false },
     imgFile: { type: String },
     status: { type: String, default: "active" },
     recipient: { type: String, default: "null" },

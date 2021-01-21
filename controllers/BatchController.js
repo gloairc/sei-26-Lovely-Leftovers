@@ -141,7 +141,7 @@ router.post(
   )
     .trim()
     .isLength({ min: 3 })
-    .isAlpha()
+    .matches(/^[A-Za-z ]+$/)
     .withMessage("only alphabets please"),
   body("foodListings.*.quantity", "Quantity must be at least 1")
     .trim()
@@ -161,9 +161,9 @@ router.post(
     .isBoolean(),
   body("foodListings.*.description").trim().optional(),
   body("foodListings.*.bestBefore", "Please enter a valid date/time")
-    .isDate("DD/MM/YYYY")
-    .isAfter()
-    .withMessage("Please enter a date later than today"),
+    .isDate("DD/MM/YYYY"),
+  // .isAfter()
+  // .withMessage("Please enter a date later than today"),
   body("foodListings.*.imgFile").optional(),
 
   (req, res) => {
