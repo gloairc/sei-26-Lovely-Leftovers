@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import FoodCard from "../foodListing/FoodCard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
+import "../foodListing/style.css";
+import { Container, CardColumns } from "react-bootstrap";
 
 const CollectionView = () => {
   const [userCollected, setUserCollected] = useState([]);
@@ -47,10 +46,16 @@ const CollectionView = () => {
   });
 
   return (
-    <div>
-      <h2>My Collections</h2>
-
-      {renderFoodCards}
+    <div className="foodContainer">
+      <div className="header">
+        <h1>My Collections</h1>
+      </div>
+      <Container>
+        <CardColumns>
+          {/* {console.log(fullList)} */}
+          {renderFoodCards}
+        </CardColumns>
+      </Container>
     </div>
   );
 };
