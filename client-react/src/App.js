@@ -35,6 +35,7 @@ function App() {
   return (
     <div>
       <NavBar loggedIn={loggedIn} />
+
       <Router>
         <Switch>
           <Route exact path="/user/new">
