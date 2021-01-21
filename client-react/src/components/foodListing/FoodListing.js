@@ -22,6 +22,7 @@ const FoodListing = () => {
         category: foodItem.category,
         isHalal: foodItem.isHalal,
         isVegetarian: foodItem.isVegetarian,
+        imgFile: foodItem.imgFile,
         queryPath: "/" + batch._id + "/" + foodItem._id,
       };
       return <FoodCard foodData={foodData} />;
