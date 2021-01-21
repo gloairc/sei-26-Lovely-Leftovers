@@ -36,31 +36,31 @@ const Account = () => {
             </Row>
             <Container style={{ margin: "5px" }}>
               <Row style={{ background: "#cdeac0", height: "50px" }}>
-                <Col sm={keyWidth}>Account Type: </Col>
+                <Col sm={keyWidth}><span class="font-weight-bold">Account Type:</span> </Col>
                 <Col sm={valueWidth}>{formData.type}</Col>
               </Row>
               <Row style={{ height: "50px" }}>
-                <Col sm={keyWidth}>Username: </Col>
+                <Col sm={keyWidth}><span class="font-weight-bold">Username:</span> </Col>
                 <Col sm={valueWidth}>{formData.username}</Col>
               </Row>
               <Row style={{ background: "#cdeac0", height: "50px" }}>
-                <Col sm={keyWidth}>First Name: </Col>
+                <Col sm={keyWidth}><span class="font-weight-bold">First Name:</span> </Col>
                 <Col sm={valueWidth}>{formData.firstName}</Col>
               </Row>
               <Row style={{ height: "50px" }}>
-                <Col sm={keyWidth}>Family Name: </Col>
+                <Col sm={keyWidth}><span class="font-weight-bold">Family Name:</span> </Col>
                 <Col sm={valueWidth}>{formData.familyName}</Col>
               </Row>
               <Row style={{ background: "#cdeac0", height: "50px" }}>
-                <Col sm={keyWidth}>Organisation: </Col>
+                <Col sm={keyWidth}><span class="font-weight-bold">Organisation:</span> </Col>
                 <Col sm={valueWidth}>{formData.organisation}</Col>
               </Row>
               <Row style={{ height: "50px" }}>
-                <Col sm={keyWidth}>Contact Number: </Col>
+                <Col sm={keyWidth}><span class="font-weight-bold">Contact Number:</span> </Col>
                 <Col sm={valueWidth}>{formData.contactNum}</Col>
               </Row>
               <Row style={{ background: "#cdeac0", height: "50px" }}>
-                <Col sm={keyWidth}>Email Address: </Col>
+                <Col sm={keyWidth}><span class="font-weight-bold">Email Address:</span> </Col>
                 <Col sm={valueWidth}>{formData.email}</Col>
               </Row>
             </Container>
@@ -114,8 +114,8 @@ const Account = () => {
           </div>
         </div>
       ) : (
-        <Redirect to={"/about"} />
-      )}
+          <Redirect to={"/about"} />
+        )}
     </div>
   );
 };

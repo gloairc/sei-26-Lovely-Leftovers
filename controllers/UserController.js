@@ -85,8 +85,8 @@ router.get("/seed", (req, res) => {
     );
 });
 
-//PUT /user/myfood/add updates recipient's received list 
-router.put("/myfood/new", (req, res) => {
+//PUT /user/collections/new updates recipient's received list 
+router.put("/collections/new", (req, res) => {
     Batch.findById(req.body.batchID, (error, batch) => {
         if (error) {
             res.status(StatusCodes.BAD_REQUEST).send({ ...error, message: "cant find batch" });
@@ -124,7 +124,7 @@ router.put("/myfood/new", (req, res) => {
 })
 
 //PUT /user/mycontributions/new updates Contributor's çonstribution list
-router.put("/mycontributions/new", (req, res) => {
+router.put("/contributions/new", (req, res) => {
     User.findByIdAndUpdate(
         req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id 
         { $push: { contributedList: req.body.batchID } }, // req.body, // what to update: 
@@ -139,7 +139,7 @@ router.put("/mycontributions/new", (req, res) => {
     );
 });
 
-
+//NEED TO CHANGE TO CONTRIBUTIONS
 // SHOW /user/:id (user account details)
 router.get("/:id", (req, res) => {
     User.findById(req.params.id, (error, user) => {

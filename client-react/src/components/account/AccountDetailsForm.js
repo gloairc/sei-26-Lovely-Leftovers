@@ -114,6 +114,14 @@ const AccountDetailsForm = () => {
     return errors;
   };
 
+  const handleBlur = (event) => {
+    console.log("BLUR");
+    console.log(formData.username);
+    axios
+      .get("/user", { username: formData.username })
+      .then((response) => console.log(response));
+  };
+
   const keyWidth = 2;
   const valueWidth = 5;
   const buffer = 1;
@@ -184,6 +192,7 @@ const AccountDetailsForm = () => {
                   return { ...state, username: event.target.value };
                 });
               }}
+              onBlur={(event) => handleBlur(event)}
             />
             <FormText className="text-muted">
               Username must be at least 8 characters long

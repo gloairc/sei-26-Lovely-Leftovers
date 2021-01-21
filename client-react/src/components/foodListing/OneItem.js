@@ -43,7 +43,7 @@ const OneItem = () => {
   const handleCollect = () => {
     console.log("handling collect Click");
     axios
-      .put("/user/myfood/new", {
+      .put("/user/collections/new", {
         batchID: batchId,
         listID: foodId,
         userID: userId,
@@ -65,7 +65,7 @@ const OneItem = () => {
   };
 
   if (isCollected === true) {
-    return <Redirect to={"/myfood"} />;
+    return <Redirect to={"/collections"} />;
   }
 
   const collectBtn = (
