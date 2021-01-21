@@ -28,7 +28,7 @@ const OneItem = () => {
   const handleCollect = () => {
     // event.preventDefault();
     console.log("handling collect Click")
-    axios.put("/user/addtorlist", ({ "batchId": batchId, "foodId": foodId, "userId": userId }))
+    axios.put("/user/addtorlist", ({ "batchID": batchId, "listID": foodId, "userID": userId }))
       .then((response) => {// response is updatedUser
         console.log("collected! response is ", response)
         setIsCollected(true)
