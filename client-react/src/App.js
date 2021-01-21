@@ -1,18 +1,11 @@
 import "./App.css";
-<<<<<<< HEAD
-import { useState } from "react";
-=======
->>>>>>> e014016b4590dad2d1cec43c78556d7549843cfc
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from "react-router-dom";
-<<<<<<< HEAD
-=======
 import { useState, useEffect } from "react";
->>>>>>> e014016b4590dad2d1cec43c78556d7549843cfc
 import SignUp from "./components/account/SignUp";
 import Login from "./components/account/Login";
 import AccountEdit from "./components/account/AccountEdit";
@@ -30,14 +23,14 @@ import ContributionView from "./components/contribution/ContributionView";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState();
-  const [userType, setUserType] = useState(sessionStorage.getItem("userType"))
-  const [userId, setUserId] = useState(sessionStorage.getItem("userId"))
+  const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
 
   useEffect(() => {
-    console.log('using effect')
-    setUserType(sessionStorage.getItem("userType"))
-    setUserId(sessionStorage.getItem("userId"))
-  }, [loggedIn])
+    console.log("using effect");
+    setUserType(sessionStorage.getItem("userType"));
+    setUserId(sessionStorage.getItem("userId"));
+  }, [loggedIn]);
 
   return (
     <div>
@@ -55,7 +48,7 @@ function App() {
             <Logout setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
           </Route>
           <Route exact path="/user/:id">
-            {userId ? <Account /> : <Redirect to={'/login'} />}
+            {userId ? <Account /> : <Redirect to={"/login"} />}
             {/* <Account /> */}
           </Route>
           <Route exact path="/user/:id/edit">
