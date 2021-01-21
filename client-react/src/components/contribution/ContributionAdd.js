@@ -1,8 +1,7 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Form,
-  FormControl,
   Button,
   Row,
   Col,
@@ -10,7 +9,7 @@ import {
   Accordion,
   Card,
 } from "react-bootstrap";
-import { Redirect, useParams, Prompt } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import ItemDetailsAdd from "../foodListing/ItemDetailsAdd";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -59,42 +58,6 @@ const ContributionAdd = () => {
     foodListings: foodList,
   });
   const [dataPosted, setDataPosted] = useState(false);
-
-  //test data
-  // const [batchDetails, setBatchDetails] = useState({
-  //   contactPerson: "test data",
-  //   contactNum: 12345678,
-  //   collectionAddress: "-10 Anson Avenue",
-  //   foodListings: [
-  //     {
-  //       title: "Mango",
-  //       quantity: 50,
-  //       category: ["fruit"],
-  //       isHalal: true,
-  //       isVegetarian: true,
-  //       description: "Yellow Juicy Yummy",
-  //       bestBefore: Date.now(),
-  //     },
-  //     {
-  //       title: "Jackfruit",
-  //       quantity: 44,
-  //       category: ["fruit"],
-  //       isHalal: true,
-  //       isVegetarian: true,
-  //       description: "Juicy nice cool Crunchy",
-  //       bestBefore: Date.now(),
-  //     },
-  //     {
-  //       title: "Durian",
-  //       quantity: 99,
-  //       category: ["fruit"],
-  //       isHalal: true,
-  //       isVegetarian: true,
-  //       description: "Not fresh",
-  //       bestBefore: Date.now(),
-  //     },
-  //   ],
-  // });
 
   const [batchCreated, setBatchCreated] = useState(false); // to redirect after creation
   const handleNewBatch = (event) => {
@@ -217,6 +180,8 @@ const ContributionAdd = () => {
         type="button"
         onClick={() => {
           console.log(batchDetails);
+          let dateFormat = new Date(Date.now()).toLocaleDateString("en-SG");
+          console.log(dateFormat);
         }}
         style={{ margin: "10px 0" }}
       >

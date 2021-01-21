@@ -93,6 +93,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
             }}
           ></FormControl> */}
           <Form.Group
+            title="category"
             onChange={(event) => {
               const newList = selectedCat;
               if (event.target.checked) {
@@ -181,11 +182,15 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
         <Col>
           Best Before Date: (Format: "DD/MM/YYYY")
           <FormControl
-            type="text"
+            type="date"
             title="bestBefore"
             onChange={(event) => {
               setFoodDetails((state) => {
-                return { ...state, bestBefore: event.target.value };
+                const formattedDate = new Date(
+                  Date.parse(event.target.value)
+                ).toLocaleDateString("en-SG");
+
+                return { ...state, bestBefore: formattedDate }; //returning as a string
               });
               // setFoodList(newFoodList);
             }}
@@ -195,7 +200,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
 
       <Row>
         <Col></Col>
-        <Col></Col>
+        {/* <Col></Col>
         <Col></Col>
         <Col></Col>
         <Col>
@@ -210,7 +215,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
           >
             Save
           </Button>
-        </Col>
+        </Col> */}
       </Row>
     </Container>
   );
