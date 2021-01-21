@@ -9,7 +9,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 
 const ContributionTable = () => {
-  let { batchId } = useParams();
+  let { batchId, foodId } = useParams();
   const [batchData, setBatchData] = useState({});
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -19,6 +19,23 @@ const ContributionTable = () => {
       setDataLoaded(true);
     });
   }, [dataLoaded]);
+
+  const handleHide = (id) => {
+    console.log("handling Hide");
+    axios
+      .put("/batch/sdeletelist", {
+        batchID: batchId,
+        listID: id,
+      })
+      .then((response) => {
+        console.log("Item Hidden", response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        console.log("error response", error.response.data.error);
+      });
+    console.log("after axios");
+  };
 
   return (
     <>
@@ -58,7 +75,9 @@ const ContributionTable = () => {
                       View
                     </Link>
                     <br />
-                    <Link>Hide</Link>
+                    <Link onClick={handleHide(foodItem._id)}>
+                      {foodItem.status === "hidden" ? "Hidden" : "Hide"}
+                    </Link>
                   </td>
                 </tr>
               ))}
