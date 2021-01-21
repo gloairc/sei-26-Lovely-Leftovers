@@ -167,7 +167,7 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
 
       <Row>
         <Col></Col>
-        {/* <Col></Col>
+        {/* <Col></Col> this is for testing
         <Col></Col>
         <Col></Col>
         <Col>
