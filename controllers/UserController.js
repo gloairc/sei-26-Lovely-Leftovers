@@ -27,7 +27,7 @@ router.get("/", (req, res) => {
 });
 
 // SEEDING
-router.get("/seeds", (req, res) => {
+router.get("/seed", (req, res) => {
     console.log("seeding")
     User.create(
         [
@@ -85,21 +85,17 @@ router.get("/seeds", (req, res) => {
     )
 })
 
-// router.get("/try", (req, res) => {
-//     res.send("ahahahaha")
-// })
-
-
 //PUT /user/addToReceivedList updates recipient's received list 
-router.put("/addtorlist", (req, res) => {
-    Batch.findById(req.body.batchID, (error, batch) => {
+router.put("/myfood/add", (req, res) => {
+    Batch.findById(req.body.batchId, (error, batch) => {
         if (error) {
             res.status(StatusCodes.BAD_REQUEST).send({ ...error, message: "cant find batch" });
         } else { //no error in finding batch ID
-            batch.foodListings.id(req.body.listID).status = "hidden"; //make that one listing hidden
-            batch.foodListings.id(req.body.listID).recipient = req.body.userID;
-            // // add in recipient's user._id to the listing. // alternative (req.session.currentUser)._id
-            // res.send(batch.foodListings) //during testing
+            // res.send(req.body) //testing
+            batch.foodListings.id(req.body.foodId).status = "hidden"; //make that one listing hidden
+            batch.foodListings.id(req.body.foodId).recipient = req.body.userId;
+            // add in recipient's user._id to the listing. // alternative (req.session.currentUser)._id
+            // res.send(batch.foodListings) // testing
 
             batch.save((err, updatedBatch) => {
                 if (err) {
@@ -110,8 +106,8 @@ router.put("/addtorlist", (req, res) => {
                     // res.send(result)
                     console.log("batch saved, ", updatedBatch, "now to update user...");
                     User.findByIdAndUpdate(
-                        req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id
-                        { $push: { receivedList: { batchID: req.body.batchID, listID: req.body.listID } } }, // req.body, // what to update: 
+                        req.body.userId, // alternative:  (req.session.currentUser)._id or req.params.id
+                        { $push: { receivedList: { batchId: req.body.batchId, listingId: req.body.foodId } } }, // req.body, // what to update: 
                         { upsert: true, new: true }, //upsert doesnt seem to be working, will add duplicate if click twice
                         (error, updatedUser) => {
                             if (error) {
@@ -128,10 +124,10 @@ router.put("/addtorlist", (req, res) => {
 })
 
 //PUT /user/addToContributionList updates Contributor's çonstribution list (IF NOT IN BATCH CONTROLLER)
-router.put("/addtoclist", (req, res) => {
+router.put("/mycontributions/new", (req, res) => {
     User.findByIdAndUpdate(
         req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id 
-        { $push: { contributionList: req.body.batchID } }, // req.body, // what to update: 
+        { $push: { contributedList: req.body.batchID } }, // req.body, // what to update: 
         { upsert: true, new: true },
         (error, updatedUser) => {
             if (error) {
