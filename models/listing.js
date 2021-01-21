@@ -9,7 +9,7 @@ const listingSchema = new mongoose.Schema(
     isVegetarian: { type: Boolean, required: false },
     description: { type: String },
     bestBefore: { type: String, required: false },
-    imgFile: { type: String },
+    imgFile: { type: String, default: "https://www.kindpng.com/picc/m/29-294916_food-donation-transparent-hd-png-download.png" },
     status: { type: String, default: "active" },
     recipient: { type: String, default: "null" },
   },
@@ -17,3 +17,5 @@ const listingSchema = new mongoose.Schema(
 );
 
 module.exports = listingSchema;
+
+//  alternative image https://i0.wp.com/www.eatthis.com/wp-content/uploads/2019/12/grain-free-diet.jpg?resize=640%2C360&ssl=1

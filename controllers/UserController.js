@@ -17,14 +17,26 @@ const Batch = require("../models/batch");
 
 // INDEX (show all users - admin access only)
 router.get("/", (req, res) => {
-    User.find({}, (error, users) => {
-        if (error) {
-            res.send(error);
-        } else {
-            res.send(users);
-        }
-    });
+    if (req.query.username) { //if there is a query, check if it exist
+        console.log("req.query.username", req.query.username);
+        User.find({ username: req.query.username }, (error, oneUser) => {
+            if (error) {
+                res.status(StatusCodes.BAD_REQUEST).send(error);
+            } else { //user exist
+                res.status(StatusCodes.OK).send(oneUser);
+            }
+        })
+    } else { //return all users
+        User.find({}, (error, users) => {
+            if (error) {
+                res.send(error);
+            } else {
+                res.send(users);
+            }
+        });
+    }
 });
+
 
 // SEEDING
 router.get("/seed", (req, res) => {
@@ -85,8 +97,8 @@ router.get("/seed", (req, res) => {
     );
 });
 
-//PUT /user/myfood/add updates recipient's received list 
-router.put("/myfood/new", (req, res) => {
+//PUT /user/collections/new updates recipient's received list 
+router.put("/collections/new", (req, res) => {
     Batch.findById(req.body.batchID, (error, batch) => {
         if (error) {
             res.status(StatusCodes.BAD_REQUEST).send({ ...error, message: "cant find batch" });
@@ -124,7 +136,7 @@ router.put("/myfood/new", (req, res) => {
 })
 
 //PUT /user/mycontributions/new updates Contributor's çonstribution list
-router.put("/mycontributions/new", (req, res) => {
+router.put("/contributions/new", (req, res) => {
     User.findByIdAndUpdate(
         req.body.userID, // alternative:  (req.session.currentUser)._id or req.params.id 
         { $push: { contributedList: req.body.batchID } }, // req.body, // what to update: 
@@ -138,7 +150,6 @@ router.put("/mycontributions/new", (req, res) => {
         }
     );
 });
-
 
 // SHOW /user/:id (user account details)
 router.get("/:id", (req, res) => {
@@ -239,15 +250,15 @@ router.put(
     }
 );
 
-// DELETE or use React Axios to send DELETE and PUT
-router.delete("/:id", (req, res) => {
-    User.findByIdAndRemove(req.params.id, (error, user) => {
-        if (error) {
-            res.status(StatusCodes.BAD_REQUEST).send(error);
-        } else {
-            res.status(StatusCodes.OK).send(user);
-        }
-    });
-});
+// // DELETE (not used as we inactivate the user instead)
+// router.delete("/:id", (req, res) => {
+//     User.findByIdAndRemove(req.params.id, (error, user) => {
+//         if (error) {
+//             res.status(StatusCodes.BAD_REQUEST).send(error);
+//         } else {
+//             res.status(StatusCodes.OK).send(user);
+//         }
+//     });
+// });
 
 module.exports = router;

@@ -1,0 +1,22 @@
+.newContainer {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.tools {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 200px;
+  width: 300px;
+  box-shadow: 3px 3px 10px #cdeac0;
+}
+
+.buttonTxt {
+  display: inline;
+  margin-left: 7px;
+}
+.buttonBox {
+  height: 40px;
+  box-shadow: 3px 3px 10px #cdeac0;
+}

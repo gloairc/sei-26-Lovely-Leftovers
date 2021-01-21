@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useParams } from "react-router-dom";
 import axios from "axios";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Account = () => {
   const [formData, setFormData] = useState({});
 
   const userId = sessionStorage.getItem("userId");
+
+  const userIdParam = useParams().id;
 
   useEffect(() => {
     axios
@@ -21,54 +23,49 @@ const Account = () => {
       });
   }, []);
 
-  const keyWidth = 3;
-  const valueWidth = 5;
   const buffer = 1;
+  const keyWidth = 6;
+  const valueWidth = 5;
 
   return (
     <div>
       {userId ? (
         <div className="accForm">
           <div className="leftForm">
-            <Row sm={2} style={{ margin: "10px 0 2px 2px" }}>
+            <Row style={{ margin: "10px 0 2px 2px" }}>
               <Col sm={buffer}></Col>
               <h2>Account Details</h2>
             </Row>
-            <Row>
-              <Col sm={buffer}></Col>
-              <Col sm={keyWidth}>Account Type: </Col>
-              <Col sm={valueWidth}>{formData.type}</Col>
-            </Row>
-            <Row>
-              <Col sm={buffer}></Col>
-              <Col sm={keyWidth}>Username: </Col>
-              <Col sm={valueWidth}>{formData.username}</Col>
-            </Row>
-            <Row>
-              <Col sm={buffer}></Col>
-              <Col sm={keyWidth}>First Name: </Col>
-              <Col sm={valueWidth}>{formData.firstName}</Col>
-            </Row>
-            <Row>
-              <Col sm={buffer}></Col>
-              <Col sm={keyWidth}>Family Name: </Col>
-              <Col sm={valueWidth}>{formData.familyName}</Col>
-            </Row>
-            <Row>
-              <Col sm={buffer}></Col>
-              <Col sm={keyWidth}>Organisation: </Col>
-              <Col sm={valueWidth}>{formData.organisation}</Col>
-            </Row>
-            <Row>
-              <Col sm={buffer}></Col>
-              <Col sm={keyWidth}>Contact Number: </Col>
-              <Col sm={valueWidth}>{formData.contactNum}</Col>
-            </Row>
-            <Row>
-              <Col sm={buffer}></Col>
-              <Col sm={keyWidth}>Email Address: </Col>
-              <Col sm={valueWidth}>{formData.email}</Col>
-            </Row>
+            <Container style={{ border: "0.5px solid grey", margin: "5px" }}>
+              <Row style={{ background: "#cdeac0", height: "50px" }}>
+                <Col sm={keyWidth}><span class="font-weight-bold">Account Type:</span> </Col>
+                <Col sm={valueWidth}>{formData.type}</Col>
+              </Row>
+              <Row style={{ height: "50px" }}>
+                <Col sm={keyWidth}><span class="font-weight-bold">Username:</span> </Col>
+                <Col sm={valueWidth}>{formData.username}</Col>
+              </Row>
+              <Row style={{ background: "#cdeac0", height: "50px" }}>
+                <Col sm={keyWidth}><span class="font-weight-bold">First Name:</span> </Col>
+                <Col sm={valueWidth}>{formData.firstName}</Col>
+              </Row>
+              <Row style={{ height: "50px" }}>
+                <Col sm={keyWidth}><span class="font-weight-bold">Family Name:</span> </Col>
+                <Col sm={valueWidth}>{formData.familyName}</Col>
+              </Row>
+              <Row style={{ background: "#cdeac0", height: "50px" }}>
+                <Col sm={keyWidth}><span class="font-weight-bold">Organisation:</span> </Col>
+                <Col sm={valueWidth}>{formData.organisation}</Col>
+              </Row>
+              <Row style={{ height: "50px" }}>
+                <Col sm={keyWidth}><span class="font-weight-bold">Contact Number:</span> </Col>
+                <Col sm={valueWidth}>{formData.contactNum}</Col>
+              </Row>
+              <Row style={{ background: "#cdeac0", height: "50px" }}>
+                <Col sm={keyWidth}><span class="font-weight-bold">Email Address:</span> </Col>
+                <Col sm={valueWidth}>{formData.email}</Col>
+              </Row>
+            </Container>
           </div>
           <div className="rightForm">
             <div className="rightLink">
@@ -83,8 +80,8 @@ const Account = () => {
           </div>
         </div>
       ) : (
-        <Redirect to={"/about"} />
-      )}
+          <Redirect to={"/about"} />
+        )}
     </div>
   );
 };

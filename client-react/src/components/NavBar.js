@@ -7,10 +7,10 @@ const NavBar = (props) => {
   const [userType, setUserType] = useState(sessionStorage.getItem("userType"));
   const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
 
-  const handleClick = () => {
-    setUserType(sessionStorage.getItem("userType"));
-    setUserId(sessionStorage.getItem("userId"));
-  };
+  const handleClick = (event) => {
+    setUserType(sessionStorage.getItem("userType"))
+    setUserId(sessionStorage.getItem("userId"))
+  }
 
   useEffect(() => {
     setUserType(sessionStorage.getItem("userType"));
@@ -32,8 +32,8 @@ const NavBar = (props) => {
               <Nav.Link href="/contribute">Contribute</Nav.Link>
             </>
           ) : (
-            ""
-          )}
+              ""
+            )}
 
           {userType === "Recipient" ? (
             <>
@@ -41,8 +41,8 @@ const NavBar = (props) => {
               <Nav.Link href="/collections">Collections</Nav.Link>
             </>
           ) : (
-            ""
-          )}
+              ""
+            )}
         </Nav>
       </Navbar.Collapse>
       <Col md={3} xs={2} xl={2} lg={2}>
@@ -56,24 +56,24 @@ const NavBar = (props) => {
             Logout
           </Button>
         ) : (
-          <>
-            <Button
-              href="/login"
-              size="md"
-              style={{ margin: "1px 2px", width: "90px" }}
-            >
-              Login
+            <>
+              <Button
+                href="/login"
+                size="md"
+                style={{ margin: "1px 2px", width: "90px" }}
+              >
+                Login
             </Button>
-            <Button
-              href="/user/new"
-              size="md"
-              style={{ margin: "1px 2px", width: "90px" }}
-              onClick={handleClick}
-            >
-              Sign Up
+              <Button
+                href="/user/new"
+                size="md"
+                style={{ margin: "1px 2px", width: "90px" }}
+                onClick={handleClick}
+              >
+                Sign Up
             </Button>
-          </>
-        )}
+            </>
+          )}
       </Col>
     </Navbar>
   );

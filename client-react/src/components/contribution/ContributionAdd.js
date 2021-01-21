@@ -14,13 +14,14 @@ import { Redirect } from "react-router-dom";
 import ItemDetailsAdd from "../foodListing/ItemDetailsAdd";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./style.css";
 
 const ContributionAdd = () => {
   const userId = sessionStorage.getItem("userId");
   const [foodList, setFoodList] = useState([{}]);
   const [detailsLoaded, setDetailsLoaded] = useState(false);
   const [inputFoodArray, setInputFoodArray] = useState([
-    <Card foodIndex={0}>
+    <Card foodIndex={0} style={{ boxShadow: "3px 3px 10px #cdeac0" }}>
       <Card.Header>
         <Accordion.Toggle as={Button} variant="link" eventKey="0">
           Food Item {1} (Click to expand)
@@ -115,22 +116,35 @@ const ContributionAdd = () => {
   };
 
   return (
-    <>
-      <h2>Add a New Contribution</h2>
-
+    // <>
+    //   <h2>Add a New Contribution</h2>
+    <div className="newContainer">
       <Form onSubmit={handleNewBatch}>
-        <Container>
+        <Container
+          style={{
+            boxShadow: "3px 3px 10px #cdeac0",
+            width: "100%",
+            background: "rgba(255,255,255,0.8)",
+          }}
+        >
+          <div>
+            <h2>Add a New Contribution</h2>
+          </div>
           <Row>
             <Col>Contact Person: </Col>
             <Col>{batchDetails.contactPerson}</Col>
+            <Col lg={8} md={6} />
           </Row>
           <Row>
             <Col>Contact Number: </Col>
             <Col>{batchDetails.contactNum}</Col>
+            <Col lg={8} md={6} />
           </Row>
           <Row>
-            <Col>Collection Address:</Col>
-            <Col>
+            <Col lg={2} md={6}>
+              Collection Address:
+            </Col>
+            <Col lg={6} md={6}>
               <FormControl
                 type="text"
                 title="collectionAddress"
@@ -141,48 +155,69 @@ const ContributionAdd = () => {
                 }}
               />
             </Col>
+            <Col lg={4} md={6} />
           </Row>
           <Row>
-            <Col>Food Items</Col>
-          </Row>
-          <Row>
-            <Col>
-              Add Food Item
-              <Button onClick={() => handleAddNewItem()}>+</Button>
-            </Col>
-            <Col>
-              Remove Last Item
-              <Button
-                id="removeItem"
-                onClick={() => {
-                  if (inputFoodArray.length > 1) {
-                    handleRemoveItem(inputFoodArray.length - 1);
-                  } else {
-                    document.getElementById("removeItem").count = alert(
-                      "Must have at least 1 Food Item"
-                    );
-                  }
-                }}
-              >
-                -
-              </Button>
-            </Col>
-            <Col xs={6}>
+            <Col lg={8} md={6}>
               <Accordion>{inputFoodArray}</Accordion>
             </Col>
           </Row>
           <Row style={{ display: "flex" }}>
             <Col xs={10} />
             <Col>
-              <Button type="submit" style={{ marginLeft: "auto", order: 10 }}>
-                Submit
-              </Button>
+              <div className="tools">
+                <div className="buttonBox">
+                  <Button
+                    style={{ width: "40px", borderRadius: "25px" }}
+                    variant="outline-success"
+                    onClick={() => handleAddNewItem()}
+                  >
+                    +
+                  </Button>
+                  <p className="buttonTxt">Add Food Item</p>
+                </div>
+                <div className="buttonBox">
+                  <Button
+                    style={{ width: "40px", borderRadius: "25px" }}
+                    variant="outline-danger"
+                    id="removeItem"
+                    onClick={() => {
+                      if (inputFoodArray.length > 1) {
+                        handleRemoveItem(inputFoodArray.length - 1);
+                      } else {
+                        document.getElementById("removeItem").count = alert(
+                          "Must have at least 1 Food Item"
+                        );
+                      }
+                    }}
+                  >
+                    -
+                  </Button>
+                  <p
+                    className="buttonTxt"
+                    style={{ color: "red", fontWeight: "bold" }}
+                  >
+                    Remove Last Item
+                  </p>
+                </div>
+                <div>
+                  <Button
+                    type="submit"
+                    style={{
+                      margin: "10px 0",
+                      boxShadow: "3px 3px 10px #cdeac0",
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </div>
             </Col>
           </Row>
         </Container>
       </Form>
       {/* below is for test and troubleshooting only */}
-      <Button
+      {/* <Button
         type="button"
         onClick={() => {
           console.log(batchDetails);
@@ -192,9 +227,9 @@ const ContributionAdd = () => {
         }}
         style={{ margin: "10px 0" }}
       >
-        check stuff for troubleshooting
-      </Button>
-    </>
+        check batchDetails
+      </Button>{" "} */}
+    </div>
   );
 };
 
