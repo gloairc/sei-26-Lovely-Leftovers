@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const FoodCard = ({ foodData }) => {
   return (
-    <Card id="foodss" style={{}}>
+    <Card id="foodss">
       <Card.Img variant="top" src="" />
       <Card.Body>
         <Card.Title
