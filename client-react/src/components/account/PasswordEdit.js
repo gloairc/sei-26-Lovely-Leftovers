@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import axios from 'axios'
-import { Form, Button, FormLabel, FormControl, FormGroup, Row, Col } from 'react-bootstrap';
+import { Form, Button, FormLabel, FormControl, FormGroup, Row, Col, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useParams, Link, Redirect } from 'react-router-dom';
 
 const PasswordEdit = (props) => {
     const [formData, setFormData] = useState({})
+    const [errorMsg, setErrorMsg] = useState()
     const userId = sessionStorage.getItem('userId')
     const userIdParam = useParams().id
 
@@ -18,11 +19,22 @@ const PasswordEdit = (props) => {
                     console.log(response)
                 })
                 .catch((error) => {
-                    console.log('error', error)
+                    setErrorMsg(error.response.data.errors)
                 })
         } else {
             console.log("password don't match")
         }
+    }
+
+    const showErrors = () => {
+        let errors = []
+        if (errorMsg) {
+            errors.push(<p>Error!</p>)
+            for (let i = 0; i < errorMsg.length; i++) {
+                errors.push(<p>{errorMsg[i].msg}</p>)
+            }
+        }
+        return errors;
     }
 
     const keyWidth = 3
@@ -34,6 +46,10 @@ const PasswordEdit = (props) => {
             {userId === userIdParam ? <>
                 <div>
                     <h1>Change Password</h1>
+                    <Row>
+                        <Col sm={buffer} />
+                        {errorMsg ? <Alert variant="danger">{showErrors()}</Alert> : ""}
+                    </Row>
                     <Form onSubmit={handleSubmit}>
                         <FormGroup as={Row} controlId="newpassword1">
                             <Col sm={buffer} />
