@@ -22,55 +22,104 @@ const ItemDetailsShow = ({ foodData, batchData }) => {
   //       setCreated(true);
   //     });
   //   };
-  console.log(foodData)
+  console.log(foodData);
 
-  const IsHalalTF = (foodData.isHalal === true) ? "Yes" : "No";
-  const IsVegTF = (foodData.isVegetarian === true) ? "Yes" : "No"
-
+  const IsHalalTF = foodData.isHalal === true ? "Yes" : "No";
+  const IsVegTF = foodData.isVegetarian === true ? "Yes" : "No";
 
   return (
     <Container>
+      <Row style={{ height: "20px" }}></Row>
       <Row>
-        <Col><p><span class="font-weight-bold">Title: </span>{foodData.title}</p></Col>
-      </Row>
-
-      <Row>
-        <Col><p><span class="font-weight-bold">Quantity: </span>{foodData.quantity}</p></Col>
-      </Row>
-
-      <Row>
-        <Col><p><span class="font-weight-bold">Category: </span>{foodData.category}</p></Col>
-      </Row>
-
-      <Row>
-        <Col><p><span class="font-weight-bold">Halal? </span> {IsHalalTF}</p></Col>
-      </Row>
-
-      <Row>
-        <Col><p><span class="font-weight-bold">Vegetarian? </span> {IsVegTF}</p></Col>
-      </Row>
-
-      <Row>
-        <Col><p><span class="font-weight-bold">Description: </span>{foodData.description}</p></Col>
+        <Col>
+          <p>
+            <span class="font-weight-bold">Title: </span>
+            {foodData.title}
+          </p>
+        </Col>
       </Row>
 
       <Row>
         <Col>
-          <p><span class="font-weight-bold"> Best Before Date: </span>{foodData.bestBefore}</p>
+          <p>
+            <span class="font-weight-bold">Quantity: </span>
+            {foodData.quantity}
+          </p>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <p>
+            <span class="font-weight-bold">Category: </span>
+            {foodData.category}
+          </p>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <p>
+            <span class="font-weight-bold">Halal? </span> {IsHalalTF}
+          </p>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <p>
+            <span class="font-weight-bold">Vegetarian? </span> {IsVegTF}
+          </p>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <p>
+            <span class="font-weight-bold">Description: </span>
+            {foodData.description}
+          </p>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <p>
+            <span class="font-weight-bold"> Best Before Date: </span>
+            {foodData.bestBefore}
+          </p>
           {/* <Moment format="DD/MM/YYYY"> {foodData.bestBefore}</Moment> */}
         </Col>
       </Row>
 
       <Row>
-        <Col> <p><span class="font-weight-bold">Collection Address: </span>{batchData.collectionAddress}</p></Col>
+        <Col>
+          {" "}
+          <p>
+            <span class="font-weight-bold">Collection Address: </span>
+            {batchData.collectionAddress}
+          </p>
+        </Col>
       </Row>
 
       <Row>
-        <Col> <p><span class="font-weight-bold">Contact Person: </span> {batchData.contactPerson}</p></Col>
+        <Col>
+          {" "}
+          <p>
+            <span class="font-weight-bold">Contact Person: </span>{" "}
+            {batchData.contactPerson}
+          </p>
+        </Col>
       </Row>
 
       <Row>
-        <Col> <p><span class="font-weight-bold">Contact Number: </span>{batchData.contactNum}</p></Col>
+        <Col>
+          {" "}
+          <p>
+            <span class="font-weight-bold">Contact Number: </span>
+            {batchData.contactNum}
+          </p>
+        </Col>
       </Row>
 
       {/* <Row>

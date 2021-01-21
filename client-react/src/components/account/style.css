@@ -1,6 +1,7 @@
 .accForm {
   border: 1px solid rgb(204, 203, 203);
-  width: 50%;
+  width: 70%;
+  height: 550px;
   margin: 20px auto;
   display: flex;
   flex-direction: row;
@@ -8,20 +9,31 @@
   box-shadow: 3px 3px 10px #cdeac0;
   padding-bottom: 15px;
   background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
 }
 
 .leftForm {
-  width: 65%;
+  width: 70%;
 }
 
 .rightForm {
-  width: 25%;
+  width: 140px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin: 10px 10px 0 0;
+  margin: 50px 10px 0 0;
 }
 
 .rightLink {
   font-size: 20px;
+}
+
+.signupForm {
+  margin: 1px solid red;
+  background: rgba(255, 255, 255, 0.8);
+  width: 60%;
+  margin: 10px auto;
+  box-shadow: 3px 3px 10px #cdeac0;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }

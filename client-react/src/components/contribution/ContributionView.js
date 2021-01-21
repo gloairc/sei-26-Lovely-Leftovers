@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
@@ -23,14 +23,13 @@ const ContributionTable = () => {
     <div className="contributionTable">
       <div className="contributionTitle">
         <h2>Batch {batchData._id}</h2>
-        {console.log(batchData)}
       </div>
       <Table
         striped
         bordered
         hover
-        variant="dark"
-        style={{ margin: "10px 2.5%" }}
+        variant="light"
+        style={{ boxShadow: " 5px 5px 15px  #cdeac0" }}
       >
         <thead>
           <tr>
@@ -54,10 +53,31 @@ const ContributionTable = () => {
                   <td>{foodItem.recipient}</td>
                   <td>
                     <Link to={`/listings/${batchData._id}/${foodItem._id}`}>
-                      View
+                      <Button
+                        variant="outline-success"
+                        style={{
+                          borderRadius: "20px",
+                          margin: "0 5px",
+                          border: "3px solid",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        View
+                      </Button>
                     </Link>
-                    <br />
-                    <Link>Hide</Link>
+                    <Link>
+                      <Button
+                        variant="outline-danger"
+                        style={{
+                          borderRadius: "20px",
+                          margin: "0 5px",
+                          border: "3px solid",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Hide
+                      </Button>
+                    </Link>
                   </td>
                 </tr>
               ))}

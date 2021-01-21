@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, Redirect, useParams } from "react-router-dom";
 import axios from "axios";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Account = () => {
@@ -23,9 +23,8 @@ const Account = () => {
       });
   }, []);
 
-  const buffer = 1;
-  const keyWidth = 6;
-  const valueWidth = 5;
+  const keyWidth = 5;
+  const valueWidth = 7;
 
   return (
     <div>
@@ -33,10 +32,9 @@ const Account = () => {
         <div className="accForm">
           <div className="leftForm">
             <Row style={{ margin: "10px 0 2px 2px" }}>
-              <Col sm={buffer}></Col>
               <h2>Account Details</h2>
             </Row>
-            <Container style={{ border: "0.5px solid grey", margin: "5px" }}>
+            <Container style={{ margin: "5px" }}>
               <Row style={{ background: "#cdeac0", height: "50px" }}>
                 <Col sm={keyWidth}>Account Type: </Col>
                 <Col sm={valueWidth}>{formData.type}</Col>
@@ -69,13 +67,49 @@ const Account = () => {
           </div>
           <div className="rightForm">
             <div className="rightLink">
-              <Link to={`/user/${userId}/edit`}>Edit Profile</Link>
+              <Link to={`/user/${userId}/edit`}>
+                <Button
+                  variant="warning"
+                  style={{
+                    borderRadius: "25px",
+                    padding: "6px",
+                    width: "150px",
+                    marginTop: "10px",
+                  }}
+                >
+                  Edit Profile
+                </Button>
+              </Link>
             </div>
             <div className="rightLink">
-              <Link to={`/user/${userId}/changepassword`}>Change Password</Link>
+              <Link to={`/user/${userId}/changepassword`}>
+                <Button
+                  variant="warning"
+                  style={{
+                    borderRadius: "25px",
+                    padding: "6px",
+                    width: "150px",
+                    marginTop: "10px",
+                  }}
+                >
+                  Change Password
+                </Button>
+              </Link>
             </div>
             <div className="rightLink">
-              <Link to={`/user/${userId}/delete`}>Delete Account</Link>
+              <Link to={`/user/${userId}/delete`}>
+                <Button
+                  variant="danger"
+                  style={{
+                    borderRadius: "25px",
+                    padding: "6px",
+                    width: "150px",
+                    marginTop: "10px",
+                  }}
+                >
+                  Delete Account
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

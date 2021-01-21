@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -53,13 +53,17 @@ const ContributionTable = () => {
         striped
         bordered
         hover
-        variant="dark"
-        style={{ margin: "10px 2.5%" }}
+        variant="light"
+        style={{
+          width: "90%",
+          margin: "10px auto",
+          boxShadow: "5px 5px 15px #cdeac0",
+        }}
       >
         <thead>
           <tr>
-            <th>Batch ID</th>
-            <th>Date Created</th>
+            <th style={{ width: "35%" }}>Batch ID</th>
+            <th style={{ width: "35%" }}>Date Created</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -77,9 +81,35 @@ const ContributionTable = () => {
                     {/* <Link to={`/batch/${batch._id}`}>
         <EditIcon />
       </Link> */}
-                    <Link to={`/contributions/${batch._id}`}>View Items</Link>
-                    <br />
-                    <Link>Hide All</Link>
+                    <Link to={`/contributions/${batch._id}`}>
+                      <Button
+                        variant="outline-success"
+                        style={{
+                          borderRadius: "20px",
+                          border: "3px solid",
+                          width: "120px",
+                          margin: "0 5px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        View Items
+                      </Button>
+                    </Link>
+
+                    <Link>
+                      <Button
+                        variant="outline-danger"
+                        style={{
+                          borderRadius: "20px",
+                          border: "3px solid",
+                          width: "120px",
+                          margin: "0 5px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Hide All
+                      </Button>
+                    </Link>
                   </td>
                 </tr>
               ))}

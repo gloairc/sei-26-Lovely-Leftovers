@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 import Moment from "react-moment";
@@ -33,7 +33,12 @@ const FoodCard = ({ foodData }) => {
             </span>
           </Card.Text>
           <Card.Link href={`/listings${foodData.queryPath}`}>
-            View Listing
+            <Button
+              variant="outline-success"
+              style={{ border: "3px solid", borderRadius: "20px" }}
+            >
+              View Listing
+            </Button>
           </Card.Link>
         </div>
       </Card.Body>
