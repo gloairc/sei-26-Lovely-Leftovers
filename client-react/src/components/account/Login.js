@@ -15,6 +15,7 @@ const Login = (props) => {
 
     const [loginStatus, setLoginStatus] = useState(false)
 
+    const [status, setStatus] = useState()
     const formSchema = Joi.object({
         username: Joi.string().alphanum().min(8).required(),
         password: Joi.string().alphanum().min(8).required(),
@@ -28,17 +29,23 @@ const Login = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        setStatus('logging in')
         axios.post('/session', formData)
             .then((response) => {
                 if (response.data._id) {
                     sessionStorage.setItem('userId', response.data._id)
                     sessionStorage.setItem('userType', response.data.type)
-                }
-                setTimeout(() => {
                     setLoginStatus(true)
-                }, 2000)
+                    props.setLoggedIn(true)
+                }
                 // setUserId(response.data.id) // set userId
                 // console.log(response.data) // response.data is the user document
+            })
+            .then(() => {
+                setTimeout(() => {
+                    const userId = sessionStorage.getItem('userId')
+                    return <Redirect to={`/user/${userId}`} />
+                }, 2000)
             })
             .catch((error) => {
                 // setLoginStatus(error.message) // error depends on status from backend (e.g. 400/401)
@@ -48,10 +55,10 @@ const Login = (props) => {
     }
 
 
-    if (loginStatus) {
-        const userId = sessionStorage.getItem('userId')
-        return <Redirect to={`/user/${userId}`} />
-    }
+    // if (loginStatus) {
+    //     const userId = sessionStorage.getItem('userId')
+    //     return <Redirect to={`/user/${userId}`} />
+    // }
 
     const keyWidth = 2
     const valueWidth = 5
@@ -104,10 +111,11 @@ const Login = (props) => {
                             Log In
                         </Button>
                     </Col>
-                    <Col sm={valueWidth}>{errorMsg ? `Error: ${errorMsg}` : ""}</Col>
+                    <Col sm='3'>{errorMsg ? `Error: ${errorMsg}` : ""}</Col>
+                    <Col sm='3'>{status === 'logging in' ? 'Logging in, please wait..' : ""}</Col>
                 </Row>
             </Form>
-            {/* {loginStatus} */}
+            {loginStatus ? <Redirect to={`/user/${sessionStorage.getItem('userId')}`} /> : ""}
         </>
     )
 }
