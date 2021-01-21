@@ -7,6 +7,7 @@ import {
   Row,
   Col,
   Container,
+  Accordian,
 } from "react-bootstrap";
 import { Redirect, useParams } from "react-router-dom";
 import ItemDetailsAdd from "../foodListing/ItemDetailsAdd";
@@ -41,6 +42,8 @@ const ContributionAdd = () => {
     collectionAddress: "666 Middle of Nowhere Road",
     foodListings: foodList,
   });
+  const [dataPosted, setDataPosted] = useState(false);
+  const userId = sessionStorage.getItem("userId");
 
   //test data
   // const [batchDetails, setBatchDetails] = useState({
@@ -78,15 +81,24 @@ const ContributionAdd = () => {
   //   ],
   // });
 
-  const [batchCreated, setBatchCreated] = useState(false);
+  const [batchCreated, setBatchCreated] = useState(false); // to redirect after creation
   const handleNewBatch = (event) => {
     event.preventDefault();
     // setBatchDetails()
     axios.post("/batch", batchDetails).then((response) => {
       setBatchCreated(true);
       console.log(response);
+      const contributionData = { userID: userId, batchID: response.data._id };
+      axios.put("/user/addtoclist", contributionData).then((response) => {
+        setDataPosted(true);
+      });
     });
   };
+
+  if (dataPosted) {
+    return <Redirect to={"/contributions"} />;
+  }
+
   const handleInputChange = (event, index) => {
     setFoodList((state) => {
       return { ...state };
@@ -99,6 +111,7 @@ const ContributionAdd = () => {
       <div foodIndex={inputFoodArray.length}>
         <h3>Food Item {inputFoodArray.length + 1}</h3>
         <ItemDetailsAdd
+          key={"foodIndex" + inputFoodArray.length}
           foodList={foodList}
           foodIndex={inputFoodArray.length}
           setFoodList={() => setFoodList()}
