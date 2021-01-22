@@ -15,7 +15,7 @@ const CollectionView = () => {
   useEffect(() => {
     axios.get(`/user/${userId}`).then((response) => {
       const foodList = response.data.receivedList.map((foodId) => {
-        return foodId;
+        return foodId.listingId;
       });
       setUserCollected(foodList);
 

@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-import { Table, Button } from "react-bootstrap";
-=======
 import { Table, Row, Col, Button } from "react-bootstrap";
->>>>>>> 29493f4ce9903832e3d3d605a33e3fdd0117177e
 import { Link, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Moment from "react-moment";
 import axios from "axios";
 
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
-
 const ContributionTable = () => {
-  let { batchId } = useParams();
+  let { batchId, foodId } = useParams();
   const [batchData, setBatchData] = useState({});
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -24,13 +17,29 @@ const ContributionTable = () => {
     });
   }, [dataLoaded]);
 
+  const handleHide = (id) => {
+    console.log("handling Hide");
+    axios
+      .put("/batch/sdeletelist", {
+        batchID: batchId,
+        listID: id,
+      })
+      .then((response) => {
+        console.log("Item Hidden", response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        console.log("error response", error.response.data.error);
+      });
+    console.log("after axios");
+  };
+
   return (
     <div className="contributionTable">
       <div className="contributionTitle">
         <h2>Batch {batchData._id}</h2>
       </div>
-    
-      
+
       <Table
         striped
         bordered
@@ -76,6 +85,9 @@ const ContributionTable = () => {
                     </Link>
                     <Link>
                       <Button
+                        onClick={() => {
+                          handleHide(foodItem._id);
+                        }}
                         variant="outline-danger"
                         style={{
                           borderRadius: "20px",
@@ -84,9 +96,10 @@ const ContributionTable = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        Hide
+                        {foodItem.status === "hidden" ? "Hidden" : "Hide"}
                       </Button>
                     </Link>
+                    <br />
                   </td>
                 </tr>
               ))}
