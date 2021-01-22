@@ -6,17 +6,23 @@ import { useParams, Link, Redirect } from 'react-router-dom';
 
 const PasswordEdit = (props) => {
     const [formData, setFormData] = useState({})
+    const [changeStatus, setChangeStatus] = useState()
     const [errorMsg, setErrorMsg] = useState()
+    const [redirect, setRedirect] = useState(false)
     const userId = sessionStorage.getItem('userId')
     const userIdParam = useParams().id
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(formData.password2)
+        setChangeStatus('Hang on, changing your password..')
         if (formData.password === formData.password2) {
             axios.put(`/user/${userId}`, { password: formData.password })
                 .then((response) => {
                     console.log(response)
+                    setChangeStatus('Password updated! Redirecting...')
+                    setTimeout(() => {
+                        setRedirect(true)
+                    }, 2000);
                 })
                 .catch((error) => {
                     setErrorMsg(error.response.data.errors)
@@ -37,6 +43,14 @@ const PasswordEdit = (props) => {
         return errors;
     }
 
+    // if (changeStatus === 'Password updated!') {
+    //     <Alert variant="success">{changeStatus}</Alert>
+    // }
+
+    if (redirect) {
+        return <Redirect to={`/user/${userIdParam}`} />
+    }
+
     const keyWidth = 3
     const valueWidth = 5
     const buffer = 1
@@ -48,6 +62,8 @@ const PasswordEdit = (props) => {
                     <h1>Change Password</h1>
                     <Row>
                         <Col sm={buffer} />
+                        {changeStatus === 'Password updated! Redirecting...' ? <Alert variant="success">{changeStatus}</Alert> : ""}
+                        {changeStatus === 'Hang on, changing your password..' ? <Alert variant="info">{changeStatus}</Alert> : ""}
                         {errorMsg ? <Alert variant="danger">{showErrors()}</Alert> : ""}
                     </Row>
                     <Form onSubmit={handleSubmit}>

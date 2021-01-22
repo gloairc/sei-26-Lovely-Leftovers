@@ -1,9 +1,9 @@
 import AccountDetailsForm from './AccountDetailsForm'
-const SignUp = () => {
+const SignUp = (props) => {
     return (
         <>
             <h1>Create a new account</h1>
-            <AccountDetailsForm />
+            <AccountDetailsForm setLoggedIn={props.setLoggedIn} />
         </>
     )
 }

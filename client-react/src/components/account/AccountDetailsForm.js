@@ -17,9 +17,10 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams, Link, Redirect } from "react-router-dom";
 
-const AccountDetailsForm = () => {
+const AccountDetailsForm = (props) => {
     const [formData, setFormData] = useState({
     })
+    const [currentUsername, setCurrentUsername] = useState()
     const [errorMsg, setErrorMsg] = useState()
     const [sent, setSent] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -43,6 +44,7 @@ const AccountDetailsForm = () => {
             axios.get(`/user/${userId}`)
                 .then((response) => {
                     setFormData(response.data)
+                    setCurrentUsername(response.data.username)
                     setIsLoading(false)
                     console.log(response)
                 })
@@ -72,6 +74,7 @@ const AccountDetailsForm = () => {
                     sessionStorage.setItem('userType', response.data.type)
                     setTimeout(() => {
                         setSent(true)
+                        props.setLoggedIn(true)
                     }, 2000)
                 })
                 .catch((error) => {
@@ -98,9 +101,12 @@ const AccountDetailsForm = () => {
         }
     }
 
-    if (sent) {
-        const userId = sessionStorage.getItem("userId");
-        return <Redirect to={`/user/${userId}`} />;
+    if (sent && userId) {
+        return <Redirect to={`/user/${userId}`
+        } />
+    }
+    else if (sent && !userId) {
+        return <Redirect to={'/listings'} />
     }
 
     const showErrors = () => {
@@ -115,14 +121,13 @@ const AccountDetailsForm = () => {
     }
 
     const handleBlur = (event) => {
-        console.log("BLUR")
         setErrorMsg("");
         axios.get('/user', {  // /user?username=formData.username
             params: { username: formData.username }
         })
             .then((response) => {// either receive the existing one user else or all users when username ===""
                 console.log("axios then response", response.data)
-                if ((response.data).length === 1) {
+                if ((response.data).length === 1 && formData.username !== currentUsername) {
                     setErrorMsg([{ msg: "Username already taken!" }])
                 }
             })
@@ -137,6 +142,7 @@ const AccountDetailsForm = () => {
             <Row>
                 <Col sm={buffer} />
                 {errorMsg ? <Alert variant="danger">{showErrors()}</Alert> : ""}
+                {isLoading ? <Alert variant="info">Loading your data...</Alert> : ""}
             </Row>
             <Form onSubmit={handleSubmit}>
                 <FormGroup as={Row} controlId="type">
@@ -177,10 +183,9 @@ const AccountDetailsForm = () => {
                     <Col sm={valueWidth}>
                         <FormControl
                             type="text"
-                            value={isLoading ? "Loading data" : formData.username}
+                            value={formData.username}
                             disabled={isLoading}
                             onChange={(event) => {
-                                console.log(event.target.id)
                                 setFormData((state) => {
                                     return { ...state, username: event.target.value }
                                 })
@@ -217,7 +222,7 @@ const AccountDetailsForm = () => {
                     <FormLabel column sm={keyWidth}>First Name: </FormLabel>
                     <Col sm={valueWidth}>
                         <FormControl type="text"
-                            value={isLoading ? "Loading data" : formData.firstName}
+                            value={formData.firstName}
                             disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {
@@ -232,7 +237,7 @@ const AccountDetailsForm = () => {
                     <FormLabel column sm={keyWidth}>Last Name: </FormLabel>
                     <Col sm={valueWidth}>
                         <FormControl type="text"
-                            value={isLoading ? "Loading data" : formData.familyName}
+                            value={formData.familyName}
                             disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {
@@ -247,7 +252,7 @@ const AccountDetailsForm = () => {
                     <FormLabel column sm={keyWidth}>Organisation: </FormLabel>
                     <Col sm={valueWidth}>
                         <FormControl type="text"
-                            value={isLoading ? "Loading data" : formData.organisation}
+                            value={formData.organisation}
                             disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {
@@ -262,7 +267,7 @@ const AccountDetailsForm = () => {
                     <FormLabel column sm={keyWidth}>Contact Number: </FormLabel>
                     <Col sm={valueWidth}>
                         <FormControl type="number"
-                            value={isLoading ? "Loading data" : formData.contactNum}
+                            value={formData.contactNum}
                             disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {
@@ -277,7 +282,7 @@ const AccountDetailsForm = () => {
                     <FormLabel column sm={keyWidth}>Email Address: </FormLabel>
                     <Col sm={valueWidth}>
                         <FormControl type="email"
-                            value={isLoading ? "Loading data" : formData.email}
+                            value={formData.email}
                             disabled={isLoading}
                             onChange={(event) => {
                                 setFormData((state) => {

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import Joi from 'joi'
-import { Form, Button, FormLabel, FormControl, FormGroup, FormText, Row, Col } from 'react-bootstrap';
+import { Form, Button, FormLabel, FormControl, FormGroup, FormText, Row, Col, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Redirect } from 'react-router-dom';
 
@@ -60,6 +60,10 @@ const Login = (props) => {
     return (
         <>
             <h1>Log In</h1>
+            <Row>
+                <Col sm={buffer} />
+                {errorMsg ? <Alert variant="danger">Error! {errorMsg}</Alert> : ""}
+            </Row>
             <Form onSubmit={handleSubmit}>
                 <FormGroup as={Row} controlId="username">
                     <Col sm={buffer} />
@@ -104,7 +108,6 @@ const Login = (props) => {
                             Log In
                         </Button>
                     </Col>
-                    <Col sm='3'>{errorMsg ? `Error: ${errorMsg}` : ""}</Col>
                     <Col sm='3'>{status === 'logging in' ? 'Logging in, please wait..' : ""}</Col>
                 </Row>
             </Form>
