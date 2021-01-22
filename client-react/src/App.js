@@ -40,7 +40,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/user/new">
-            <SignUp />
+            <SignUp setLoggedIn={setLoggedIn} />
           </Route>
           <Route exact path="/login">
             <Login setLoggedIn={setLoggedIn} />
@@ -50,7 +50,6 @@ function App() {
           </Route>
           <Route exact path="/user/:id">
             {userId ? <Account /> : <Redirect to={"/login"} />}
-            {/* <Account /> */}
           </Route>
           <Route exact path="/user/:id/edit">
             <AccountEdit />
@@ -59,7 +58,7 @@ function App() {
             {userId ? <PasswordEdit /> : <Redirect to={"/login"} />}
           </Route>
           <Route exact path="/user/:id/delete">
-            {userId ? <DeleteAccount /> : <Redirect to={"/login"} />}
+            {userId ? <DeleteAccount setLoggedIn={setLoggedIn} /> : <Redirect to={"/login"} />}
           </Route>
           <Route exact path="/about">
             <About />
@@ -68,7 +67,7 @@ function App() {
             <FoodListing />
           </Route>
           <Route exact path="/listings/:batchId/:foodId">
-            {userId ? <OneItem /> : <Redirect to={"/login"} />}
+            <OneItem />
           </Route>
           <Route exact path="/contribute">
             {userId ? <ContributionAdd /> : <Redirect to={"/login"} />}

@@ -1,18 +1,9 @@
-import { useState } from "react";
-import axios from "axios";
-import Joi from "joi";
-import {
-  Form,
-  Button,
-  FormLabel,
-  FormControl,
-  FormGroup,
-  FormText,
-  Row,
-  Col,
-} from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Redirect } from "react-router-dom";
+import { useState } from 'react'
+import axios from 'axios'
+import Joi from 'joi'
+import { Form, Button, FormLabel, FormControl, FormGroup, FormText, Row, Col, Alert } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Redirect } from 'react-router-dom';
 
 const Login = (props) => {
   const [formData, setFormData] = useState({
@@ -95,50 +86,62 @@ const Login = (props) => {
             </Col>
           </FormGroup>
 
-          <FormGroup as={Row} controlId="password">
-            <Col sm={buffer} />
-            <FormLabel column sm={keyWidth}>
-              Password:{" "}
-            </FormLabel>
-            <Col sm={valueWidth}>
-              <FormControl
-                type="Password"
-                value={formData.password}
-                onChange={(event) => {
-                  setFormData((state) => {
-                    return { ...state, password: event.target.value };
-                  });
-                }}
-              />
-              <FormText className="text-muted">
-                Password must be at least 8 characters long
-              </FormText>
-            </Col>
-          </FormGroup>
-          <Row>
-            <Col sm={buffer} />
-            <Col sm={keyWidth}>
-              <Button
-                variant="success"
-                style={{
-                  borderRadius: "20px",
-                  width: "150px",
-                  margin: "10px",
-                }}
-                type="submit"
-              >
-                Log In
-              </Button>
-            </Col>
-            <Col sm="3">{errorMsg ? `Error: ${errorMsg}` : ""}</Col>
-            <Col sm="3">
-              {status === "logging in" ? "Logging in, please wait.." : ""}
-            </Col>
-          </Row>
-        </Form>
-      </div>
-    </div>
-  );
-};
+    return (
+        <>
+            <h1>Log In</h1>
+            <Row>
+                <Col sm={buffer} />
+                {errorMsg ? <Alert variant="danger">Error! {errorMsg}</Alert> : ""}
+            </Row>
+            <Form onSubmit={handleSubmit}>
+                <FormGroup as={Row} controlId="username">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>
+                        Username:
+                                    </FormLabel>
+                    <Col sm={valueWidth}>
+                        <FormControl
+                            type="text"
+                            value={formData.username}
+                            onChange={(event) => {
+                                console.log(event.target.id)
+                                setFormData((state) => {
+                                    return { ...state, username: event.target.value }
+                                })
+                            }}
+                        />
+                        <FormText className="text-muted">
+                            Username must be at least 8 characters long
+                                </FormText>
+                    </Col>
+                </FormGroup>
+
+                <FormGroup as={Row} controlId="password">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>Password: </FormLabel>
+                    <Col sm={valueWidth}>
+                        <FormControl type="Password"
+                            value={formData.password}
+                            onChange={(event) => {
+                                setFormData((state) => {
+                                    return { ...state, password: event.target.value }
+                                })
+                            }} />
+                        <FormText className="text-muted">Password must be at least 8 characters long</FormText>
+                    </Col>
+                </FormGroup>
+                <Row>
+                    <Col sm={buffer} />
+                    <Col sm={keyWidth}>
+                        <Button variant="primary" type="submit">
+                            Log In
+                        </Button>
+                    </Col>
+                    <Col sm='3'>{status === 'logging in' ? 'Logging in, please wait..' : ""}</Col>
+                </Row>
+            </Form>
+        </>
+    )
+}
 
 export default Login;
