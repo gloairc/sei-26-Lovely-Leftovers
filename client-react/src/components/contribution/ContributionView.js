@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Row, Col, Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ const ContributionTable = () => {
   let { batchId, foodId } = useParams();
   const [batchData, setBatchData] = useState({});
   const [dataLoaded, setDataLoaded] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     axios.get(`/batch/${batchId}`).then((response) => {
@@ -111,7 +112,12 @@ const ContributionTable = () => {
         <Col></Col>
 
         <Col>
-          <Button href="/contributions" style={{ margin: "10px 0" }}>
+          <Button
+            onClick={() => {
+              history.goBack();
+            }}
+            style={{ margin: "10px 0" }}
+          >
             Back
           </Button>
         </Col>

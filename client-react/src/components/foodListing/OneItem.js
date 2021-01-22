@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Button, Row, Col, Container } from "react-bootstrap";
-import { Redirect, useParams } from "react-router-dom";
+import { Redirect, useParams, useHistory } from "react-router-dom";
 import ItemDetailsShow from "./ItemDetailsShow";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,6 +13,7 @@ const OneItem = () => {
   const userId = sessionStorage.getItem("userId");
   const userType = sessionStorage.getItem("userType");
   const [isCollected, setIsCollected] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     axios.get(`/batch/${batchId}`).then((response) => {
@@ -90,7 +91,10 @@ const OneItem = () => {
 
           <Col>
             <Button
-              href={linkToggle(userType)}
+              // href={linkToggle(userType)}
+              onClick={() => {
+                history.goBack();
+              }}
               style={{
                 margin: "10px 0",
                 borderRadius: "20px",
