@@ -3,11 +3,12 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const { StatusCodes } = require("http-status-codes");
 const Batch = require("../models/batch");
-const foodCat = require("../dataDump/dataDump");
+// const foodCat = require("../dataDump/dataDump");
 const moment = require("moment");
 const { isDate } = require("moment");
 const User = require("../models/user");
 // const { batchFind } = require("../functions/mongooseFn");
+const foodCat = ["Meat", "Seafood", "Fruits", "Vegetables", "Carbs", "Snack", "Dairy & Eggs", "Canned food", "Dessert", "Drinks", "Frozen", "Chilled"]
 
 router.get("/seed", (req, res) => {
   Batch.create(
@@ -146,13 +147,19 @@ router.post(
   body("foodListings.*.quantity", "Quantity must be at least 1")
     .trim()
     .isInt({ min: 1 }),
+  body("foodListings.*.weight", "Please enter weight")
+    .trim()
+    .isInt({ gt: 0 }),
+  body("foodListings.*.unit", "Please select a unit")
+    .trim()
+    .notEmpty(),
   body("foodListings.*.category", "Please select at least one entry").isArray({
     min: 1,
   }),
-  body(
-    "foodListings.*.category.*",
-    "Only categories provided are considered valid entries"
-  ).isIn(foodCat),
+  // body(
+  //   "foodListings.*.category.*",
+  //   "Only categories provided are considered valid entries"
+  // ).isIn(foodCat),
   body("foodListings.*.isHalal", "Please pick an option for halal")
     .notEmpty()
     .isBoolean(),
@@ -269,8 +276,13 @@ router.put(
     "quantity",
     "Only positive integer accepted more than 0 is accepted"
   ).isInt({ gt: 0 }),
+  body("foodListings.*.weight", "Please enter weight")
+    .isInt({ gt: 0 }),
+  body("foodListings.*.unit", "Please select a unit")
+    .trim()
+    .notEmpty(),
   body("category", "pick at least one category").notEmpty(), //test test
-  body("category.*", "category not valid").isIn(foodCat),
+  // body("category.*", "category not valid").isIn(foodCat),
   body("isHalal", "input must be true or false").isBoolean(),
   body("isVegetarian", "input must be true or false").isBoolean(),
   body("bestBefore", "Enter valid dateformat dd/mm/yyyy")
@@ -289,6 +301,8 @@ router.put(
         const listItem = batch.foodListings.id(data.listID);
         listItem.title = req.body.title;
         listItem.quantity = req.body.quantity;
+        listItem.weight = req.body.weight;
+        listItem.unit = req.body.unit;
         listItem.category = req.body.category;
         listItem.isHalal = req.body.isHalal;
         listItem.isVegetarian = req.body.isVegetarian;

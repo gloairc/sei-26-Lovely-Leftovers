@@ -20,6 +20,7 @@ import FoodListing from "./components/foodListing/FoodListing";
 import ContributionAdd from "./components/contribution/ContributionAdd";
 import ContributionTable from "./components/contribution/ContributionTable";
 import ContributionView from "./components/contribution/ContributionView";
+import CollectionView from "./components/recipient/CollectionView";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState();
@@ -80,6 +81,9 @@ function App() {
           </Route>
           <Route path="/contributions/:batchId">
             {userId ? <ContributionView /> : <Redirect to={"/login"} />}
+          </Route>
+          <Route path="/collections">
+            {userId ? <CollectionView /> : <Redirect to={"/login"} />}
           </Route>
         </Switch>
       </Router>

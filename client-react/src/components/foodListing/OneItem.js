@@ -83,34 +83,42 @@ const OneItem = () => {
   );
 
   const toShowCollectBtnOrNot = userType === "Recipient" ? collectBtn : "";
-
+  const linkToggle = (user) => {
+    if (user === "Contributor") {
+      return "/contributions";
+    } else {
+      return "/listings";
+    }
+  };
   return (
-    <div className="oneItem">
-      <div>
-        <ItemDetailsShow foodData={foodDetails} batchData={batchDetails} />
-        {/* <ItemDetailsShow foodData={foodDetails} batchData={batchData} /> */}
-      </div>
-
-      <div>
-        <div></div>
+    <Container>
+      <div className="oneItem">
         <div>
-          {toShowCollectBtnOrNot}
-          <Button
-            href="/listings"
-            style={{
-              margin: "10px 10px 15px 10px",
-              borderRadius: "20px",
-              border: "3px solid",
-              fontWeight: "bold",
-              width: "150px",
-            }}
-            variant="outline-warning"
-          >
-            Back
-          </Button>
+          <ItemDetailsShow foodData={foodDetails} batchData={batchDetails} />
+          {/* <ItemDetailsShow foodData={foodDetails} batchData={batchData} /> */}
         </div>
+
+        <Row>
+          <Col>{toShowCollectBtnOrNot}</Col>
+
+          <Col>
+            <Button
+              href={linkToggle(userType)}
+              style={{
+                margin: "10px 0",
+                borderRadius: "20px",
+                border: "3px solid",
+                fontWeight: "bold",
+                width: "150px",
+              }}
+              variant="outline-warning"
+            >
+              Back
+            </Button>
+          </Col>
+        </Row>
       </div>
-    </div>
+    </Container>
   );
 };
 

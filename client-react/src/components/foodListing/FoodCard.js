@@ -8,26 +8,27 @@ import { Link } from "react-router-dom";
 // https://bit.ly/3c4kYL1
 
 const FoodCard = ({ foodData }) => {
-  const isHalalTF = (foodData.isHalal === true) ? "Halal" : "";
-  const isVegTF = (foodData.isVegetarian === true) ? "Vegetarian" : "";
+  const isHalalTF = foodData.isHalal === true ? "Halal" : "";
+  const isVegTF = foodData.isVegetarian === true ? "Vegetarian" : "";
 
   const longCatList = () => {
-    const foodCat = (foodData.category);
+    const foodCat = foodData.category;
     let catList = "";
-    let finalCatList = "1243";
+    let finalCatList = "";
     for (let i = 0; i < ((foodCat).length) - 1; i++) {
       catList += ((foodCat)[i] + ", ")
     }
-    finalCatList = catList + (foodCat)[foodCat.length - 1]
+    finalCatList = catList + foodCat[foodCat.length - 1];
     // console.log("finalCatList", finalCatList)
-    return finalCatList
-  }
+    return finalCatList;
+  };
 
-  const foodCategories = ((foodData.category).length > 1) ? longCatList() : (foodData.category)
-
+  const foodCategories =
+    foodData.category.length > 1 ? longCatList() : foodData.category;
 
   return (
     <Card id="foodss">
+      {console.log(foodData)}
       <span class="badge badge-success">{isVegTF}</span>
       <span class="badge badge-warning">{isHalalTF}</span>
       <Card.Img variant="top" src={foodData.imgFile} />
@@ -45,14 +46,18 @@ const FoodCard = ({ foodData }) => {
         </Card.Title>
         <div className="textWrap">
           <Card.Text style={{ marginBottom: "-1px" }}>
-            Quantity: <span style={{ color: "blue" }}>{foodData.quantity}</span>
+            Quantity: <span style={{ color: "blue" }}>{foodData.quantity}</span> x <span>{foodData.weight}{foodData.unit}</span>
           </Card.Text>
           <Card.Text>
-            Best Before: <span style={{ color: "red" }}>
+            Best Before:{" "}
+            <span style={{ color: "red" }}>
               {foodData.bestBefore}
               {/* <Moment format="DD/MM/YYYY">{foodData.bestBefore}</Moment>{" "} */}
             </span>
-            <footer class="blockquote-footer font-italic"><br />Category:  {foodCategories}</footer>
+            <footer class="blockquote-footer font-italic"><br />Category:
+            {/* {foodData.category} */}
+              {foodCategories}
+            </footer>
           </Card.Text>
           <Card.Link href={`/listings${foodData.queryPath}`}>
             <Button

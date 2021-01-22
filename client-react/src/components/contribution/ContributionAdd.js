@@ -1,7 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Form,
+  FormControl,
   Button,
   Row,
   Col,
@@ -18,6 +19,7 @@ import "./style.css";
 const ContributionAdd = () => {
   const userId = sessionStorage.getItem("userId");
   const [foodList, setFoodList] = useState([{}]);
+  const [detailsLoaded, setDetailsLoaded] = useState(false);
   const [inputFoodArray, setInputFoodArray] = useState([
     <Card foodIndex={0} style={{ boxShadow: "3px 3px 10px #cdeac0" }}>
       <Card.Header>
@@ -39,11 +41,22 @@ const ContributionAdd = () => {
   ]);
 
   const [batchDetails, setBatchDetails] = useState({
-    contactPerson: "mitch test data",
-    contactNum: 12345678,
-    collectionAddress: "666 Middle of Nowhere Road",
+    contactPerson: "",
+    contactNum: 0,
+    collectionAddress: "",
     foodListings: foodList,
   });
+
+  useEffect(() => {
+    axios.get(`/user/${userId}`).then((response) => {
+      const newBatch = batchDetails;
+      newBatch.contactPerson = `${response.data.firstName} ${response.data.familyName}`;
+      newBatch.contactNum = response.data.contactNum;
+      setBatchDetails(newBatch);
+      setDetailsLoaded(true);
+    });
+  }, [detailsLoaded]);
+
   const [dataPosted, setDataPosted] = useState(false);
 
   const [batchCreated, setBatchCreated] = useState(false); // to redirect after creation
@@ -53,9 +66,11 @@ const ContributionAdd = () => {
       setBatchCreated(true);
       console.log(response);
       const contributionData = { userID: userId, batchID: response.data._id };
-      axios.put("/user/contributions/new", contributionData).then((response) => {
-        setDataPosted(true);
-      });
+      axios
+        .put("/user/contributions/new", contributionData)
+        .then((response) => {
+          setDataPosted(true);
+        });
     });
   };
 
@@ -101,6 +116,8 @@ const ContributionAdd = () => {
   };
 
   return (
+    // <>
+    //   <h2>Add a New Contribution</h2>
     <div className="newContainer">
       <Form onSubmit={handleNewBatch}>
         <Container
@@ -114,9 +131,39 @@ const ContributionAdd = () => {
             <h2>Add a New Contribution</h2>
           </div>
           <Row>
+            <Col>Contact Person: </Col>
+            <Col>{batchDetails.contactPerson}</Col>
+            <Col lg={8} md={6} />
+          </Row>
+          <Row>
+            <Col>Contact Number: </Col>
+            <Col>{batchDetails.contactNum}</Col>
+            <Col lg={8} md={6} />
+          </Row>
+          <Row>
+            <Col lg={2} md={6}>
+              Collection Address:
+            </Col>
+            <Col lg={6} md={6}>
+              <FormControl
+                type="text"
+                title="collectionAddress"
+                onChange={(event) => {
+                  setBatchDetails((state) => {
+                    return { ...state, collectionAddress: event.target.value };
+                  });
+                }}
+              />
+            </Col>
+            <Col lg={4} md={6} />
+          </Row>
+          <Row>
             <Col lg={8} md={6}>
               <Accordion>{inputFoodArray}</Accordion>
             </Col>
+          </Row>
+          <Row style={{ display: "flex" }}>
+            <Col xs={10} />
             <Col>
               <div className="tools">
                 <div className="buttonBox">
@@ -188,13 +235,14 @@ const ContributionAdd = () => {
         type="button"
         onClick={() => {
           console.log(batchDetails);
-          let dateFormat = new Date(Date.now()).toLocaleDateString("en-SG");
-          console.log(dateFormat);
+          // let dateFormat = new Date(Date.now()).toLocaleDateString("en-SG");
+          // console.log(dateFormat);
+          console.log(sessionStorage);
         }}
         style={{ margin: "10px 0" }}
       >
         check batchDetails
-      </Button> */}
+      </Button>{" "} */}
     </div>
   );
 };
