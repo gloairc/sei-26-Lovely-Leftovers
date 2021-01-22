@@ -12,7 +12,6 @@ const OneItem = () => {
   const [batchDetails, setBatchDetails] = useState({});
   const userId = sessionStorage.getItem("userId");
   const userType = sessionStorage.getItem("userType");
-  // const userId = "60079ec9f7b7a342e072ecc2"  //hardcoded for now
   const [isCollected, setIsCollected] = useState(false);
 
   const history = useHistory();
@@ -90,7 +89,6 @@ const OneItem = () => {
       <div className="oneItem">
         <div>
           <ItemDetailsShow foodData={foodDetails} batchData={batchDetails} />
-          {/* <ItemDetailsShow foodData={foodDetails} batchData={batchData} /> */}
         </div>
 
         <Row>

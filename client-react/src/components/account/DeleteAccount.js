@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Redirect, useParams } from 'react-router-dom'
 
-const DeleteAccount = () => {
+const DeleteAccount = (props) => {
     const userId = sessionStorage.getItem('userId')
     const [userDeleted, setUserDeleted] = useState(false)
 
@@ -13,8 +13,10 @@ const DeleteAccount = () => {
             axios.put(`/user/${userId}`, { status: "Inactive" })
                 .then((response) => {
                     console.log("deactivated user")
+                    sessionStorage.clear()
                     setTimeout(() => {
                         setUserDeleted(true)
+                        props.setLoggedIn(false)
                     }, 2000)
                 })
                 .catch((error) => {
@@ -24,7 +26,6 @@ const DeleteAccount = () => {
     }, [])
 
     if (userDeleted) {
-        sessionStorage.clear()
         return <Redirect to={'/about'} />
     }
 

@@ -2,14 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Table, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Moment from "react-moment";
 import axios from "axios";
 
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
-
 const ContributionTable = () => {
-  let { batchId } = useParams();
+  let { batchId, foodId } = useParams();
   const [batchData, setBatchData] = useState({});
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -19,6 +15,23 @@ const ContributionTable = () => {
       setDataLoaded(true);
     });
   }, [dataLoaded]);
+
+  const handleHide = (id) => {
+    console.log("handling Hide");
+    axios
+      .put("/batch/sdeletelist", {
+        batchID: batchId,
+        listID: id,
+      })
+      .then((response) => {
+        console.log("Item Hidden", response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        console.log("error response", error.response.data.error);
+      });
+    console.log("after axios");
+  };
 
   return (
     <div className="contributionTable">
@@ -50,9 +63,7 @@ const ContributionTable = () => {
                 <tr>
                   <td>{foodItem.title}</td>
                   <td>{foodItem.quantity}</td>
-                  <td>
-                    <Moment format="DD/MM/YYYY">{foodItem.bestBefore}</Moment>
-                  </td>
+                  <td>{foodItem.bestBefore}</td>
                   <td>{foodItem.status}</td>
                   <td>{foodItem.recipient}</td>
                   <td>
@@ -71,6 +82,9 @@ const ContributionTable = () => {
                     </Link>
                     <Link>
                       <Button
+                        onClick={() => {
+                          handleHide(foodItem._id);
+                        }}
                         variant="outline-danger"
                         style={{
                           borderRadius: "20px",
@@ -79,9 +93,10 @@ const ContributionTable = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        Hide
+                        {foodItem.status === "hidden" ? "Hidden" : "Hide"}
                       </Button>
                     </Link>
+                    <br />
                   </td>
                 </tr>
               ))}

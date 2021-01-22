@@ -11,7 +11,7 @@ const About = () => {
             Lovely Leftovers
           </p>
           <p style={{ fontSize: "30px" }}>
-            Generic Food image, also we do stuff with food you don't want.
+            We do good with food you don't want.
           </p>
         </div>
       </div>
