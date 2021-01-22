@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Moment from "react-moment";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "./style.css";
 import axios from "axios";
-
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
 
 const ContributionTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -82,14 +77,8 @@ const ContributionTable = () => {
               {tableData.map((batch) => (
                 <tr>
                   <td>{batch._id}</td>
+                  <td>{batch.createdAt}</td>
                   <td>
-                    <Moment format="DD/MM/YYYY">{batch.createdAt}</Moment>
-                  </td>
-                  <td>
-                    {/* <DeleteForeverIcon onClick={() => handleDelete(subject._id)} /> */}
-                    {/* <Link to={`/batch/${batch._id}`}>
-        <EditIcon />
-      </Link> */}
                     <Link to={`/contributions/${batch._id}`}>
                       <Button
                         variant="outline-success"

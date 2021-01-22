@@ -1,13 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {
-  Form,
-  FormControl,
-  Button,
-  Row,
-  Col,
-  Container,
-} from "react-bootstrap";
+import { Button, Row, Col, Container } from "react-bootstrap";
 import { Redirect, useParams } from "react-router-dom";
 import ItemDetailsShow from "./ItemDetailsShow";
 import axios from "axios";
@@ -19,12 +12,7 @@ const OneItem = () => {
   const [batchDetails, setBatchDetails] = useState({});
   const userId = sessionStorage.getItem("userId");
   const userType = sessionStorage.getItem("userType");
-  // const userId = "60079ec9f7b7a342e072ecc2"  //hardcoded for now
   const [isCollected, setIsCollected] = useState(false);
-
-  // const isEmptyObject = (value) => {
-  //   return Object.keys(value).length === 0 && value.constructor === Object;
-  // }
 
   useEffect(() => {
     axios.get(`/batch/${batchId}`).then((response) => {
@@ -95,7 +83,6 @@ const OneItem = () => {
       <div className="oneItem">
         <div>
           <ItemDetailsShow foodData={foodDetails} batchData={batchDetails} />
-          {/* <ItemDetailsShow foodData={foodDetails} batchData={batchData} /> */}
         </div>
 
         <Row>

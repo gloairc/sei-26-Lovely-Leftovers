@@ -1,29 +1,11 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import {
-  Form,
-  FormControl,
-  Button,
-  Row,
-  Col,
-  Container,
-} from "react-bootstrap";
-import { Redirect } from "react-router-dom";
-import Moment from "react-moment";
-// import axios from "axios";
+import { Row, Col, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "./style.css";
 
 const ItemDetailsShow = ({ foodData, batchData }) => {
   const [category, setCategory] = useState([]);
 
-  //   const handleCreateUser = (event) => {
-  //     event.preventDefault();
-  //     axios.post("/users", formData).then((response) => {
-  //       console.log("response", response);
-  //       setCreated(true);
-  //     });
-  //   };
   console.log("fooddata", foodData);
   console.log("batchData", batchData);
 
@@ -116,7 +98,6 @@ const ItemDetailsShow = ({ foodData, batchData }) => {
             <span class="font-weight-bold"> Best Before Date: </span>
             {foodData.bestBefore}
           </p>
-          {/* <Moment format="DD/MM/YYYY"> {foodData.bestBefore}</Moment> */}
         </Col>
       </Row>
 

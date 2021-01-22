@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Table, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Moment from "react-moment";
 import axios from "axios";
 
 const ContributionTable = () => {
@@ -64,9 +63,7 @@ const ContributionTable = () => {
                 <tr>
                   <td>{foodItem.title}</td>
                   <td>{foodItem.quantity}</td>
-                  <td>
-                    <Moment format="DD/MM/YYYY">{foodItem.bestBefore}</Moment>
-                  </td>
+                  <td>{foodItem.bestBefore}</td>
                   <td>{foodItem.status}</td>
                   <td>{foodItem.recipient}</td>
                   <td>

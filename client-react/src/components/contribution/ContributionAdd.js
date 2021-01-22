@@ -116,8 +116,6 @@ const ContributionAdd = () => {
   };
 
   return (
-    // <>
-    //   <h2>Add a New Contribution</h2>
     <div className="newContainer">
       <Form onSubmit={handleNewBatch}>
         <Container
@@ -230,19 +228,6 @@ const ContributionAdd = () => {
           </Row>
         </Container>
       </Form>
-      {/* below is for test and troubleshooting only */}
-      {/* <Button
-        type="button"
-        onClick={() => {
-          console.log(batchDetails);
-          // let dateFormat = new Date(Date.now()).toLocaleDateString("en-SG");
-          // console.log(dateFormat);
-          console.log(sessionStorage);
-        }}
-        style={{ margin: "10px 0" }}
-      >
-        check batchDetails
-      </Button>{" "} */}
     </div>
   );
 };
