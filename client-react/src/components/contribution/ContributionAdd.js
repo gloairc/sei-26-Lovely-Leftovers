@@ -127,7 +127,7 @@ const ContributionAdd = () => {
             background: "rgba(255,255,255,0.8)",
           }}
         >
-          <div>
+          <div style={{ margin: "10px" }}>
             <h2>Add a New Contribution</h2>
           </div>
           <Row>
@@ -168,7 +168,13 @@ const ContributionAdd = () => {
               <div className="tools">
                 <div className="buttonBox">
                   <Button
-                    style={{ width: "40px", borderRadius: "25px" }}
+                    style={{
+                      width: "40px",
+                      borderRadius: "25px",
+                      border: "3px solid",
+                      fontWeight: "bold",
+                      boxShadow: "3px 3px 10px #cdeac0",
+                    }}
                     variant="outline-success"
                     onClick={() => handleAddNewItem()}
                   >
@@ -178,7 +184,13 @@ const ContributionAdd = () => {
                 </div>
                 <div className="buttonBox">
                   <Button
-                    style={{ width: "40px", borderRadius: "25px" }}
+                    style={{
+                      width: "40px",
+                      borderRadius: "25px",
+                      border: "3px solid",
+                      fontWeight: "bold",
+                      boxShadow: "3px 3px 10px #cdeac0",
+                    }}
                     variant="outline-danger"
                     id="removeItem"
                     onClick={() => {
@@ -205,7 +217,9 @@ const ContributionAdd = () => {
                     type="submit"
                     style={{
                       margin: "10px 0",
-                      boxShadow: "3px 3px 10px #cdeac0",
+                      boxShadow: "5px 3px 10px #cdeac0",
+                      borderRadius: "25px",
+                      height: "40px",
                     }}
                   >
                     Submit

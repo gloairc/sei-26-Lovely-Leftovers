@@ -15,7 +15,16 @@
   width: 250px;
   margin: 10px 0px;
   background: #faf9f9;
-  border-radius: 10px;
+  border-radius: 20px;
   border: 0px;
   box-shadow: 3px 3px 10px #cdeac0;
+}
+
+.oneItem {
+  width: 60%;
+  margin: 15px auto;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 5px 15px #cdeac0;
 }

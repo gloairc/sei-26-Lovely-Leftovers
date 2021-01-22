@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 import Moment from "react-moment";
@@ -14,9 +14,9 @@ const FoodCard = ({ foodData }) => {
   const longCatList = () => {
     const foodCat = foodData.category;
     let catList = "";
-    let finalCatList = "1243";
-    for (let i = 0; i < foodCat.length - 1; i++) {
-      catList += foodCat[i] + ", ";
+    let finalCatList = "";
+    for (let i = 0; i < ((foodCat).length) - 1; i++) {
+      catList += ((foodCat)[i] + ", ")
     }
     finalCatList = catList + foodCat[foodCat.length - 1];
     // console.log("finalCatList", finalCatList)
@@ -46,7 +46,7 @@ const FoodCard = ({ foodData }) => {
         </Card.Title>
         <div className="textWrap">
           <Card.Text style={{ marginBottom: "-1px" }}>
-            Quantity: <span style={{ color: "blue" }}>{foodData.quantity}</span>
+            Quantity: <span style={{ color: "blue" }}>{foodData.quantity}</span> x <span>{foodData.weight}{foodData.unit}</span>
           </Card.Text>
           <Card.Text>
             Best Before:{" "}
@@ -54,13 +54,18 @@ const FoodCard = ({ foodData }) => {
               {foodData.bestBefore}
               {/* <Moment format="DD/MM/YYYY">{foodData.bestBefore}</Moment>{" "} */}
             </span>
-            <footer class="blockquote-footer font-italic">
-              <br />
-              Category: {foodCategories}
+            <footer class="blockquote-footer font-italic"><br />Category:
+            {/* {foodData.category} */}
+              {foodCategories}
             </footer>
           </Card.Text>
           <Card.Link href={`/listings${foodData.queryPath}`}>
-            View Listing
+            <Button
+              variant="outline-success"
+              style={{ border: "3px solid", borderRadius: "20px" }}
+            >
+              View Listing
+            </Button>
           </Card.Link>
         </div>
       </Card.Body>

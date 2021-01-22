@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import Moment from "react-moment";
-import foodCat from "./dataDump";
+// import foodCat from "./dataDump";
 // import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import "./style.css";
@@ -20,8 +20,9 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
   const [foodDetails, setFoodDetails] = useState(foodList[foodIndex]);
   const [selectedCat, setSelectedCat] = useState([]);
   const newFoodList = foodList.splice(foodIndex, 1, foodDetails);
+  const foodCat = ["Meat", "Seafood", "Fruits", "Vegetables", "Carbs", "Snack", "Dairy & Eggs", "Canned food", "Dessert", "Drinks", "Frozen", "Chilled"]
   const renderFoodCat = foodCat.map((foodItem) => {
-    return <Form.Check type="checkbox" label={foodItem} value={foodItem} />;
+    return <Form.Check inline type="checkbox" label={foodItem} value={foodItem} />;
   });
   const toBoolean = (inputString) => {
     if (inputString === "Yes") {
@@ -30,6 +31,11 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
       return false;
     }
   };
+
+  const units = ["g", "kg", "ml", "L"];
+  const renderUnit = units.map((indivUnit) => {
+    return <Form.Check inline type="radio" label={indivUnit} value={indivUnit} name="radioGroup" />;
+  });
 
   return (
     <Container>
@@ -60,6 +66,37 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
               });
             }}
           />
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          Est. weight per item: {" "}
+          <FormControl
+            type="number"
+            title="weight"
+            onChange={(event) => {
+              setFoodDetails((state) => {
+                return { ...state, weight: event.target.value };
+              });
+            }}
+          />
+        </Col>
+        <Col>
+          Unit: {" "}
+          <Form.Group
+            title="unit"
+            onChange={(event) => {
+              let selectedUnit = ""
+              if (event.target.checked) {
+                selectedUnit = event.target.checked
+              }
+              setFoodDetails((state) => {
+                return { ...state, unit: event.target.value };
+              });
+            }}>
+            {renderUnit}
+          </Form.Group>
         </Col>
       </Row>
 

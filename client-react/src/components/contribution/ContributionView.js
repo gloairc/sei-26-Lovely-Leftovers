@@ -5,9 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Moment from "react-moment";
 import axios from "axios";
 
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
-
 const ContributionTable = () => {
   let { batchId, foodId } = useParams();
   const [batchData, setBatchData] = useState({});
@@ -38,15 +35,17 @@ const ContributionTable = () => {
   };
 
   return (
-    <>
-      <h2>Batch {batchData._id}</h2>
-      {console.log(batchData)}
+    <div className="contributionTable">
+      <div className="contributionTitle">
+        <h2>Batch {batchData._id}</h2>
+      </div>
+
       <Table
         striped
         bordered
         hover
-        variant="dark"
-        style={{ margin: "10px 2.5%" }}
+        variant="light"
+        style={{ boxShadow: " 5px 5px 15px  #cdeac0" }}
       >
         <thead>
           <tr>
@@ -72,12 +71,35 @@ const ContributionTable = () => {
                   <td>{foodItem.recipient}</td>
                   <td>
                     <Link to={`/listings/${batchData._id}/${foodItem._id}`}>
-                      View
+                      <Button
+                        variant="outline-success"
+                        style={{
+                          borderRadius: "20px",
+                          margin: "0 5px",
+                          border: "3px solid",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        View
+                      </Button>
+                    </Link>
+                    <Link>
+                      <Button
+                        onClick={() => {
+                          handleHide(foodItem._id);
+                        }}
+                        variant="outline-danger"
+                        style={{
+                          borderRadius: "20px",
+                          margin: "0 5px",
+                          border: "3px solid",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {foodItem.status === "hidden" ? "Hidden" : "Hide"}
+                      </Button>
                     </Link>
                     <br />
-                    <Link onClick={handleHide(foodItem._id)}>
-                      {foodItem.status === "hidden" ? "Hidden" : "Hide"}
-                    </Link>
                   </td>
                 </tr>
               ))}
@@ -97,7 +119,7 @@ const ContributionTable = () => {
           </Button>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

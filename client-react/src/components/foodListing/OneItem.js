@@ -69,7 +69,15 @@ const OneItem = () => {
   }
 
   const collectBtn = (
-    <Button onClick={handleCollect} style={{ margin: "10px 0" }}>
+    <Button
+      onClick={handleCollect}
+      style={{
+        margin: "10px 10px 15px 10px",
+        borderRadius: "20px",
+        width: "150px",
+      }}
+      variant="success"
+    >
       Collect
     </Button>
   );
@@ -83,21 +91,33 @@ const OneItem = () => {
     }
   };
   return (
-    <Container fluid>
-      <Row>
-        <ItemDetailsShow foodData={foodDetails} batchData={batchDetails} />
-        {/* <ItemDetailsShow foodData={foodDetails} batchData={batchData} /> */}
-      </Row>
+    <Container>
+      <div className="oneItem">
+        <div>
+          <ItemDetailsShow foodData={foodDetails} batchData={batchDetails} />
+          {/* <ItemDetailsShow foodData={foodDetails} batchData={batchData} /> */}
+        </div>
 
-      <Row>
-        <Col>{toShowCollectBtnOrNot}</Col>
+        <Row>
+          <Col>{toShowCollectBtnOrNot}</Col>
 
-        <Col>
-          <Button href={linkToggle(userType)} style={{ margin: "10px 0" }}>
-            Back
-          </Button>
-        </Col>
-      </Row>
+          <Col>
+            <Button
+              href={linkToggle(userType)}
+              style={{
+                margin: "10px 0",
+                borderRadius: "20px",
+                border: "3px solid",
+                fontWeight: "bold",
+                width: "150px",
+              }}
+              variant="outline-warning"
+            >
+              Back
+            </Button>
+          </Col>
+        </Row>
+      </div>
     </Container>
   );
 };
