@@ -84,6 +84,7 @@ function App() {
           <Route path="/collections">
             {userId ? <CollectionView /> : <Redirect to={"/login"} />}
           </Route>
+
         </Switch>
       </Router>
     </div>
