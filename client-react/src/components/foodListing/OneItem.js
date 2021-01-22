@@ -13,12 +13,7 @@ const OneItem = () => {
   const userId = sessionStorage.getItem("userId");
   const userType = sessionStorage.getItem("userType");
   const [isCollected, setIsCollected] = useState(false);
-
   const history = useHistory();
-
-  // const isEmptyObject = (value) => {
-  //   return Object.keys(value).length === 0 && value.constructor === Object;
-  // }
 
   useEffect(() => {
     axios.get(`/batch/${batchId}`).then((response) => {
