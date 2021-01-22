@@ -1,14 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {
-  Form,
-  FormControl,
-  Button,
-  Row,
-  Col,
-  Container,
-} from "react-bootstrap";
-import { Redirect, useParams } from "react-router-dom";
+import { Button, Row, Col, Container } from "react-bootstrap";
+import { Redirect, useParams, useHistory } from "react-router-dom";
 import ItemDetailsShow from "./ItemDetailsShow";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -21,6 +14,8 @@ const OneItem = () => {
   const userType = sessionStorage.getItem("userType");
   // const userId = "60079ec9f7b7a342e072ecc2"  //hardcoded for now
   const [isCollected, setIsCollected] = useState(false);
+
+  const history = useHistory();
 
   // const isEmptyObject = (value) => {
   //   return Object.keys(value).length === 0 && value.constructor === Object;
@@ -103,7 +98,8 @@ const OneItem = () => {
 
           <Col>
             <Button
-              href={linkToggle(userType)}
+              // href={linkToggle(userType)}
+              onClick={() => history.goBack()}
               style={{
                 margin: "10px 0",
                 borderRadius: "20px",

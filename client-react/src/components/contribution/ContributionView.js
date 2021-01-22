@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-import { Table, Button } from "react-bootstrap";
-=======
 import { Table, Row, Col, Button } from "react-bootstrap";
->>>>>>> 29493f4ce9903832e3d3d605a33e3fdd0117177e
 import { Link, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Moment from "react-moment";
@@ -29,8 +25,7 @@ const ContributionTable = () => {
       <div className="contributionTitle">
         <h2>Batch {batchData._id}</h2>
       </div>
-    
-      
+
       <Table
         striped
         bordered
@@ -101,7 +96,17 @@ const ContributionTable = () => {
         <Col></Col>
 
         <Col>
-          <Button href="/contributions" style={{ margin: "10px 0" }}>
+          <Button
+            variant="outline-warning"
+            href="/contributions"
+            style={{
+              margin: "10px 0",
+              borderRadius: "20px",
+              border: "3px solid",
+              fontWeight: "bold",
+              width: "150px",
+            }}
+          >
             Back
           </Button>
         </Col>
