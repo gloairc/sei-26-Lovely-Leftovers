@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Table, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Moment from "react-moment";
 import axios from "axios";
 
 const ContributionTable = () => {

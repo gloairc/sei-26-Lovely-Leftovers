@@ -51,10 +51,7 @@ const CollectionView = () => {
         <h1>My Collections</h1>
       </div>
       <Container>
-        <CardColumns>
-          {/* {console.log(fullList)} */}
-          {renderFoodCards}
-        </CardColumns>
+        <CardColumns>{renderFoodCards}</CardColumns>
       </Container>
     </div>
   );
