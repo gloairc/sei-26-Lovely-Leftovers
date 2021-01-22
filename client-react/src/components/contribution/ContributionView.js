@@ -113,10 +113,16 @@ const ContributionTable = () => {
 
         <Col>
           <Button
-            onClick={() => {
-              history.goBack();
+            onClick={() => history.goBack()}
+            variant="outline-warning"
+            href="/contributions"
+            style={{
+              margin: "10px 0",
+              borderRadius: "20px",
+              border: "3px solid",
+              fontWeight: "bold",
+              width: "150px",
             }}
-            style={{ margin: "10px 0" }}
           >
             Back
           </Button>

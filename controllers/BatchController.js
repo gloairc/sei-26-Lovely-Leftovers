@@ -8,7 +8,20 @@ const moment = require("moment");
 const { isDate } = require("moment");
 const User = require("../models/user");
 // const { batchFind } = require("../functions/mongooseFn");
-const foodCat = ["Meat", "Seafood", "Fruits", "Vegetables", "Carbs", "Snack", "Dairy & Eggs", "Canned food", "Dessert", "Drinks", "Frozen", "Chilled"]
+const foodCat = [
+  "Meat",
+  "Seafood",
+  "Fruits",
+  "Vegetables",
+  "Carbs",
+  "Snack",
+  "Dairy & Eggs",
+  "Canned food",
+  "Dessert",
+  "Drinks",
+  "Frozen",
+  "Chilled",
+];
 
 router.get("/seed", (req, res) => {
   Batch.create(
@@ -132,7 +145,7 @@ router.get("/:batchID", async (req, res) => {
 
 router.post(
   "/",
-  body("foodListings", "Please enter food items").notEmpty(),
+  // body("foodListings", "Please enter food items").notEmpty(),
   body("contactPerson").trim().optional(),
   body("contactNum", "Please enter only digits").trim().optional(),
   body("collectionAddress").trim().optional(),
@@ -147,12 +160,8 @@ router.post(
   body("foodListings.*.quantity", "Quantity must be at least 1")
     .trim()
     .isInt({ min: 1 }),
-  body("foodListings.*.weight", "Please enter weight")
-    .trim()
-    .isInt({ gt: 0 }),
-  body("foodListings.*.unit", "Please select a unit")
-    .trim()
-    .notEmpty(),
+  body("foodListings.*.weight", "Please enter weight").trim().isInt({ gt: 0 }),
+  body("foodListings.*.unit", "Please select a unit").trim().notEmpty(),
   body("foodListings.*.category", "Please select at least one entry").isArray({
     min: 1,
   }),
@@ -167,8 +176,9 @@ router.post(
     .notEmpty()
     .isBoolean(),
   body("foodListings.*.description").trim().optional(),
-  body("foodListings.*.bestBefore", "Please enter a valid date/time")
-    .isDate("DD/MM/YYYY"),
+  body("foodListings.*.bestBefore", "Please enter a valid date/time").isDate(
+    "DD/MM/YYYY"
+  ),
   // .isAfter()
   // .withMessage("Please enter a date later than today"),
   body("foodListings.*.imgFile").optional(),
@@ -276,11 +286,8 @@ router.put(
     "quantity",
     "Only positive integer accepted more than 0 is accepted"
   ).isInt({ gt: 0 }),
-  body("foodListings.*.weight", "Please enter weight")
-    .isInt({ gt: 0 }),
-  body("foodListings.*.unit", "Please select a unit")
-    .trim()
-    .notEmpty(),
+  body("foodListings.*.weight", "Please enter weight").isInt({ gt: 0 }),
+  body("foodListings.*.unit", "Please select a unit").trim().notEmpty(),
   body("category", "pick at least one category").notEmpty(), //test test
   // body("category.*", "category not valid").isIn(foodCat),
   body("isHalal", "input must be true or false").isBoolean(),

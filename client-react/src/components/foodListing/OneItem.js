@@ -92,9 +92,7 @@ const OneItem = () => {
           <Col>
             <Button
               // href={linkToggle(userType)}
-              onClick={() => {
-                history.goBack();
-              }}
+              onClick={() => history.goBack()}
               style={{
                 margin: "10px 0",
                 borderRadius: "20px",
