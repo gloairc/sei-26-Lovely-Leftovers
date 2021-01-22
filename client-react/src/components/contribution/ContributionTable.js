@@ -82,9 +82,7 @@ const ContributionTable = () => {
               {tableData.map((batch) => (
                 <tr>
                   <td>{batch._id}</td>
-                  <td>
-                    <Moment format="DD/MM/YYYY">{batch.createdAt}</Moment>
-                  </td>
+                  <td>{batch.createdAt}</td>
                   <td>
                     {/* <DeleteForeverIcon onClick={() => handleDelete(subject._id)} /> */}
                     {/* <Link to={`/batch/${batch._id}`}>

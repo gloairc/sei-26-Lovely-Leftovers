@@ -64,9 +64,7 @@ const ContributionTable = () => {
                 <tr>
                   <td>{foodItem.title}</td>
                   <td>{foodItem.quantity}</td>
-                  <td>
-                    <Moment format="DD/MM/YYYY">{foodItem.bestBefore}</Moment>
-                  </td>
+                  <td>{foodItem.bestBefore}</td>
                   <td>{foodItem.status}</td>
                   <td>{foodItem.recipient}</td>
                   <td>
