@@ -1,22 +1,10 @@
-import React from "react";
-import { useState } from "react";
-import {
-  Form,
-  FormControl,
-  Button,
-  Row,
-  Col,
-  Container,
-  InputGroup,
-} from "react-bootstrap";
-import { Redirect } from "react-router-dom";
-import Moment from "react-moment";
+import React, { useState } from "react";
+import { Form, FormControl, Row, Col, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
   const [foodDetails, setFoodDetails] = useState(foodList[foodIndex]);
   const [selectedCat, setSelectedCat] = useState([]);
-  const newFoodList = foodList.splice(foodIndex, 1, foodDetails);
   const foodCat = [
     "Meat",
     "Seafood",
@@ -221,26 +209,6 @@ const ItemDetailsAdd = ({ foodList, foodIndex, setFoodList }) => {
             }}
           />
         </Col>
-      </Row>
-
-      <Row>
-        <Col></Col>
-        {/* <Col></Col> this is for testing
-        <Col></Col>
-        <Col></Col>
-        <Col>
-          <Button
-            type="button"
-            onClick={() => {
-              console.log("Saved");
-              console.log(foodDetails);
-              console.log(foodList);
-            }}
-            style={{ margin: "10px 0" }}
-          >
-            Save
-          </Button>
-        </Col> */}
       </Row>
     </Container>
   );
