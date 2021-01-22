@@ -33,11 +33,11 @@ Bairong
   - Mitch: responsible for Routing, dealing with components of Batch and Listing.
   - Renice: responsible for User Authentication and User components.
   
-  Backend development:
+2.  Backend development:
   - Gloria: responsible for session and user schema/ validation and authentication.
   - Bairong: responsible for Batch, the nested Listing schema / validation & styling.
   
-2. **General approach**
+3. **General approach**
 - Initial planning
   A lot of time was spent on wireframing and finalizing our user story. From there, we moved on to designing a database that could make our vision a possibility. We research heavily on unfamiliar topics before we proceeded with our project. (e.g. database relationships or user authentication)
 - Communication
