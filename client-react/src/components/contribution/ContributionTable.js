@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Moment from "react-moment";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import "./style.css";
 import axios from "axios";
-
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
 
 const ContributionTable = () => {
   const [tableData, setTableData] = useState([]);
@@ -15,11 +10,21 @@ const ContributionTable = () => {
   const [deleted, setDeleted] = useState(false);
   const userId = sessionStorage.getItem("userId");
 
-  //   const handleDelete = (id) => {
-  //     axios.delete(`/pets/${id}`).then((response) => {
-  //       setDeleted(true);
-  //     });
-  //   };
+  const handleHide = (batch) => {
+    console.log("handling Hide");
+    axios
+      .put("/batch/sdeletebatch", {
+        batchID: batch,
+      })
+      .then((response) => {
+        console.log("Item Hidden", response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        console.log("error response", error.response.data.error);
+      });
+    console.log("after axios");
+  };
 
   useEffect(() => {
     axios.get(`/user/${userId}`).then((response) => {
@@ -52,13 +57,17 @@ const ContributionTable = () => {
         striped
         bordered
         hover
-        variant="dark"
-        style={{ margin: "10px 2.5%" }}
+        variant="light"
+        style={{
+          width: "90%",
+          margin: "10px auto",
+          boxShadow: "5px 5px 15px #cdeac0",
+        }}
       >
         <thead>
           <tr>
-            <th>Batch ID</th>
-            <th>Date Created</th>
+            <th style={{ width: "35%" }}>Batch ID</th>
+            <th style={{ width: "35%" }}>Date Created</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -68,17 +77,40 @@ const ContributionTable = () => {
               {tableData.map((batch) => (
                 <tr>
                   <td>{batch._id}</td>
+                  <td>{batch.createdAt}</td>
                   <td>
-                    <Moment format="DD/MM/YYYY">{batch.createdAt}</Moment>
-                  </td>
-                  <td>
-                    {/* <DeleteForeverIcon onClick={() => handleDelete(subject._id)} /> */}
-                    {/* <Link to={`/batch/${batch._id}`}>
-        <EditIcon />
-      </Link> */}
-                    <Link to={`/contributions/${batch._id}`}>View Items</Link>
-                    <br />
-                    <Link>Hide All</Link>
+                    <Link to={`/contributions/${batch._id}`}>
+                      <Button
+                        variant="outline-success"
+                        style={{
+                          borderRadius: "20px",
+                          border: "3px solid",
+                          width: "120px",
+                          margin: "0 5px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        View Items
+                      </Button>
+                    </Link>
+
+                    <Link>
+                      <Button
+                        onClick={() => {
+                          handleHide(batch._id);
+                        }}
+                        variant="outline-danger"
+                        style={{
+                          borderRadius: "20px",
+                          border: "3px solid",
+                          width: "120px",
+                          margin: "0 5px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {batch.status === "hidden" ? "Hidden" : "Hide All"}
+                      </Button>
+                    </Link>
                   </td>
                 </tr>
               ))}

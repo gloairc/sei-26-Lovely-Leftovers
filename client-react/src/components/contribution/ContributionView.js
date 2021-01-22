@@ -2,14 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Table, Row, Col, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Moment from "react-moment";
 import axios from "axios";
 
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
-
 const ContributionTable = () => {
-  let { batchId } = useParams();
+  let { batchId, foodId } = useParams();
   const [batchData, setBatchData] = useState({});
   const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -20,16 +16,35 @@ const ContributionTable = () => {
     });
   }, [dataLoaded]);
 
+  const handleHide = (id) => {
+    console.log("handling Hide");
+    axios
+      .put("/batch/sdeletelist", {
+        batchID: batchId,
+        listID: id,
+      })
+      .then((response) => {
+        console.log("Item Hidden", response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        console.log("error response", error.response.data.error);
+      });
+    console.log("after axios");
+  };
+
   return (
-    <>
-      <h2>Batch {batchData._id}</h2>
-      {console.log(batchData)}
+    <div className="contributionTable">
+      <div className="contributionTitle">
+        <h2>Batch {batchData._id}</h2>
+      </div>
+
       <Table
         striped
         bordered
         hover
-        variant="dark"
-        style={{ margin: "10px 2.5%" }}
+        variant="light"
+        style={{ boxShadow: " 5px 5px 15px  #cdeac0" }}
       >
         <thead>
           <tr>
@@ -48,17 +63,40 @@ const ContributionTable = () => {
                 <tr>
                   <td>{foodItem.title}</td>
                   <td>{foodItem.quantity}</td>
-                  <td>
-                    <Moment format="DD/MM/YYYY">{foodItem.bestBefore}</Moment>
-                  </td>
+                  <td>{foodItem.bestBefore}</td>
                   <td>{foodItem.status}</td>
                   <td>{foodItem.recipient}</td>
                   <td>
                     <Link to={`/listings/${batchData._id}/${foodItem._id}`}>
-                      View
+                      <Button
+                        variant="outline-success"
+                        style={{
+                          borderRadius: "20px",
+                          margin: "0 5px",
+                          border: "3px solid",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        View
+                      </Button>
+                    </Link>
+                    <Link>
+                      <Button
+                        onClick={() => {
+                          handleHide(foodItem._id);
+                        }}
+                        variant="outline-danger"
+                        style={{
+                          borderRadius: "20px",
+                          margin: "0 5px",
+                          border: "3px solid",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {foodItem.status === "hidden" ? "Hidden" : "Hide"}
+                      </Button>
                     </Link>
                     <br />
-                    <Link>Hide</Link>
                   </td>
                 </tr>
               ))}
@@ -78,7 +116,7 @@ const ContributionTable = () => {
           </Button>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

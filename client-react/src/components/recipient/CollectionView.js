@@ -15,7 +15,7 @@ const CollectionView = () => {
   useEffect(() => {
     axios.get(`/user/${userId}`).then((response) => {
       const foodList = response.data.receivedList.map((foodId) => {
-        return foodId;
+        return foodId.listingId;
       });
       setUserCollected(foodList);
 
@@ -51,10 +51,7 @@ const CollectionView = () => {
         <h1>My Collections</h1>
       </div>
       <Container>
-        <CardColumns>
-          {/* {console.log(fullList)} */}
-          {renderFoodCards}
-        </CardColumns>
+        <CardColumns>{renderFoodCards}</CardColumns>
       </Container>
     </div>
   );

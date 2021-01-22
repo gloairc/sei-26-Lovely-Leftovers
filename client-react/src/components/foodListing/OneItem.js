@@ -1,13 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {
-  Form,
-  FormControl,
-  Button,
-  Row,
-  Col,
-  Container,
-} from "react-bootstrap";
+import { Button, Row, Col, Container } from "react-bootstrap";
 import { Redirect, useParams } from "react-router-dom";
 import ItemDetailsShow from "./ItemDetailsShow";
 import axios from "axios";
@@ -19,12 +12,7 @@ const OneItem = () => {
   const [batchDetails, setBatchDetails] = useState({});
   const userId = sessionStorage.getItem("userId");
   const userType = sessionStorage.getItem("userType");
-  // const userId = "60079ec9f7b7a342e072ecc2"  //hardcoded for now
   const [isCollected, setIsCollected] = useState(false);
-
-  // const isEmptyObject = (value) => {
-  //   return Object.keys(value).length === 0 && value.constructor === Object;
-  // }
 
   useEffect(() => {
     axios.get(`/batch/${batchId}`).then((response) => {
@@ -69,7 +57,15 @@ const OneItem = () => {
   }
 
   const collectBtn = (
-    <Button onClick={handleCollect} style={{ margin: "10px 0" }}>
+    <Button
+      onClick={handleCollect}
+      style={{
+        margin: "10px 10px 15px 10px",
+        borderRadius: "20px",
+        width: "150px",
+      }}
+      variant="success"
+    >
       Collect
     </Button>
   );
@@ -83,21 +79,32 @@ const OneItem = () => {
     }
   };
   return (
-    <Container fluid>
-      <Row>
-        <ItemDetailsShow foodData={foodDetails} batchData={batchDetails} />
-        {/* <ItemDetailsShow foodData={foodDetails} batchData={batchData} /> */}
-      </Row>
+    <Container>
+      <div className="oneItem">
+        <div>
+          <ItemDetailsShow foodData={foodDetails} batchData={batchDetails} />
+        </div>
 
-      <Row>
-        <Col>{toShowCollectBtnOrNot}</Col>
+        <Row>
+          <Col>{toShowCollectBtnOrNot}</Col>
 
-        <Col>
-          <Button href={linkToggle(userType)} style={{ margin: "10px 0" }}>
-            Back
-          </Button>
-        </Col>
-      </Row>
+          <Col>
+            <Button
+              href={linkToggle(userType)}
+              style={{
+                margin: "10px 0",
+                borderRadius: "20px",
+                border: "3px solid",
+                fontWeight: "bold",
+                width: "150px",
+              }}
+              variant="outline-warning"
+            >
+              Back
+            </Button>
+          </Col>
+        </Row>
+      </div>
     </Container>
   );
 };

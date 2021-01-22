@@ -1,11 +1,7 @@
-import React, { useState } from "react";
-import { Card } from "react-bootstrap";
+import React from "react";
+import { Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
-import Moment from "react-moment";
-import { Link } from "react-router-dom";
-// import "./style.css";
-// https://bit.ly/3c4kYL1
 
 const FoodCard = ({ foodData }) => {
   const isHalalTF = foodData.isHalal === true ? "Halal" : "";
@@ -15,11 +11,10 @@ const FoodCard = ({ foodData }) => {
     const foodCat = foodData.category;
     let catList = "";
     let finalCatList = "";
-    for (let i = 0; i < ((foodCat).length) - 1; i++) {
-      catList += ((foodCat)[i] + ", ")
+    for (let i = 0; i < foodCat.length - 1; i++) {
+      catList += foodCat[i] + ", ";
     }
     finalCatList = catList + foodCat[foodCat.length - 1];
-    // console.log("finalCatList", finalCatList)
     return finalCatList;
   };
 
@@ -32,7 +27,6 @@ const FoodCard = ({ foodData }) => {
       <span class="badge badge-success">{isVegTF}</span>
       <span class="badge badge-warning">{isHalalTF}</span>
       <Card.Img variant="top" src={foodData.imgFile} />
-      {/*   "https://www.kindpng.com/picc/m/29-294916_food-donation-transparent-hd-png-download.png"*/}
       <Card.Body>
         <Card.Title
           style={{
@@ -46,21 +40,29 @@ const FoodCard = ({ foodData }) => {
         </Card.Title>
         <div className="textWrap">
           <Card.Text style={{ marginBottom: "-1px" }}>
-            Quantity: <span style={{ color: "blue" }}>{foodData.quantity}</span> x <span>{foodData.weight}{foodData.unit}</span>
+            Quantity: <span style={{ color: "blue" }}>{foodData.quantity}</span>{" "}
+            x{" "}
+            <span>
+              {foodData.weight}
+              {foodData.unit}
+            </span>
           </Card.Text>
           <Card.Text>
             Best Before:{" "}
-            <span style={{ color: "red" }}>
-              {foodData.bestBefore}
-              {/* <Moment format="DD/MM/YYYY">{foodData.bestBefore}</Moment>{" "} */}
-            </span>
-            <footer class="blockquote-footer font-italic"><br />Category:
-            {/* {foodData.category} */}
+            <span style={{ color: "red" }}>{foodData.bestBefore}</span>
+            <footer class="blockquote-footer font-italic">
+              <br />
+              Category:
               {foodCategories}
             </footer>
           </Card.Text>
           <Card.Link href={`/listings${foodData.queryPath}`}>
-            View Listing
+            <Button
+              variant="outline-success"
+              style={{ border: "3px solid", borderRadius: "20px" }}
+            >
+              View Listing
+            </Button>
           </Card.Link>
         </div>
       </Card.Body>

@@ -1,8 +1,17 @@
-import { useState } from 'react'
-import axios from 'axios'
-import { Form, Button, FormLabel, FormControl, FormGroup, Row, Col, Alert } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams, Link, Redirect } from 'react-router-dom';
+import { useState } from "react";
+import axios from "axios";
+import {
+  Form,
+  Button,
+  FormLabel,
+  FormControl,
+  FormGroup,
+  Row,
+  Col,
+  Alert,
+} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useParams, Link, Redirect } from "react-router-dom";
 
 const PasswordEdit = (props) => {
     const [formData, setFormData] = useState({})
@@ -31,17 +40,18 @@ const PasswordEdit = (props) => {
             console.log("password don't match")
         }
     }
+  };
 
-    const showErrors = () => {
-        let errors = []
-        if (errorMsg) {
-            errors.push(<p>Error!</p>)
-            for (let i = 0; i < errorMsg.length; i++) {
-                errors.push(<p>{errorMsg[i].msg}</p>)
-            }
-        }
-        return errors;
+  const showErrors = () => {
+    let errors = [];
+    if (errorMsg) {
+      errors.push(<p>Error!</p>);
+      for (let i = 0; i < errorMsg.length; i++) {
+        errors.push(<p>{errorMsg[i].msg}</p>);
+      }
     }
+    return errors;
+  };
 
     // if (changeStatus === 'Password updated!') {
     //     <Alert variant="success">{changeStatus}</Alert>
@@ -55,7 +65,7 @@ const PasswordEdit = (props) => {
     const valueWidth = 5
     const buffer = 1
 
-    return (
+  return (
         <>
             {userId === userIdParam ? <>
                 <div>
@@ -84,42 +94,66 @@ const PasswordEdit = (props) => {
                             </Col>
                         </FormGroup>
 
-                        <FormGroup as={Row} controlId="password2">
-                            <Col sm={buffer} />
-                            <FormLabel column sm={keyWidth}>Re-Enter New Password: </FormLabel>
-                            <Col sm={valueWidth}>
-                                <FormControl type="Password"
-                                    value={formData.password2}
-                                    onChange={(event) => {
-                                        setFormData((state) => {
-                                            return { ...state, password2: event.target.value }
-                                        })
-                                    }} />
-                            </Col>
-                        </FormGroup>
+              <FormGroup as={Row} controlId="password2">
+                <Col sm={buffer} />
+                <FormLabel column sm={keyWidth}>
+                  Re-Enter New Password:{" "}
+                </FormLabel>
+                <Col sm={valueWidth}>
+                  <FormControl
+                    type="Password"
+                    value={formData.password2}
+                    onChange={(event) => {
+                      setFormData((state) => {
+                        return { ...state, password2: event.target.value };
+                      });
+                    }}
+                  />
+                </Col>
+              </FormGroup>
 
-                        <Row>
-                            <Col sm={buffer} />
-                            <Button variant="primary" type="submit">
-                                Save Password
-                            </Button>
-                            <Col sm="1"></Col>
-                            <Col>
-                                <Link to={`/user/${userId}`}>Back to Account Details</Link>
-                            </Col>
-                            <Col sm="1"></Col>
-                            <Col sm="1"></Col>
-                            <Col sm="1"></Col>
-                            <Col sm="1"></Col>
-                        </Row>
-                    </Form>
-
-                </div>
-            </>
-                :
-                <Redirect to={'/restricted'} />
-            }
+              <Row>
+                <Col sm={buffer} />
+                <Button
+                  variant="success"
+                  style={{
+                    borderRadius: "20px",
+                    border: "3px solid",
+                    fontWeight: "bold",
+                    width: "150px",
+                  }}
+                  type="submit"
+                >
+                  Save Password
+                </Button>
+                <Col sm="1"></Col>
+                <Col>
+                  <Link to={`/user/${userId}`}>
+                    <Button
+                      variant="outline-warning"
+                      style={{
+                        borderRadius: "20px",
+                        border: "3px solid",
+                        fontWeight: "bold",
+                        width: "150px",
+                      }}
+                    >
+                      Back to Account Details
+                    </Button>
+                  </Link>
+                </Col>
+                <Col sm="1"></Col>
+                <Col sm="1"></Col>
+                <Col sm="1"></Col>
+                <Col sm="1"></Col>
+              </Row>
+            </Form>
+          </div>
         </>
-    )
-}
+      ) : (
+        <Redirect to={"/restricted"} />
+      )}
+    </>
+  );
+};
 export default PasswordEdit;
