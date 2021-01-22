@@ -8,9 +8,10 @@ Gloria
 Bairong
 
 ## Our working app: <Link>
-  
+  https://lovelyleftovers-project3.herokuapp.com/
 
 ## Our working repository: <Link>
+  https://git.generalassemb.ly/g00nd0/SEI-26_group1_project3
   
 ## Technologies used:
 - MERN Stack
@@ -22,7 +23,7 @@ Bairong
   5. react-moment
   6. joi
   7. lodash
-  8. jquery
+  
 
 
 ## Our Approach
@@ -33,8 +34,8 @@ Bairong
   - Renice: responsible for User Authentication and User components.
   
   Backend development:
-  - Gloria: responsible for session and user schema/ validation and authentication
-  - Bairong: responsible for Batch, the nested Listing schema / validation.
+  - Gloria: responsible for session and user schema/ validation and authentication.
+  - Bairong: responsible for Batch, the nested Listing schema / validation & styling.
   
 2. **General approach**
 - Initial planning
@@ -46,7 +47,12 @@ Bairong
 1) Deciding the data relationship between our Batch and Listing Schemas:
   We were unfamiliar with dealing with related data schemas that could potentially required us to make sophisticated operations in order to properly update our databases. In the end, we decided to just proceed with using embedded documents due to the ease of usage.
  
-2) 
+2) POST / PUT actions from the frontend and embedded documents. -------- MITCH HERE
+
+3) User Authentication & protected routes:
+  Had major problems dealing with this issue. ---RENICE PLEASE EXPLAIN ISSUE --- Due to a lack of time, we decided to try using useContext/useReducer for Authentication and --- RENICE URS HERE ----
+  
+4) Doing cross documents updates. (Referencing Docs).  --- GLORIA HERE ----
  
 
 Problem Statement, Solution, User Story, Tech used, Wireframe:
