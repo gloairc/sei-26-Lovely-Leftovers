@@ -47,7 +47,9 @@ Bairong
 1) Deciding the data relationship between our Batch and Listing Schemas:
   We were unfamiliar with dealing with related data schemas that could potentially required us to make sophisticated operations in order to properly update our databases. In the end, we decided to just proceed with using embedded documents due to the ease of usage.
  
-2) POST / PUT actions from the frontend and embedded documents. -------- MITCH HERE
+2) POST / PUT actions from the frontend and embedded documents.
+  We wanted to have a form that allows the user to dynamically add or remove the number of food items in a batch, as well as update and keep track of changes in the state. A form was created in a separate component, ItemDetailsAdd, specifically for adding food items only. 
+  For CollectionView (for recipients), we opted to display a user's collected items similar to the Food Listings page, instead of what was shown in the wireframe. To display it like the wireframe, we would need make several axios calls and create an overly complicated function to link the data. 
 
 3) User Authentication & Authorisation:
   We took a long time to find a feasible solution to ensure that an authenticated (logged in) user will be able to access the app in the manner he is authorised to do so. Due to a lack of time, we decided to try using useContext/useReducer for Authentication and storing user info in sessionStorage, which admittedly exposes our app to security risks.
