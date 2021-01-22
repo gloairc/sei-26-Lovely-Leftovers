@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Joi from "joi";
+// import Joi from "joi";
 import "./style.css";
 import {
-  Form,
-  Button,
-  FormLabel,
-  FormControl,
-  FormGroup,
-  FormText,
-  FormCheck,
-  Row,
-  Col,
-  Alert,
+    Form,
+    Button,
+    FormLabel,
+    FormControl,
+    FormGroup,
+    FormText,
+    FormCheck,
+    Row,
+    Col,
+    Alert,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams, Link, Redirect } from "react-router-dom";
@@ -26,17 +26,17 @@ const AccountDetailsForm = (props) => {
     const [isLoading, setIsLoading] = useState(false)
     const userId = useParams().id
 
-  // validation is WIP
-  // const formSchema = Joi.object({
-  //     username: Joi.string().alphanum().min(8).required(),
-  //     password: Joi.string().alphanum().min(8).required(),
-  //     type: Joi.string().required(),
-  //     firstName: Joi.string().regex(/^[a-zA-Z]{2}[a-zA-Z]+/).required(),
-  //     lastName: Joi.string().required(),
-  //     organisation: Joi.string().alphanum(),
-  //     email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
-  //     contactNum: Joi.string().length(8).regex(/^[0-9]{8}$/).required(),
-  // })
+    // validation is WIP
+    // const formSchema = Joi.object({
+    //     username: Joi.string().alphanum().min(8).required(),
+    //     password: Joi.string().alphanum().min(8).required(),
+    //     type: Joi.string().required(),
+    //     firstName: Joi.string().regex(/^[a-zA-Z]{2}[a-zA-Z]+/).required(),
+    //     lastName: Joi.string().required(),
+    //     organisation: Joi.string().alphanum(),
+    //     email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
+    //     contactNum: Joi.string().length(8).regex(/^[0-9]{8}$/).required(),
+    // })
 
     useEffect(() => {
         if (userId) {
@@ -65,67 +65,40 @@ const AccountDetailsForm = (props) => {
             organisation: formData.organisation,
             contactNum: formData.contactNum,
             email: formData.email,
-        }
+        };
         if (!userId) {
-            axios.post('/user', formData)
+            axios
+                .post("/user", formData)
                 .then((response) => {
-                    console.log(response)
-                    sessionStorage.setItem('userId', response.data._id)
-                    sessionStorage.setItem('userType', response.data.type)
+                    console.log(response);
+                    sessionStorage.setItem("userId", response.data._id);
+                    sessionStorage.setItem("userType", response.data.type);
                     setTimeout(() => {
-                        setSent(true)
-                        props.setLoggedIn(true)
-                    }, 2000)
+                        setSent(true);
+                    }, 2000);
                 })
                 .catch((error) => {
-                    console.log('error response', error.response)
-                    console.log('error', error.response.data.errors)
-                    setErrorMsg(error.response.data.errors)
+                    console.log("error", error.response.data.errors);
+                    setErrorMsg(error.response.data.errors);
+                });
+
+            // validation WIP
+            // const validate = formSchema.validate(formData, { abortEarly: false })
+            // console.log(validate.error)
+        } else if (userId) {
+            axios
+                .put(`/user/${userId}`, updatedInfo)
+                .then((response) => {
+                    setTimeout(() => {
+                        setSent(true);
+                    }, 2000);
                 })
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const updatedInfo = {
-      username: formData.username,
-      firstName: formData.firstName,
-      familyName: formData.familyName,
-      organisation: formData.organisation,
-      contactNum: formData.contactNum,
-      email: formData.email,
+                .catch((error) => {
+                    console.log("error", error.response.data.errors);
+                    setErrorMsg(error.response.data.errors); // array of objects
+                });
+        }
     };
-    if (!userId) {
-      axios
-        .post("/user", formData)
-        .then((response) => {
-          console.log(response);
-          sessionStorage.setItem("userId", response.data._id);
-          sessionStorage.setItem("userType", response.data.type);
-          setTimeout(() => {
-            setSent(true);
-          }, 2000);
-        })
-        .catch((error) => {
-          console.log("error", error.response.data.errors);
-          setErrorMsg(error.response.data.errors);
-        });
-
-      // validation WIP
-      // const validate = formSchema.validate(formData, { abortEarly: false })
-      // console.log(validate.error)
-    } else if (userId) {
-      axios
-        .put(`/user/${userId}`, updatedInfo)
-        .then((response) => {
-          setTimeout(() => {
-            setSent(true);
-          }, 2000);
-        })
-        .catch((error) => {
-          console.log("error", error.response.data.errors);
-          setErrorMsg(error.response.data.errors); // array of objects
-        });
-    }
-  };
 
     if (sent && userId) {
         return <Redirect to={`/user/${userId}`
@@ -133,17 +106,18 @@ const AccountDetailsForm = (props) => {
     }
     else if (sent && !userId) {
         return <Redirect to={'/listings'} />
-
-  const showErrors = () => {
-    let errors = [];
-    if (errorMsg) {
-      errors.push(<p>Error!</p>);
-      for (let i = 0; i < errorMsg.length; i++) {
-        errors.push(<p>{errorMsg[i].msg}</p>);
-      }
     }
-    return errors;
-  };
+
+    const showErrors = () => {
+        let errors = [];
+        if (errorMsg) {
+            errors.push(<p>Error!</p>);
+            for (let i = 0; i < errorMsg.length; i++) {
+                errors.push(<p>{errorMsg[i].msg}</p>);
+            }
+        }
+        return errors;
+    };
 
     const handleBlur = (event) => {
         setErrorMsg("");
@@ -158,9 +132,9 @@ const AccountDetailsForm = (props) => {
             })
     }
 
-  const keyWidth = 2;
-  const valueWidth = 5;
-  const buffer = 1;
+    const keyWidth = 2;
+    const valueWidth = 5;
+    const buffer = 1;
 
     return (
         <>
@@ -223,46 +197,45 @@ const AccountDetailsForm = (props) => {
                     </Col>
                 </FormGroup>
 
-        <FormGroup as={Row} controlId="password">
-          <Col sm={buffer} />
-          <FormLabel column sm={keyWidth}>
-            Password:{" "}
-          </FormLabel>
-          <Col sm={valueWidth}>
-            <FormControl
-              type="Password"
-              value={userId ? "" : formData.password}
-              onChange={(event) => {
-                setFormData((state) => {
-                  return { ...state, password: event.target.value };
-                });
-              }}
-              disabled={userId}
-            />
-            <FormText className="text-muted">
-              Password must be at least 8 characters long
+                <FormGroup as={Row} controlId="password">
+                    <Col sm={buffer} />
+                    <FormLabel column sm={keyWidth}>
+                        Password:{" "}
+                    </FormLabel>
+                    <Col sm={valueWidth}>
+                        <FormControl
+                            type="Password"
+                            value={userId ? "" : formData.password}
+                            onChange={(event) => {
+                                setFormData((state) => {
+                                    return { ...state, password: event.target.value };
+                                });
+                            }}
+                            disabled={userId}
+                        />
+                        <FormText className="text-muted">
+                            Password must be at least 8 characters long
             </FormText>
-          </Col>
-          {userId ? (
-            <Col sm="2">
-              <Link to={`/user/${userId}/changepassword`}>
-                <Button
-                  variant="outline-warning"
-                  style={{
-                    borderRadius: "20px",
-                    width: "170px",
-                    border: "3px solid",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Change Password
-                </Button>
-              </Link>
-            </Col>
-          ) : (
-            ""
-          )}
-        </FormGroup>
+                    </Col>
+                    {userId ? (
+                        <Col sm="2">
+                            <Link to={`/user/${userId}/changepassword`}>
+                                <Button
+                                    variant="outline-warning"
+                                    style={{
+                                        borderRadius: "20px",
+                                        width: "170px",
+                                        border: "3px solid",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    Change Password</Button>
+                            </Link>
+                        </Col>
+                    ) : (
+                            ""
+                        )}
+                </FormGroup>
 
                 <FormGroup as={Row} controlId="firstName">
                     <Col sm={buffer} />
@@ -339,37 +312,37 @@ const AccountDetailsForm = (props) => {
                     </Col>
                 </FormGroup>
 
-        <Row>
-          <Col sm={buffer} />
-          <Col sm={keyWidth}>
-            <Button
-              variant="outline-success"
-              style={{
-                borderRadius: "20px",
-                width: "150px",
-                border: "3px solid",
-                fontWeight: "bold",
-              }}
-              type="submit"
-              disabled={isLoading}
-            >
-              {userId ? "Save Changes" : "Create Account"}
-            </Button>
-          </Col>
-          {userId ? (
-            <>
-              <Col sm="1"></Col>
-              <Col>
-                <Link to={`/user/${userId}`}>Back to Account Details</Link>
-              </Col>
-            </>
-          ) : (
-            ""
-          )}
-        </Row>
-      </Form>
-    </div>
-  );
+                <Row>
+                    <Col sm={buffer} />
+                    <Col sm={keyWidth}>
+                        <Button
+                            variant="outline-success"
+                            style={{
+                                borderRadius: "20px",
+                                width: "150px",
+                                border: "3px solid",
+                                fontWeight: "bold",
+                            }}
+                            type="submit"
+                            disabled={isLoading}
+                        >
+                            {userId ? "Save Changes" : "Create Account"}
+                        </Button>
+                    </Col>
+                    {userId ? (
+                        <>
+                            <Col sm="1"></Col>
+                            <Col>
+                                <Link to={`/user/${userId}`}>Back to Account Details</Link>
+                            </Col>
+                        </>
+                    ) : (
+                            ""
+                        )}
+                </Row>
+            </Form>
+        </>
+    );
 };
 
 export default AccountDetailsForm;

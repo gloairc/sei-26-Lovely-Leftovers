@@ -28,7 +28,7 @@ const Account = () => {
 
   return (
     <div>
-      {userId ? (
+      {userId === userIdParam ? (
         <div className="accForm">
           <div className="leftForm">
             <Row style={{ margin: "10px 0 2px 2px" }}>
@@ -132,8 +132,8 @@ const Account = () => {
           </div>
         </div>
       ) : (
-        <Redirect to={"/about"} />
-      )}
+          <Redirect to={"/about"} />
+        )}
     </div>
   );
 };
