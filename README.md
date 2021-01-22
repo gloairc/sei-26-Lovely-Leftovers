@@ -28,8 +28,8 @@ Bairong
 
 ## Our Approach
 
-1. **Organization**
-  Frontend development:
+**Organization**
+1.  Frontend development:
   - Mitch: responsible for Routing, dealing with components of Batch and Listing.
   - Renice: responsible for User Authentication and User components.
   
@@ -49,8 +49,8 @@ Bairong
  
 2) POST / PUT actions from the frontend and embedded documents. -------- MITCH HERE
 
-3) User Authentication & protected routes:
-  Had major problems dealing with this issue. ---RENICE PLEASE EXPLAIN ISSUE --- Due to a lack of time, we decided to try using useContext/useReducer for Authentication and --- RENICE URS HERE ----
+3) User Authentication & Authorisation:
+  We took a long time to find a feasible solution to ensure that an authenticated (logged in) user will be able to access the app in the manner he is authorised to do so. Due to a lack of time, we decided to try using useContext/useReducer for Authentication and storing user info in sessionStorage, which admittedly exposes our app to security risks.
   
 4) Doing cross documents updates. (Referencing Docs).  --- GLORIA HERE ----
  
