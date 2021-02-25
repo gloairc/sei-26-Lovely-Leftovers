@@ -54,8 +54,5 @@ Bairong
 3) User Authentication & Authorisation:
   We took a long time to find a feasible solution to ensure that an authenticated (logged in) user will be able to access the app in the manner he is authorised to do so. Due to a lack of time, we decided to try using useContext/useReducer for Authentication and storing user info in sessionStorage, which admittedly exposes our app to security risks.
   
-4) Doing cross documents updates. (Referencing Docs).  --- GLORIA HERE ----
- 
-
-Problem Statement, Solution, User Story, Tech used, Wireframe:
+## Problem Statement, Solution, User Story, Tech used, Wireframe:
 https://docs.google.com/spreadsheets/d/1LeVqVNUfh9SaKYF2lVWPQ7ilunT0e9HQTQQ_9VdBBHA/edit?usp=sharing
